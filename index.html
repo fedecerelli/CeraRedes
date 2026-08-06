@@ -11,7 +11,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800;900&display=swap"
     rel="stylesheet">
-  <!-- Librerías para recorte y exportación -->
+  <!-- Librerías gratuitas para recorte y exportación -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
@@ -22,23 +22,16 @@
        ================================================================ */
     :root {
       --blue-main: #0A227A;
-      /* Azul institucional oscuro */
       --blue-bright: #1545D8;
-      /* Azul brillante para detalles */
       --blue-light: #F0F4FF;
-      /* Fondo claro para campos */
       --text-dark: #0A122A;
-      /* Color de texto principal */
       --grey-border: #D1D9ED;
-      /* Bordes suaves */
       --grey-sub: #656E85;
-      /* Texto secundario */
       --font-title: 'Bebas Neue', sans-serif;
-      /* Tipografía para títulos */
       --font-body: 'Montserrat', sans-serif;
-      /* Tipografía para cuerpo */
+      --radius-card: 30px;
+      --radius-box: 14px;
 
-      /* Colores de acento para cada categoría (solo se usan en la línea de categoría) */
       --primera-main: #0A227A;
       --primera-bright: #1545D8;
       --primera-light: #F0F4FF;
@@ -53,47 +46,72 @@
     }
 
     /* ================================================================
-       NUEVA INSIGNIA DE CATEGORÍA (minimalista, debajo del encabezado)
+       MEJORA 7: INSIGNIA DE CATEGORÍA DESTACADA
+       Minimalista: sin caja ni fondo, solo tipografía grande con mucho
+       tracking, un punto de color y un subrayado grueso del color de
+       la categoría. Resalta por tamaño, peso y color, no por adornos.
        ================================================================ */
     .category-line {
-      font-family: var(--font-body);
-      font-weight: 600;
-      /* más fina que el encabezado */
-      font-size: 28px;
-      /* tamaño legible pero no abrumador */
-      text-transform: uppercase;
-      color: var(--blue-main);
-      letter-spacing: 0.08em;
-      text-align: center;
-      margin: 12px 0 18px 0;
-      /* separación con el título */
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 16px;
+      margin: 16px 0 22px 0;
     }
 
-    .category-line .line {
-      flex: 0 1 60px;
-      height: 2px;
-      background: var(--blue-main);
-      opacity: 0.3;
+    .category-line .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--blue-bright);
+      flex-shrink: 0;
     }
 
     .category-line .label {
-      white-space: nowrap;
-      padding: 0 8px;
+      font-family: var(--font-body);
+      font-weight: 900;
+      font-size: 32px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--blue-main);
+      line-height: 1;
+      padding-bottom: 8px;
+      border-bottom: 5px solid var(--blue-bright);
     }
 
-    /* Versión 1:1 más pequeña */
+    .cat-senior .category-line .dot {
+      background: var(--senior-bright);
+    }
+
+    .cat-senior .category-line .label {
+      color: var(--senior-main);
+      border-bottom-color: var(--senior-bright);
+    }
+
+    .cat-inferiores .category-line .dot {
+      background: var(--inferiores-bright);
+    }
+
+    .cat-inferiores .category-line .label {
+      color: var(--inferiores-main);
+      border-bottom-color: var(--inferiores-bright);
+    }
+
     .card-11 .category-line {
-      font-size: 18px;
+      gap: 8px;
       margin: 8px 0 12px 0;
-      gap: 10px;
     }
 
-    .card-11 .category-line .line {
-      flex-basis: 30px;
+    .card-11 .category-line .dot {
+      width: 8px;
+      height: 8px;
+    }
+
+    .card-11 .category-line .label {
+      font-size: 17px;
+      letter-spacing: 0.12em;
+      padding-bottom: 4px;
+      border-bottom-width: 3px;
     }
 
     /* ================================================================
@@ -157,11 +175,10 @@
     }
 
     /* ================================================================
-       PANEL DE CONTROL (izquierda) - ANCHO AJUSTADO
+       PANEL DE CONTROL (izquierda)
        ================================================================ */
     #panel {
       width: 360px;
-      /* Aumentado para que quepan los campos */
       min-width: 300px;
       background: #FFFFFF;
       border-right: 1px solid #D8DCE8;
@@ -185,11 +202,39 @@
     .panel-header p.sub {
       font-size: 12px;
       color: var(--grey-sub);
-      margin-bottom: 16px;
+      margin-bottom: 10px;
       font-weight: 500;
     }
 
-    /* Pestañas móviles (solo visibles en pantallas pequeñas) */
+    /* ================================================================
+       MEJORA 9: acciones rápidas para expandir/contraer todo y así
+       reducir el scroll de la barra lateral.
+       ================================================================ */
+    .panel-quick-actions {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .panel-quick-actions button {
+      flex: 1;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 6px 4px;
+      border-radius: 6px;
+      border: 1px solid var(--grey-border);
+      background: #fff;
+      color: var(--blue-main);
+      cursor: pointer;
+    }
+
+    .panel-quick-actions button:hover {
+      background: var(--blue-light);
+    }
+
+    /* Pestañas móviles */
     .mobile-tabs {
       display: none;
       background: #fff;
@@ -217,22 +262,64 @@
     }
 
     /* ================================================================
-       ESTILOS DE FORMULARIOS (minimalistas y compactos)
+       MEJORA 5 y 9: SECCIONES COLAPSABLES (details/summary nativo)
+       Reemplazan los fieldset fijos: se pueden contraer y expandir
+       para optimizar el espacio y reducir el scroll de la barra.
        ================================================================ */
-    fieldset {
+    details.fs {
       border: 1px solid var(--grey-border);
-      border-radius: 6px;
-      margin-bottom: 10px;
-      padding: 8px 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      background: #fff;
     }
 
-    legend {
+    details.fs summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 9px 10px;
       font-size: 10px;
       font-weight: 800;
       color: var(--blue-bright);
       text-transform: uppercase;
-      padding: 0 6px;
       letter-spacing: 0.04em;
+      background: var(--blue-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    details.fs summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.fs summary::after {
+      content: '';
+      flex-shrink: 0;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--blue-bright);
+      transition: transform 0.15s ease;
+    }
+
+    details.fs[open] summary::after {
+      transform: rotate(180deg);
+    }
+
+    details.fs.fs-highlight summary {
+      background: var(--blue-bright);
+      color: #fff;
+    }
+
+    details.fs.fs-highlight summary::after {
+      border-top-color: #fff;
+    }
+
+    .fs-body {
+      padding: 10px 10px 4px 10px;
     }
 
     label {
@@ -247,17 +334,20 @@
 
     input[type="text"],
     input[type="date"],
+    input[type="time"],
+    input[type="number"],
     select,
     textarea {
       width: 100%;
       padding: 6px 8px;
       font-size: 12px;
       border: 1px solid var(--grey-border);
-      border-radius: 4px;
+      border-radius: 6px;
       font-family: inherit;
       font-weight: 600;
       background: #fff;
       transition: border 0.15s;
+      margin-bottom: 6px;
     }
 
     input:focus,
@@ -273,8 +363,9 @@
       gap: 6px;
       background: var(--blue-light);
       padding: 4px 6px;
-      border-radius: 4px;
+      border-radius: 6px;
       border: 1px dashed var(--grey-border);
+      margin-bottom: 6px;
     }
 
     .file-input-group img {
@@ -282,7 +373,7 @@
       height: 28px;
       object-fit: contain;
       background: #fff;
-      border-radius: 4px;
+      border-radius: 6px;
       border: 1px solid #ccc;
     }
 
@@ -309,6 +400,7 @@
       flex: 1;
       font-size: 11px;
       padding: 5px 6px;
+      margin-bottom: 0;
     }
 
     .btn-remove-row {
@@ -316,21 +408,21 @@
       color: white;
       border: none;
       padding: 6px 10px;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: 700;
       font-size: 11px;
     }
 
     /* ================================================================
-       BOTONES (minimalistas)
+       BOTONES
        ================================================================ */
     .btn {
       display: block;
       width: 100%;
       padding: 8px 10px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-weight: 800;
       font-size: 11px;
       cursor: pointer;
@@ -338,6 +430,11 @@
       text-align: center;
       text-transform: uppercase;
       letter-spacing: 0.04em;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: wait;
     }
 
     .btn-primary {
@@ -366,6 +463,15 @@
       margin-top: 4px;
     }
 
+    .export-hint {
+      font-size: 9px;
+      color: var(--grey-sub);
+      text-align: center;
+      margin-top: 6px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
     /* ================================================================
        MODAL CROPPER
        ================================================================ */
@@ -389,7 +495,7 @@
 
     .modal-content {
       background: #fff;
-      border-radius: 10px;
+      border-radius: 14px;
       width: 100%;
       max-width: 480px;
       padding: 18px;
@@ -410,7 +516,7 @@
       background: #f0f0f0;
       margin-bottom: 12px;
       overflow: hidden;
-      border-radius: 6px;
+      border-radius: 10px;
     }
 
     .img-container img {
@@ -453,21 +559,28 @@
       letter-spacing: 0.06em;
     }
 
+    /* ================================================================
+       MEJORA 6 (revisada): la vista previa usa el espacio disponible
+       automáticamente en lugar de tener un tamaño fijo pequeño con
+       controles de zoom manuales. El ancho se calcula con clamp() en
+       base al viewport, y la función fitAll() (JS) reescala el flyer
+       cada vez que cambia el tamaño de pantalla.
+       ================================================================ */
     .preview-frame {
       box-shadow: 0 6px 18px rgba(10, 34, 122, 0.10);
-      border-radius: 6px;
+      border-radius: var(--radius-card);
       overflow: hidden;
       background: #fff;
     }
 
     #wrap916 {
-      width: 240px;
-      height: 426px;
+      width: clamp(240px, 30vw, 460px);
+      aspect-ratio: 9 / 16;
     }
 
     #wrap11 {
-      width: 300px;
-      height: 300px;
+      width: clamp(280px, 34vw, 520px);
+      aspect-ratio: 1 / 1;
     }
 
     .scaler {
@@ -476,6 +589,7 @@
 
     /* ================================================================
        ESTILO DEL FLYER (la tarjeta que se genera)
+       MEJORA 1: esquinas redondeadas en toda la tarjeta
        ================================================================ */
     .card {
       width: 1080px;
@@ -485,6 +599,8 @@
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
+      border-radius: var(--radius-card);
+      overflow: hidden;
     }
 
     .card-916 {
@@ -497,7 +613,6 @@
       padding: 45px 55px;
     }
 
-    /* Contenedor interno que permite aplicar overlay de fondo */
     .card-content {
       position: relative;
       z-index: 2;
@@ -598,6 +713,7 @@
       background: var(--blue-main);
       margin: 30px 0;
       border: none;
+      border-radius: 3px;
     }
 
     .card-11 .divider-thick {
@@ -620,7 +736,7 @@
       font-family: var(--font-title);
       font-size: 44px;
       padding: 8px 45px;
-      border-radius: 12px;
+      border-radius: 999px;
       letter-spacing: 0.04em;
       line-height: 1;
     }
@@ -628,7 +744,6 @@
     .card-11 .pill-cat {
       font-size: 26px;
       padding: 5px 30px;
-      border-radius: 8px;
     }
 
     /* ===== MODO VS ===== */
@@ -660,7 +775,7 @@
       width: 320px;
       height: 320px;
       border: 3px solid var(--blue-bright);
-      border-radius: 20px;
+      border-radius: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -674,7 +789,7 @@
       width: 190px;
       height: 190px;
       padding: 12px;
-      border-radius: 14px;
+      border-radius: 18px;
     }
 
     .shield-frame img {
@@ -688,7 +803,7 @@
       height: 100%;
       background: var(--blue-light);
       border: 2px dashed var(--blue-bright);
-      border-radius: 12px;
+      border-radius: 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -751,13 +866,13 @@
       align-items: center;
       background: #FFFFFF;
       border: 2px solid var(--blue-bright);
-      border-radius: 16px;
+      border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 8px 20px rgba(21, 69, 216, 0.06);
     }
 
     .card-11 .schedule-row {
-      border-radius: 10px;
+      border-radius: 14px;
     }
 
     .sched-time {
@@ -849,7 +964,7 @@
     /* ===== INFO HORA/FECHA ===== */
     .info-box {
       border: 2px solid var(--blue-bright);
-      border-radius: 16px;
+      border-radius: 22px;
       padding: 20px 30px;
       display: flex;
       align-items: center;
@@ -860,7 +975,7 @@
 
     .card-11 .info-box {
       padding: 10px 20px;
-      border-radius: 12px;
+      border-radius: 16px;
       margin-bottom: 14px;
     }
 
@@ -920,7 +1035,7 @@
     /* ===== ACCESOS ===== */
     .access-box {
       border: 2px solid var(--blue-bright);
-      border-radius: 14px;
+      border-radius: 18px;
       padding: 16px 20px;
       display: flex;
       align-items: center;
@@ -931,7 +1046,7 @@
 
     .card-11 .access-box {
       padding: 8px 14px;
-      border-radius: 10px;
+      border-radius: 12px;
       margin-bottom: 8px;
       gap: 12px;
     }
@@ -988,7 +1103,7 @@
     .goleadores-box {
       width: 100%;
       border: 2px solid var(--blue-bright);
-      border-radius: 16px;
+      border-radius: 20px;
       padding: 20px 25px;
       margin-bottom: 25px;
       background: #FFFFFF;
@@ -996,7 +1111,7 @@
 
     .card-11 .goleadores-box {
       padding: 12px 16px;
-      border-radius: 10px;
+      border-radius: 14px;
       margin-bottom: 14px;
     }
 
@@ -1027,7 +1142,7 @@
       font-weight: 800;
       font-size: 22px;
       padding: 8px 18px;
-      border-radius: 20px;
+      border-radius: 999px;
     }
 
     .card-11 .goleador-chip {
@@ -1053,7 +1168,7 @@
     .generico-img-frame {
       width: 100%;
       max-height: 620px;
-      border-radius: 16px;
+      border-radius: 22px;
       overflow: hidden;
       border: 3px solid var(--blue-bright);
       background: #fff;
@@ -1064,7 +1179,7 @@
 
     .card-11 .generico-img-frame {
       max-height: 340px;
-      border-radius: 12px;
+      border-radius: 16px;
     }
 
     .generico-img-frame img {
@@ -1091,7 +1206,7 @@
     .sponsor-strip {
       width: 100%;
       border: 2px solid var(--grey-border);
-      border-radius: 14px;
+      border-radius: 18px;
       padding: 14px 18px;
       display: flex;
       flex-direction: column;
@@ -1103,7 +1218,7 @@
 
     .card-11 .sponsor-strip {
       padding: 8px 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       margin-bottom: 10px;
       gap: 5px;
     }
@@ -1124,13 +1239,16 @@
       max-width: 100%;
       max-height: 110px;
       object-fit: contain;
+      border-radius: 8px;
     }
 
     .card-11 .sponsor-strip img {
       max-height: 60px;
     }
 
-    /* ===== PIE DE PÁGINA ===== */
+    /* ================================================================
+       PIE DE PÁGINA
+       ================================================================ */
     .footer-section {
       display: flex;
       align-items: center;
@@ -1138,43 +1256,29 @@
       padding-top: 20px;
       border-top: 3px solid var(--blue-main);
       margin-top: auto;
+      gap: 16px;
     }
 
     .card-11 .footer-section {
-      padding-top: 10px;
+      padding-top: 18px;
+      margin-top: 18px;
       border-top-width: 2px;
     }
 
     .footer-left {
       display: flex;
       align-items: center;
-      gap: 14px;
-    }
-
-    .footer-mini-logo {
-      width: 50px;
-      height: 50px;
-    }
-
-    .card-11 .footer-mini-logo {
-      width: 32px;
-      height: 32px;
-    }
-
-    .footer-mini-logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
     }
 
     .footer-slogan {
       font-family: var(--font-title);
       font-size: 42px;
       color: var(--blue-bright);
+      letter-spacing: 0.02em;
     }
 
     .card-11 .footer-slogan {
-      font-size: 26px;
+      font-size: 28px;
     }
 
     .footer-right {
@@ -1186,6 +1290,7 @@
       font-weight: 700;
       color: var(--grey-sub);
       text-transform: uppercase;
+      margin-bottom: 2px;
     }
 
     .footer-r2 {
@@ -1196,20 +1301,28 @@
     }
 
     .card-11 .footer-r1 {
-      font-size: 10px;
+      font-size: 11px;
+      margin-bottom: 3px;
     }
 
     .card-11 .footer-r2 {
-      font-size: 11px;
+      font-size: 13px;
     }
 
     /* ================================================================
        ELEMENTO OCULTO PARA EXPORTACIÓN
+       Se posiciona dentro del viewport (con opacidad 0) en lugar de
+       muy lejos a la izquierda: algunos navegadores móviles recortan
+       o fallan al capturar contenido fuera del área visible, lo que
+       provocaba que la descarga de imágenes no funcionara en celulares.
        ================================================================ */
     #offscreen {
       position: fixed;
-      left: -9999px;
+      left: 0;
       top: 0;
+      opacity: 0;
+      pointer-events: none;
+      z-index: -1;
     }
 
     /* ================================================================
@@ -1238,13 +1351,13 @@
       }
 
       #wrap916 {
-        width: 200px;
-        height: 355px;
+        width: clamp(200px, 62vw, 340px);
+        aspect-ratio: 9 / 16;
       }
 
       #wrap11 {
-        width: 260px;
-        height: 260px;
+        width: clamp(220px, 78vw, 380px);
+        aspect-ratio: 1 / 1;
       }
 
       .view-tab-content {
@@ -1283,225 +1396,263 @@
       <p class="sub">Club Social y Deportivo Cerámica Argentina</p>
     </div>
 
-    <!-- PASO 1: ESCUDO DEL CLUB (general) -->
-    <fieldset style="background: #f7f9ff; border-color: var(--blue-bright);">
-      <legend style="background: var(--blue-bright); color:#fff; border-radius: 4px; padding:2px 8px;">1. Escudo del
-        Club</legend>
-      <label>Cargar / Cambiar Escudo de Cerámica:</label>
-      <div class="file-input-group">
-        <img class="mini mini-local" src="" alt="" style="display:none;">
-        <input type="file" accept="image/*" id="file-local">
+    <!-- MEJORA 5/9: acciones rápidas para contraer/expandir todas las secciones -->
+    <div class="panel-quick-actions">
+      <button type="button" id="btn-expand-all">Expandir Todo</button>
+      <button type="button" id="btn-collapse-all">Contraer Todo</button>
+    </div>
+
+    <!-- PASO 1: ESCUDO DEL CLUB (abierto por defecto) -->
+    <details class="fs fs-highlight" open>
+      <summary>1. Escudo del Club</summary>
+      <div class="fs-body">
+        <label>Cargar / Cambiar Escudo de Cerámica:</label>
+        <div class="file-input-group">
+          <img class="mini mini-local" src="" alt="" style="display:none;">
+          <input type="file" accept="image/*" id="file-local">
+        </div>
       </div>
-    </fieldset>
+    </details>
 
-    <!-- PASO 2: CATEGORÍA INSTITUCIONAL -->
-    <fieldset>
-      <legend>2. Categoría</legend>
-      <label>Seleccioná la categoría del flyer:</label>
-      <div class="cat-selector" id="cat-selector">
-        <div class="cat-opt sel-primera active" data-cat="PRIMERA">Primera</div>
-        <div class="cat-opt sel-senior" data-cat="SENIOR">Seniors</div>
-        <div class="cat-opt sel-inferiores" data-cat="INFERIORES">Inferiores</div>
+    <!-- PASO 2: CATEGORÍA (abierto por defecto) -->
+    <details class="fs" open>
+      <summary>2. Categoría</summary>
+      <div class="fs-body">
+        <label>Seleccioná la categoría del flyer:</label>
+        <div class="cat-selector" id="cat-selector">
+          <div class="cat-opt sel-primera active" data-cat="PRIMERA">Primera</div>
+          <div class="cat-opt sel-senior" data-cat="SENIOR">Seniors</div>
+          <div class="cat-opt sel-inferiores" data-cat="INFERIORES">Inferiores</div>
+        </div>
       </div>
-    </fieldset>
+    </details>
 
-    <!-- PASO 3: TIPO DE FLYER -->
-    <fieldset>
-      <legend>3. Formato de Flyer</legend>
-      <label>Seleccionar Tipo:</label>
-      <select id="in-mode">
-        <option value="VS" selected>Partido Único (VS Escudos)</option>
-        <option value="LIBRE">Cronograma Libre / Múltiples Categorías</option>
-        <option value="RESULTADO">Resultado de la Fecha (Marcador y Goles)</option>
-        <option value="GENERICO">Genérico (Libre / Cualquier Aviso)</option>
-      </select>
-    </fieldset>
+    <!-- PASO 3: TIPO DE FLYER (abierto por defecto) -->
+    <details class="fs" open>
+      <summary>3. Formato de Flyer</summary>
+      <div class="fs-body">
+        <label>Seleccionar Tipo:</label>
+        <select id="in-mode">
+          <option value="VS" selected>Partido Único (VS Escudos)</option>
+          <option value="LIBRE">Cronograma Libre / Múltiples Categorías</option>
+          <option value="RESULTADO">Resultado de la Fecha (Marcador y Goles)</option>
+          <option value="GENERICO">Genérico (Libre / Cualquier Aviso)</option>
+        </select>
+      </div>
+    </details>
 
-    <!-- ENCABEZADO -->
-    <fieldset>
-      <legend>Encabezado</legend>
-      <label>Línea 1</label>
-      <input type="text" class="in-brand1" value="CLUB SOCIAL Y DEPORTIVO">
-      <label>Línea 2</label>
-      <input type="text" class="in-brand2" value="CERÁMICA ARGENTINA">
-      <label>Título Superior</label>
-      <input type="text" class="in-t1" value="PRÓXIMO">
-      <label>Título Principal</label>
-      <input type="text" class="in-t2" value="PARTIDO">
-      <label>Subtítulo (se muestra en la pill)</label>
-      <input type="text" class="in-cat" value="AMISTOSO">
-      <p style="font-size:9px; color:var(--grey-sub); margin-top:-2px; font-weight:600;">
-        La categoría (Primera/Seniors/Inferiores) se muestra ahora como una línea minimalista debajo del encabezado.
-      </p>
-    </fieldset>
+    <!-- ENCABEZADO (contraído por defecto para ahorrar espacio) -->
+    <details class="fs">
+      <summary>Encabezado</summary>
+      <div class="fs-body">
+        <label>Línea 1</label>
+        <input type="text" class="in-brand1" value="CLUB SOCIAL Y DEPORTIVO">
+        <label>Línea 2</label>
+        <input type="text" class="in-brand2" value="CERÁMICA ARGENTINA">
+        <label>Título Superior</label>
+        <input type="text" class="in-t1" value="PRÓXIMO">
+        <label>Título Principal</label>
+        <input type="text" class="in-t2" value="PARTIDO">
+        <label>Subtítulo (se muestra en la pill)</label>
+        <input type="text" class="in-cat" value="AMISTOSO">
+        <p style="font-size:9px; color:var(--grey-sub); margin-top:-2px; font-weight:600;">
+          La categoría (Primera/Seniors/Inferiores) se muestra como una insignia de color debajo del encabezado.
+        </p>
+      </div>
+    </details>
 
     <!-- SECCIÓN MODO VS (y también RESULTADO) -->
     <div id="field-group-vs">
-      <fieldset>
-        <legend>Condición del Partido</legend>
-        <label>Cerámica Argentina juega como:</label>
-        <select id="in-condicion">
-          <option value="LOCAL" selected>LOCAL (Cerámica primero)</option>
-          <option value="VISITANTE">VISITANTE (Rival primero)</option>
-        </select>
-      </fieldset>
-      <fieldset>
-        <legend>Rival y Escudo</legend>
-        <label>Escudo Rival (JPG/PNG)</label>
-        <div class="file-input-group">
-          <img class="mini mini-rival" src="" alt="" style="display:none;">
-          <input type="file" accept="image/*" id="file-rival">
+      <details class="fs">
+        <summary>Condición del Partido</summary>
+        <div class="fs-body">
+          <label>Cerámica Argentina juega como:</label>
+          <select id="in-condicion">
+            <option value="LOCAL" selected>LOCAL (Cerámica primero)</option>
+            <option value="VISITANTE">VISITANTE (Rival primero)</option>
+          </select>
         </div>
-        <label>Nombre Rival</label>
-        <input type="text" id="in-nombre-rival" class="in-nombre-rival" value="MOQUEHUA">
-      </fieldset>
+      </details>
+      <details class="fs">
+        <summary>Rival y Escudo</summary>
+        <div class="fs-body">
+          <label>Escudo Rival (JPG/PNG)</label>
+          <div class="file-input-group">
+            <img class="mini mini-rival" src="" alt="" style="display:none;">
+            <input type="file" accept="image/*" id="file-rival">
+          </div>
+          <label>Nombre Rival</label>
+          <input type="text" id="in-nombre-rival" class="in-nombre-rival" value="MOQUEHUA">
+        </div>
+      </details>
     </div>
 
     <!-- SECCIÓN MODO LIBRE (CRONOGRAMA) -->
     <div id="field-group-libre" style="display: none;">
-      <fieldset>
-        <legend>Cronograma de Partidos / Horarios</legend>
-        <div id="schedule-inputs">
-          <div class="schedule-input-row">
-            <input type="text" value="10:30 HS" class="sched-in-time" placeholder="Hora">
-            <input type="text" value="SUB 11" class="sched-in-cat" placeholder="Categoría">
-            <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+      <details class="fs" open>
+        <summary>Cronograma de Partidos / Horarios</summary>
+        <div class="fs-body">
+          <div id="schedule-inputs">
+            <div class="schedule-input-row">
+              <input type="text" value="10:30 HS" class="sched-in-time" placeholder="Hora">
+              <input type="text" value="SUB 11" class="sched-in-cat" placeholder="Categoría">
+              <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+            </div>
+            <div class="schedule-input-row">
+              <input type="text" value="11:30 HS" class="sched-in-time" placeholder="Hora">
+              <input type="text" value="SUB 13" class="sched-in-cat" placeholder="Categoría">
+              <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+            </div>
+            <div class="schedule-input-row">
+              <input type="text" value="13:00 HS" class="sched-in-time" placeholder="Hora">
+              <input type="text" value="SUB 17" class="sched-in-cat" placeholder="Categoría">
+              <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+            </div>
+            <div class="schedule-input-row">
+              <input type="text" value="15:15 HS" class="sched-in-time" placeholder="Hora">
+              <input type="text" value="SUB 23" class="sched-in-cat" placeholder="Categoría">
+              <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+            </div>
           </div>
-          <div class="schedule-input-row">
-            <input type="text" value="11:30 HS" class="sched-in-time" placeholder="Hora">
-            <input type="text" value="SUB 13" class="sched-in-cat" placeholder="Categoría">
-            <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
-          </div>
-          <div class="schedule-input-row">
-            <input type="text" value="13:00 HS" class="sched-in-time" placeholder="Hora">
-            <input type="text" value="SUB 17" class="sched-in-cat" placeholder="Categoría">
-            <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
-          </div>
-          <div class="schedule-input-row">
-            <input type="text" value="15:15 HS" class="sched-in-time" placeholder="Hora">
-            <input type="text" value="SUB 23" class="sched-in-cat" placeholder="Categoría">
-            <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
-          </div>
+          <button class="btn btn-outline btn-small" id="btn-add-sched">+ Agregar Horario</button>
         </div>
-        <button class="btn btn-outline btn-small" id="btn-add-sched">+ Agregar Horario</button>
-      </fieldset>
+      </details>
     </div>
 
     <!-- SECCIÓN MODO GENÉRICO -->
     <div id="field-group-generico" style="display: none;">
-      <fieldset>
-        <legend>Contenido Libre</legend>
-        <label>Imagen (Opcional)</label>
-        <div class="file-input-group">
-          <img class="mini mini-generico" src="" alt="" style="display:none;">
-          <input type="file" accept="image/*" id="file-generico">
+      <details class="fs" open>
+        <summary>Contenido Libre</summary>
+        <div class="fs-body">
+          <label>Imagen (Opcional)</label>
+          <div class="file-input-group">
+            <img class="mini mini-generico" src="" alt="" style="display:none;">
+            <input type="file" accept="image/*" id="file-generico">
+          </div>
+          <label>Texto Libre</label>
+          <textarea id="in-gen-texto" rows="5"
+            style="width:100%; padding:8px; font-size:12px; border:1px solid var(--grey-border); border-radius:6px; font-family:inherit; font-weight:600; resize:vertical;"
+            placeholder="Escribí acá lo que necesites: festejo, aviso, agradecimiento, promoción, lo que se te ocurra...">¡Gracias por acompañarnos siempre!</textarea>
         </div>
-        <label>Texto Libre</label>
-        <textarea id="in-gen-texto" rows="5"
-          style="width:100%; padding:8px; font-size:12px; border:1px solid var(--grey-border); border-radius:4px; font-family:inherit; font-weight:600; resize:vertical;"
-          placeholder="Escribí acá lo que necesites: festejo, aviso, agradecimiento, promoción, lo que se te ocurra...">¡Gracias por acompañarnos siempre!</textarea>
-      </fieldset>
+      </details>
     </div>
 
     <!-- SECCIÓN MODO RESULTADO -->
     <div id="field-group-resultado" style="display: none;">
-      <fieldset>
-        <legend>Marcador Final</legend>
-        <div class="row2">
-          <div>
-            <label>Goles Cerámica</label>
-            <input type="number" min="0" id="in-goles-local" value="2">
-          </div>
-          <div>
-            <label>Goles Rival</label>
-            <input type="number" min="0" id="in-goles-rival" value="1">
-          </div>
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend>Goleadores (Opcional)</legend>
-        <div id="goal-inputs">
-          <div class="schedule-input-row">
-            <input type="text" value="15' Pérez" class="goal-in-text" placeholder="Ej: 15' Pérez">
-            <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
-          </div>
-          <div class="schedule-input-row">
-            <input type="text" value="70' Gómez" class="goal-in-text" placeholder="Ej: 70' Gómez">
-            <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
+      <details class="fs" open>
+        <summary>Marcador Final</summary>
+        <div class="fs-body">
+          <div class="row2">
+            <div>
+              <label>Goles Cerámica</label>
+              <input type="number" min="0" id="in-goles-local" value="2">
+            </div>
+            <div>
+              <label>Goles Rival</label>
+              <input type="number" min="0" id="in-goles-rival" value="1">
+            </div>
           </div>
         </div>
-        <button class="btn btn-outline btn-small" id="btn-add-goal">+ Agregar Goleador</button>
-      </fieldset>
+      </details>
+      <details class="fs">
+        <summary>Goleadores (Opcional)</summary>
+        <div class="fs-body">
+          <div id="goal-inputs">
+            <div class="schedule-input-row">
+              <input type="text" value="15' Pérez" class="goal-in-text" placeholder="Ej: 15' Pérez">
+              <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
+            </div>
+            <div class="schedule-input-row">
+              <input type="text" value="70' Gómez" class="goal-in-text" placeholder="Ej: 70' Gómez">
+              <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-small" id="btn-add-goal">+ Agregar Goleador</button>
+        </div>
+      </details>
     </div>
 
     <!-- CANCHA Y HORARIO (visible en modos VS y LIBRE) -->
-    <fieldset id="fieldset-cancha">
-      <legend>Cancha y Horario</legend>
-      <label>Estadio</label>
-      <input type="text" class="in-estadio" value="ESTADIO HECTOR C. CARDOSO">
-      <label>Subtítulo Estadio</label>
-      <input type="text" class="in-estadio-sub" value="CLUB CERAMICA">
-      <div class="row2">
-        <div id="field-hora-vs">
-          <label>Hora</label>
-          <input type="text" class="in-hora" value="15HS">
-        </div>
-        <div>
-          <label>Fecha</label>
-          <input type="date" id="in-fecha-picker">
+    <details class="fs" id="fieldset-cancha">
+      <summary>Cancha y Horario</summary>
+      <div class="fs-body">
+        <label>Estadio</label>
+        <input type="text" class="in-estadio" value="ESTADIO HECTOR C. CARDOSO">
+        <label>Subtítulo Estadio</label>
+        <input type="text" class="in-estadio-sub" value="CLUB CERAMICA">
+        <div class="row2">
+          <div id="field-hora-vs">
+            <label>Hora</label>
+            <input type="time" class="in-hora" value="15:00">
+          </div>
+          <div>
+            <label>Fecha</label>
+            <input type="date" id="in-fecha-picker">
+          </div>
         </div>
       </div>
-    </fieldset>
+    </details>
 
     <!-- ACCESOS (visible en modos VS y LIBRE) -->
-    <fieldset id="fieldset-accesos">
-      <legend>Accesos</legend>
-      <label>Acceso Local</label>
-      <input type="text" class="in-acc-local" value='SERGIO "PELA" GIROTTI X CALLE ALEM'>
-      <label>Acceso Visitante</label>
-      <input type="text" class="in-acc-visit" value="SOBRE CALLE BROWN">
-    </fieldset>
+    <details class="fs" id="fieldset-accesos">
+      <summary>Accesos</summary>
+      <div class="fs-body">
+        <label>Acceso Local</label>
+        <input type="text" class="in-acc-local" value='SERGIO "PELA" GIROTTI X CALLE ALEM'>
+        <label>Acceso Visitante</label>
+        <input type="text" class="in-acc-visit" value="SOBRE CALLE BROWN">
+      </div>
+    </details>
 
     <!-- PUBLICIDAD / AUSPICIANTE -->
-    <fieldset>
-      <legend>Publicidad / Auspiciante (Opcional)</legend>
-      <label>Logo o imagen del sponsor:</label>
-      <div class="file-input-group">
-        <img class="mini mini-sponsor" src="" alt="" style="display:none;">
-        <input type="file" accept="image/*" id="file-sponsor">
+    <details class="fs">
+      <summary>Publicidad / Auspiciante (Opcional)</summary>
+      <div class="fs-body">
+        <label>Logo o imagen del sponsor:</label>
+        <div class="file-input-group">
+          <img class="mini mini-sponsor" src="" alt="" style="display:none;">
+          <input type="file" accept="image/*" id="file-sponsor">
+        </div>
+        <button class="btn btn-outline btn-small" id="btn-remove-sponsor" style="display:none;">✕ Quitar
+          Publicidad</button>
       </div>
-      <button class="btn btn-outline btn-small" id="btn-remove-sponsor" style="display:none;">✕ Quitar
-        Publicidad</button>
-    </fieldset>
+    </details>
 
     <!-- IMAGEN DE FONDO -->
-    <fieldset>
-      <legend>Fondo de la Plantilla (Opcional)</legend>
-      <label>Imagen de fondo (JPG/PNG):</label>
-      <div class="file-input-group">
-        <img class="mini mini-background" src="" alt="" style="display:none;">
-        <input type="file" accept="image/*" id="file-background">
+    <details class="fs">
+      <summary>Fondo de la Plantilla (Opcional)</summary>
+      <div class="fs-body">
+        <label>Imagen de fondo (JPG/PNG):</label>
+        <div class="file-input-group">
+          <img class="mini mini-background" src="" alt="" style="display:none;">
+          <input type="file" accept="image/*" id="file-background">
+        </div>
+        <button class="btn btn-outline btn-small" id="btn-remove-background" style="display:none;">✕ Quitar
+          Fondo</button>
+        <p style="font-size:9px; color:var(--grey-sub); margin-top:6px;">Si no cargás nada, se usará el fondo
+          degradado original.</p>
       </div>
-      <button class="btn btn-outline btn-small" id="btn-remove-background" style="display:none;">✕ Quitar Fondo</button>
-      <p style="font-size:9px; color:var(--grey-sub); margin-top:6px;">Si no cargás nada, se usará el fondo degradado
-        original.</p>
-    </fieldset>
+    </details>
 
     <!-- PIE DE PÁGINA -->
-    <fieldset>
-      <legend>Pie de Página</legend>
-      <label>Slogan</label>
-      <input type="text" class="in-foot-slogan" value="¡VAMOS CERA!">
-      <label>Liga / Torneo R1</label>
-      <input type="text" class="in-foot-r1" value="LIGA CHIVILCOYANA DE FUTBOL">
-      <label>Liga / Torneo R2</label>
-      <input type="text" class="in-foot-r2" value="TORNEO SENIOR AÑO 2026">
-    </fieldset>
+    <details class="fs">
+      <summary>Pie de Página</summary>
+      <div class="fs-body">
+        <label>Slogan</label>
+        <input type="text" class="in-foot-slogan" value="¡VAMOS CERA!">
+        <label>Liga / Torneo R1</label>
+        <input type="text" class="in-foot-r1" value="LIGA CHIVILCOYANA DE FUTBOL">
+        <label>Liga / Torneo R2</label>
+        <input type="text" class="in-foot-r2" value="TORNEO AÑO 2026">
+      </div>
+    </details>
 
     <!-- BOTONES DE EXPORTACIÓN -->
     <div id="exportbar">
       <button class="btn btn-primary" id="btn-916">Descargar JPG (Historia 9:16)</button>
       <button class="btn btn-outline" id="btn-11">Descargar JPG (Feed 1:1)</button>
+      <p class="export-hint">En el celular la imagen se abre en una pestaña nueva: mantené el dedo presionado sobre
+        ella para guardarla.</p>
     </div>
   </div>
 
@@ -1557,34 +1708,25 @@
   <script>
     // ================================================================
     //  VARIABLES GLOBALES
-    //  Almacenan las imágenes cargadas (en base64) para usarlas en el flyer.
     // ================================================================
-    let localShieldSrc = null;        // Escudo de Cerámica
-    let rivalShieldSrc = null;        // Escudo del rival
-    let sponsorSrc = null;           // Logo del sponsor
-    let genericoImgSrc = null;       // Imagen en modo Genérico
-    let backgroundImgSrc = null;     // Imagen de fondo para la plantilla
-    let currentCategory = 'PRIMERA'; // Categoría activa (PRIMERA, SENIOR, INFERIORES)
-    let cropper = null;              // Instancia del Cropper
-    let currentTargetTeam = null;    // 'local' o 'rival' para saber qué escudo estamos recortando
+    let localShieldSrc = null;
+    let rivalShieldSrc = null;
+    let sponsorSrc = null;
+    let genericoImgSrc = null;
+    let backgroundImgSrc = null;
+    let currentCategory = 'PRIMERA';
+    let cropper = null;
+    let currentTargetTeam = null;
 
-    // ================================================================
-    //  REFERENCIAS A ELEMENTOS DEL DOM
-    // ================================================================
     const cropModal = document.getElementById('cropModal');
     const cropImage = document.getElementById('cropImage');
     const datePicker = document.getElementById('in-fecha-picker');
 
-    // Fecha por defecto: hoy
     const today = new Date();
     datePicker.value = today.toISOString().split('T')[0];
 
-    // ================================================================
-    //  FUNCIÓN: switchTab(tab)
-    //  Cambia entre pestañas "Editor" y "Vista Previa" en móviles.
-    // ================================================================
     function switchTab(tab) {
-      if (window.innerWidth > 850) return; // solo en móviles
+      if (window.innerWidth > 850) return;
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.view-tab-content').forEach(c => c.classList.remove('active'));
 
@@ -1598,11 +1740,6 @@
       }
     }
 
-    // ================================================================
-    //  FUNCIÓN: getCalculatedDateInfo()
-    //  Devuelve el nombre del día y la fecha formateada (ej. "DOMINGO 9/8")
-    //  a partir del input date.
-    // ================================================================
     function getCalculatedDateInfo() {
       if (!datePicker.value) return { dayName: 'DOMINGO', formattedDate: '9/8' };
       const parts = datePicker.value.split('-');
@@ -1611,10 +1748,14 @@
       return { dayName: days[dateObj.getDay()], formattedDate: `${dateObj.getDate()}/${dateObj.getMonth() + 1}` };
     }
 
-    // ================================================================
-    //  FUNCIONES PARA OBTENER EL HTML DE LOS ESCUDOS
-    //  Si no hay imagen cargada, se muestra un texto genérico.
-    // ================================================================
+    // MEJORA 8: formatea el input type="time" (HH:MM) al estilo "15HS" / "15:30HS"
+    function getFormattedHora() {
+      const horaInput = document.querySelector('.in-hora');
+      if (!horaInput || !horaInput.value) return '15HS';
+      const [hh, mm] = horaInput.value.split(':');
+      return mm === '00' ? `${hh}HS` : `${hh}:${mm}HS`;
+    }
+
     function getRivalShieldHTML() {
       if (rivalShieldSrc) return `<img src="${rivalShieldSrc}">`;
       const rivalName = document.getElementById('in-nombre-rival').value.trim() || 'RIVAL';
@@ -1626,10 +1767,6 @@
       return `<div class="generated-shield"><div class="gen-text">CERÁMICA</div></div>`;
     }
 
-    // ================================================================
-    //  FUNCIÓN: buildGenericoHTML()
-    //  Construye el bloque de contenido para el modo Genérico.
-    // ================================================================
     function buildGenericoHTML() {
       const texto = document.getElementById('in-gen-texto').value.trim();
       const imgHTML = genericoImgSrc ? `<div class="generico-img-frame"><img src="${genericoImgSrc}"></div>` : '';
@@ -1637,10 +1774,6 @@
       return `<div class="generico-container">${imgHTML}${textoHTML}</div>`;
     }
 
-    // ================================================================
-    //  FUNCIÓN: buildSponsorHTML()
-    //  Si hay un sponsor cargado, muestra la franja.
-    // ================================================================
     function buildSponsorHTML() {
       if (!sponsorSrc) return '';
       return `
@@ -1651,10 +1784,6 @@
     `;
     }
 
-    // ===============================================================
-    //  FUNCIÓN: buildScheduleHTML()
-    //  Construye la lista de horarios para el modo Cronograma.
-    // ================================================================
     function buildScheduleHTML() {
       const times = document.querySelectorAll('.sched-in-time');
       const cats = document.querySelectorAll('.sched-in-cat');
@@ -1674,10 +1803,6 @@
       return html;
     }
 
-    // ================================================================
-    //  FUNCIÓN: buildResultadoHTML()
-    //  Construye el bloque de marcador y goleadores para el modo Resultado.
-    // ================================================================
     function buildResultadoHTML(isLocal, team1Shield, team1Name, team2Shield, team2Name) {
       const golesCeramica = parseInt(document.getElementById('in-goles-local').value, 10) || 0;
       const golesRival = parseInt(document.getElementById('in-goles-rival').value, 10) || 0;
@@ -1716,29 +1841,18 @@
     `;
     }
 
-    // ================================================================
-    //  NUEVA FUNCIÓN: buildCategoryLineHTML()
-    //  Genera la línea de categoría minimalista con guiones y texto.
-    //  Usa la fuente Montserrat (misma que encabezado) pero con peso 600.
-    //  Se muestra debajo del encabezado.
-    // ================================================================
+    // MEJORA 7: insignia de categoría destacada (pill de color según categoría)
     function buildCategoryLineHTML() {
       const labels = { PRIMERA: 'PRIMERA DIVISIÓN', SENIOR: 'SENIORS', INFERIORES: 'INFERIORES' };
       const label = labels[currentCategory] || 'CATEGORÍA';
       return `
       <div class="category-line">
-        <span class="line"></span>
+        <span class="dot"></span>
         <span class="label">${label}</span>
-        <span class="line"></span>
       </div>
     `;
     }
 
-    // ================================================================
-    //  FUNCIÓN PRINCIPAL: buildCardHTML()
-    //  Construye todo el HTML interno de la tarjeta (flyer) según
-    //  el modo seleccionado y los datos cargados.
-    // ================================================================
     function buildCardHTML() {
       const mode = document.getElementById('in-mode').value;
       const isLocal = document.getElementById('in-condicion').value === 'LOCAL';
@@ -1782,18 +1896,14 @@
       } else if (mode === 'RESULTADO') {
         centralContentHTML = buildResultadoHTML(isLocal, team1Shield, team1Name, team2Shield, team2Name);
         timeDisplayHTML = '';
-      } else { // GENERICO
+      } else {
         centralContentHTML = buildGenericoHTML();
         timeDisplayHTML = '';
       }
 
       const showStadiumAccess = mode === 'VS' || mode === 'LIBRE';
 
-      // ================================================================
-      //  ESTRUCTURA COMPLETA DE LA TARJETA
-      //  La categoría se inserta como una línea decorativa (category-line)
-      //  justo después del encabezado y antes del título.
-      // ================================================================
+      // MEJORA 3: el pie de página ya no incluye el escudo, solo el slogan
       return `
       <div class="card-content">
         <div class="header-row">
@@ -1804,7 +1914,6 @@
           </div>
         </div>
 
-        <!-- NUEVA LÍNEA DE CATEGORÍA (minimalista, debajo del encabezado) -->
         ${buildCategoryLineHTML()}
 
         <div class="title-box">
@@ -1857,7 +1966,6 @@
 
         <div class="footer-section">
           <div class="footer-left">
-            <div class="footer-mini-logo">${ceramicaHTML}</div>
             <span class="footer-slogan dyn-foot-slogan"></span>
           </div>
           <div class="footer-right">
@@ -1869,22 +1977,12 @@
     `;
     }
 
-    // ================================================================
-    //  FUNCIÓN: renderCards()
-    //  Actualiza todas las tarjetas (vista previa y exportación)
-    //  con el HTML generado y aplica el fondo si existe.
-    // ================================================================
     function renderCards() {
       document.querySelectorAll('.card').forEach(el => {
-        // Quitamos clases de categoría anteriores (ya no se usan para la insignia)
         el.classList.remove('cat-primera', 'cat-senior', 'cat-inferiores');
         el.classList.add('cat-' + currentCategory.toLowerCase());
-        // Insertamos el HTML generado
         el.innerHTML = buildCardHTML();
 
-        // ================================================================
-        //  APLICAR IMAGEN DE FONDO (si existe)
-        // ================================================================
         if (backgroundImgSrc) {
           el.style.backgroundImage = `url(${backgroundImgSrc})`;
           el.style.backgroundSize = 'cover';
@@ -1909,18 +2007,10 @@
       updateAllText();
     }
 
-    // ================================================================
-    //  FUNCIÓN: setText(cls, val)
-    //  Actualiza el texto de todos los elementos con una clase dada.
-    // ================================================================
     function setText(cls, val) {
       document.querySelectorAll('.' + cls).forEach(el => el.textContent = val);
     }
 
-    // ================================================================
-    //  FUNCIÓN: updateAllText()
-    //  Lee los campos del panel y actualiza los textos en las tarjetas.
-    // ================================================================
     function updateAllText() {
       setText('dyn-brand1', document.querySelector('.in-brand1').value);
       setText('dyn-brand2', document.querySelector('.in-brand2').value);
@@ -1929,7 +2019,7 @@
       setText('dyn-cat', document.querySelector('.in-cat').value);
       setText('dyn-estadio', document.querySelector('.in-estadio').value);
       setText('dyn-estadio-sub', document.querySelector('.in-estadio-sub').value);
-      if (document.querySelector('.in-hora')) setText('dyn-hora', document.querySelector('.in-hora').value);
+      if (document.querySelector('.in-hora')) setText('dyn-hora', getFormattedHora());
       setText('dyn-acc-local', document.querySelector('.in-acc-local').value);
       setText('dyn-acc-visit', document.querySelector('.in-acc-visit').value);
       setText('dyn-foot-slogan', document.querySelector('.in-foot-slogan').value);
@@ -1938,10 +2028,18 @@
     }
 
     // ================================================================
+    //  MEJORA 5/9: expandir / contraer todas las secciones
+    // ================================================================
+    document.getElementById('btn-expand-all').addEventListener('click', () => {
+      document.querySelectorAll('details.fs').forEach(d => d.open = true);
+    });
+    document.getElementById('btn-collapse-all').addEventListener('click', () => {
+      document.querySelectorAll('details.fs').forEach(d => d.open = false);
+    });
+
+    // ================================================================
     //  EVENTOS DEL PANEL
     // ================================================================
-
-    // Cambio de modo (VS, LIBRE, RESULTADO, GENERICO)
     document.getElementById('in-mode').addEventListener('change', (e) => {
       const mode = e.target.value;
       const isVs = mode === 'VS';
@@ -1962,7 +2060,6 @@
       renderCards();
     });
 
-    // Selector de categoría
     document.querySelectorAll('.cat-opt').forEach(opt => {
       opt.addEventListener('click', () => {
         document.querySelectorAll('.cat-opt').forEach(o => o.classList.remove('active'));
@@ -1972,7 +2069,6 @@
       });
     });
 
-    // Campo de texto libre (modo genérico)
     document.getElementById('in-gen-texto').addEventListener('input', renderCards);
 
     // ================================================================
@@ -2158,11 +2254,16 @@
       });
     });
 
+    // MEJORA 8: el nuevo input de hora es type="time"
+    document.querySelector('.in-hora').addEventListener('input', updateAllText);
     document.getElementById('in-condicion').addEventListener('change', renderCards);
     datePicker.addEventListener('change', renderCards);
 
     // ================================================================
     //  ESCALADO DE LA VISTA PREVIA
+    //  El ancho de #wrap916 / #wrap11 se define en CSS con clamp() para
+    //  usar el espacio disponible; esta función solo recalcula la
+    //  escala del flyer para que encaje justo en ese ancho.
     // ================================================================
     function scalePreview(scalerId, wrapId, fullW, fullH) {
       const wrap = document.getElementById(wrapId);
@@ -2194,20 +2295,67 @@
     document.fonts.ready.then(fitAll);
 
     // ================================================================
-    //  EXPORTACIÓN (descarga de JPG)
+    //  MEJORA 2: EXPORTACIÓN QUE FUNCIONA EN MÓVILES
+    //  Muchos navegadores de celular (especialmente iOS) bloquean una
+    //  descarga o apertura de ventana si no ocurre de forma síncrona
+    //  dentro del clic del usuario. Por eso, en móviles abrimos la
+    //  pestaña ANTES de generar la imagen y recién después le asignamos
+    //  el contenido ya listo.
     // ================================================================
-    function exportCard(elementId, filename) {
+    function isMobileDevice() {
+      return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
+    function exportCard(elementId, filename, mobileWindow) {
       const el = document.getElementById(elementId);
-      html2canvas(el, { backgroundColor: '#ffffff', scale: 1, useCORS: true, logging: false }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = filename;
-        link.href = canvas.toDataURL('image/jpeg', 0.98);
-        link.click();
+      const buttons = document.querySelectorAll('#exportbar .btn');
+      buttons.forEach(b => b.disabled = true);
+
+      html2canvas(el, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        width: el.offsetWidth,
+        height: el.offsetHeight
+      }).then(canvas => {
+        canvas.toBlob((blob) => {
+          buttons.forEach(b => b.disabled = false);
+          if (!blob) {
+            if (mobileWindow) mobileWindow.close();
+            return;
+          }
+          const url = URL.createObjectURL(blob);
+
+          if (mobileWindow) {
+            // La pestaña ya estaba abierta desde el clic del usuario.
+            mobileWindow.location.href = url;
+          } else {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+          setTimeout(() => URL.revokeObjectURL(url), 60000);
+        }, 'image/jpeg', 0.98);
+      }).catch(() => {
+        buttons.forEach(b => b.disabled = false);
+        if (mobileWindow) mobileWindow.close();
       });
     }
 
-    document.getElementById('btn-916').addEventListener('click', () => exportCard('export916', 'proximo-partido-historia.jpg'));
-    document.getElementById('btn-11').addEventListener('click', () => exportCard('export11', 'proximo-partido-feed.jpg'));
+    document.getElementById('btn-916').addEventListener('click', () => {
+      const mobileWindow = isMobileDevice() ? window.open('', '_blank') : null;
+      exportCard('export916', 'proximo-partido-historia.jpg', mobileWindow);
+    });
+
+    document.getElementById('btn-11').addEventListener('click', () => {
+      const mobileWindow = isMobileDevice() ? window.open('', '_blank') : null;
+      exportCard('export11', 'proximo-partido-feed.jpg', mobileWindow);
+    });
   </script>
 </body>
 
