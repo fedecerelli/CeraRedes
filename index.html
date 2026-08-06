@@ -1,29 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Generador de Flyers · Cerámica Argentina</title>
+  <!-- Fuentes profesionales -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <!-- Librerías para recorte y exportación -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
-  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
   <style>
+    /* ================================================================
+       VARIABLES GLOBALES (colores institucionales y de categoría)
+       ================================================================ */
     :root {
       --blue-main: #0A227A;
+      /* Azul institucional oscuro */
       --blue-bright: #1545D8;
+      /* Azul brillante para detalles */
       --blue-light: #F0F4FF;
+      /* Fondo claro para campos */
       --text-dark: #0A122A;
+      /* Color de texto principal */
       --grey-border: #D1D9ED;
+      /* Bordes suaves */
       --grey-sub: #656E85;
+      /* Texto secundario */
       --font-title: 'Bebas Neue', sans-serif;
+      /* Tipografía para títulos */
       --font-body: 'Montserrat', sans-serif;
+      /* Tipografía para cuerpo */
 
-      /* Paletas por categoría (misma identidad, distinto acento) */
+      /* Colores de acento para cada categoría (solo se usan en la línea de categoría) */
       --primera-main: #0A227A;
       --primera-bright: #1545D8;
       --primera-light: #F0F4FF;
@@ -37,29 +52,99 @@
       --inferiores-light: #EAFBF2;
     }
 
-    /* La identidad del club se mantiene SIEMPRE en azul. La categoría se indica
-       mediante una insignia que COMBINA el azul característico con un acento propio. */
-    .cat-badge {
-      position: absolute; top: 70px; right: 0; z-index: 5;
-      font-family: var(--font-title); font-size: 30px; letter-spacing: 0.05em;
-      color: #fff; padding: 12px 40px 12px 34px; line-height: 1;
-      border-radius: 12px 0 0 12px; box-shadow: -4px 6px 14px rgba(10,18,42,0.18);
-      display: flex; align-items: center; gap: 10px;
+    /* ================================================================
+       NUEVA INSIGNIA DE CATEGORÍA (minimalista, debajo del encabezado)
+       ================================================================ */
+    .category-line {
+      font-family: var(--font-body);
+      font-weight: 600;
+      /* más fina que el encabezado */
+      font-size: 28px;
+      /* tamaño legible pero no abrumador */
+      text-transform: uppercase;
+      color: var(--blue-main);
+      letter-spacing: 0.08em;
+      text-align: center;
+      margin: 12px 0 18px 0;
+      /* separación con el título */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
     }
-    .card-11 .cat-badge { top: 45px; font-size: 17px; padding: 7px 22px 7px 18px; border-radius: 8px 0 0 8px; gap: 6px; }
-    .cat-badge.badge-primera { background: linear-gradient(120deg, var(--primera-main), var(--primera-bright)); }
-    .cat-badge.badge-senior { background: linear-gradient(120deg, var(--primera-main) 35%, var(--senior-bright)); }
-    .cat-badge.badge-inferiores { background: linear-gradient(120deg, var(--primera-main) 35%, var(--inferiores-bright)); }
 
-    /* Selector de categoría en el panel: cada option se pinta con su color */
-    .cat-selector { display: flex; gap: 8px; }
-    .cat-opt { flex: 1; border: 2px solid var(--grey-border); border-radius: 8px; padding: 10px 6px; text-align: center; font-size: 11px; font-weight: 800; cursor: pointer; background: #fff; color: var(--grey-sub); text-transform: uppercase; letter-spacing: 0.02em; }
-    .cat-opt i { display: block; font-size: 16px; margin-bottom: 4px; }
-    .cat-opt.sel-primera.active { border-color: var(--primera-bright); color: var(--primera-main); background: var(--primera-light); }
-    .cat-opt.sel-senior.active { border-color: var(--senior-bright); color: var(--senior-main); background: var(--senior-light); }
-    .cat-opt.sel-inferiores.active { border-color: var(--inferiores-bright); color: var(--inferiores-main); background: var(--inferiores-light); }
+    .category-line .line {
+      flex: 0 1 60px;
+      height: 2px;
+      background: var(--blue-main);
+      opacity: 0.3;
+    }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    .category-line .label {
+      white-space: nowrap;
+      padding: 0 8px;
+    }
+
+    /* Versión 1:1 más pequeña */
+    .card-11 .category-line {
+      font-size: 18px;
+      margin: 8px 0 12px 0;
+      gap: 10px;
+    }
+
+    .card-11 .category-line .line {
+      flex-basis: 30px;
+    }
+
+    /* ================================================================
+       SELECTOR DE CATEGORÍA (en el panel de control)
+       ================================================================ */
+    .cat-selector {
+      display: flex;
+      gap: 8px;
+    }
+
+    .cat-opt {
+      flex: 1;
+      border: 2px solid var(--grey-border);
+      border-radius: 8px;
+      padding: 10px 6px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      background: #fff;
+      color: var(--grey-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .cat-opt.sel-primera.active {
+      border-color: var(--primera-bright);
+      color: var(--primera-main);
+      background: var(--primera-light);
+    }
+
+    .cat-opt.sel-senior.active {
+      border-color: var(--senior-bright);
+      color: var(--senior-main);
+      background: var(--senior-light);
+    }
+
+    .cat-opt.sel-inferiores.active {
+      border-color: var(--inferiores-bright);
+      color: var(--inferiores-main);
+      background: var(--inferiores-light);
+    }
+
+    /* ================================================================
+       RESET Y ESTRUCTURA BASE
+       ================================================================ */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: var(--font-body);
@@ -71,24 +156,40 @@
       overflow-x: hidden;
     }
 
-    /* ---------- LAYOUT PRINCIPAL ---------- */
+    /* ================================================================
+       PANEL DE CONTROL (izquierda) - ANCHO AJUSTADO
+       ================================================================ */
     #panel {
-      width: 380px;
-      min-width: 340px;
+      width: 360px;
+      /* Aumentado para que quepan los campos */
+      min-width: 300px;
       background: #FFFFFF;
       border-right: 1px solid #D8DCE8;
-      padding: 24px 20px 80px 20px;
+      padding: 18px 14px 60px 14px;
       overflow-y: auto;
       height: 100vh;
       position: sticky;
       top: 0;
       z-index: 10;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
     }
 
-    .panel-header h1 { font-size: 18px; font-weight: 800; color: var(--blue-main); margin-bottom: 4px; }
-    .panel-header p.sub { font-size: 12px; color: var(--grey-sub); margin-bottom: 20px; }
+    .panel-header h1 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--blue-main);
+      margin-bottom: 2px;
+      letter-spacing: -0.02em;
+    }
 
+    .panel-header p.sub {
+      font-size: 12px;
+      color: var(--grey-sub);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    /* Pestañas móviles (solo visibles en pantallas pequeñas) */
     .mobile-tabs {
       display: none;
       background: #fff;
@@ -97,569 +198,1505 @@
       top: 0;
       z-index: 100;
     }
+
     .tab-btn {
-      flex: 1; padding: 12px; text-align: center; font-weight: 800; font-size: 13px; border: none; background: transparent; color: var(--grey-sub); cursor: pointer;
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 13px;
+      border: none;
+      background: transparent;
+      color: var(--grey-sub);
+      cursor: pointer;
     }
-    .tab-btn.active { color: var(--blue-bright); border-bottom: 3px solid var(--blue-bright); }
 
+    .tab-btn.active {
+      color: var(--blue-bright);
+      border-bottom: 3px solid var(--blue-bright);
+    }
+
+    /* ================================================================
+       ESTILOS DE FORMULARIOS (minimalistas y compactos)
+       ================================================================ */
     fieldset {
-      border: 1px solid var(--grey-border); border-radius: 8px; margin-bottom: 14px; padding: 12px;
+      border: 1px solid var(--grey-border);
+      border-radius: 6px;
+      margin-bottom: 10px;
+      padding: 8px 10px;
     }
-    legend { font-size: 11px; font-weight: 800; color: var(--blue-bright); text-transform: uppercase; padding: 0 6px; }
-    label { display: block; font-size: 11px; font-weight: 700; color: #3A4259; margin: 8px 0 4px 0; }
-    
-    input[type="text"], input[type="date"], select {
-      width: 100%; padding: 10px; font-size: 14px; border: 1px solid var(--grey-border); border-radius: 6px; font-family: inherit; font-weight: 600; background: #fff;
+
+    legend {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--blue-bright);
+      text-transform: uppercase;
+      padding: 0 6px;
+      letter-spacing: 0.04em;
     }
-    input:focus, select:focus { outline: 2px solid var(--blue-bright); }
-    
+
+    label {
+      display: block;
+      font-size: 9px;
+      font-weight: 700;
+      color: #3A4259;
+      margin: 4px 0 2px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 6px 8px;
+      font-size: 12px;
+      border: 1px solid var(--grey-border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-weight: 600;
+      background: #fff;
+      transition: border 0.15s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--blue-bright);
+    }
+
     .file-input-group {
-      display: flex; align-items: center; gap: 10px; background: var(--blue-light); padding: 8px; border-radius: 6px; border: 1px dashed var(--grey-border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue-light);
+      padding: 4px 6px;
+      border-radius: 4px;
+      border: 1px dashed var(--grey-border);
     }
-    .file-input-group img { width: 36px; height: 36px; object-fit: contain; background: #fff; border-radius: 4px; border: 1px solid #ccc; }
-    .row2 { display: flex; gap: 8px; }
-    .row2 > div { flex: 1; }
 
-    /* FILAS CRONOGRAMA DINÁMICAS */
-    .schedule-input-row { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
-    .schedule-input-row input { flex: 1; }
-    .btn-remove-row { background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; }
+    .file-input-group img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
 
-    #exportbar { position: sticky; bottom: -80px; background: #fff; padding-top: 12px; border-top: 1px solid var(--grey-border); }
-    .btn { display: block; width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; margin-bottom: 8px; text-align: center; }
-    .btn-primary { background: var(--blue-main); color: #fff; }
-    .btn-outline { background: #fff; color: var(--blue-main); border: 2px solid var(--blue-main); }
-    .btn-small { padding: 6px 12px; font-size: 11px; margin-top: 8px; }
+    .row2 {
+      display: flex;
+      gap: 6px;
+    }
 
-    /* ---------- MODAL CROPPER ---------- */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 18, 42, 0.85); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 15px; }
-    .modal-overlay.active { display: flex; }
-    .modal-content { background: #fff; border-radius: 12px; width: 100%; max-width: 500px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-    .modal-content h3 { font-size: 16px; font-weight: 800; color: var(--blue-main); margin-bottom: 12px; text-align: center; }
-    .img-container { width: 100%; height: 300px; background: #f0f0f0; margin-bottom: 15px; overflow: hidden; border-radius: 8px; }
-    .img-container img { max-width: 100%; }
-    .modal-actions { display: flex; gap: 10px; }
+    .row2>div {
+      flex: 1;
+    }
 
-    /* ---------- VISTA PREVIA ---------- */
-    #stage { flex: 1; padding: 30px; display: flex; flex-direction: column; align-items: center; gap: 30px; overflow-y: auto; width: 100%; }
-    .preview-block { width: 100%; display: flex; flex-direction: column; align-items: center; }
-    .preview-block h3 { font-size: 12px; font-weight: 700; color: var(--grey-sub); text-transform: uppercase; text-align: center; margin-bottom: 10px; }
-    .preview-frame { box-shadow: 0 15px 35px rgba(10,34,122,0.15); border-radius: 8px; overflow: hidden; background: #fff; }
-    #wrap916 { width: 270px; height: 480px; }
-    #wrap11 { width: 340px; height: 340px; }
-    .scaler { transform-origin: top left; }
+    /* ================================================================
+       FILAS DINÁMICAS (cronograma, goleadores)
+       ================================================================ */
+    .schedule-input-row {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 4px;
+      align-items: center;
+    }
 
-    /* ---------- ESTILO DEL FLYER ---------- */
-    .card { width: 1080px; background: linear-gradient(145deg, #FFFFFF 45%, #EBF1FD 100%); color: var(--blue-main); position: relative; display: flex; flex-direction: column; box-sizing: border-box; }
-    .card-916 { height: 1920px; padding: 70px 65px; }
-    .card-11 { height: 1080px; padding: 45px 55px; }
+    .schedule-input-row input {
+      flex: 1;
+      font-size: 11px;
+      padding: 5px 6px;
+    }
 
-    .header-row { display: flex; align-items: center; gap: 20px; }
-    .header-logo-box { width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .card-11 .header-logo-box { width: 65px; height: 65px; }
-    .header-logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .btn-remove-row {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 11px;
+    }
 
-    .header-text { font-family: var(--font-body); font-weight: 900; text-transform: uppercase; color: var(--blue-bright); line-height: 1.15; }
-    .header-text .t-sub { font-size: 22px; letter-spacing: 0.02em; display: block; }
-    .header-text .t-main { font-size: 26px; letter-spacing: 0.02em; display: block; }
-    .card-11 .header-text .t-sub { font-size: 15px; }
-    .card-11 .header-text .t-main { font-size: 18px; }
+    /* ================================================================
+       BOTONES (minimalistas)
+       ================================================================ */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 8px 10px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 11px;
+      cursor: pointer;
+      margin-bottom: 4px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
 
-    .title-box { margin-top: 25px; font-family: var(--font-title); text-transform: uppercase; line-height: 0.82; color: var(--blue-main); }
-    .title-box .t1 { font-size: 140px; display: block; letter-spacing: 0.02em; }
-    .title-box .t2 { font-size: 210px; display: block; letter-spacing: 0.01em; }
-    .card-11 .title-box { margin-top: 10px; }
-    .card-11 .title-box .t1 { font-size: 80px; }
-    .card-11 .title-box .t2 { font-size: 115px; }
+    .btn-primary {
+      background: var(--blue-main);
+      color: #fff;
+      transition: background 0.15s;
+    }
 
-    .divider-thick { height: 3px; background: var(--blue-main); margin: 30px 0; border: none; }
-    .card-11 .divider-thick { margin: 15px 0; }
+    .btn-primary:hover {
+      background: var(--blue-bright);
+    }
 
-    .pill-container { text-align: center; margin-bottom: 35px; }
-    .card-11 .pill-container { margin-bottom: 20px; }
-    .pill-cat { display: inline-block; background: var(--blue-bright); color: #FFFFFF; font-family: var(--font-title); font-size: 44px; padding: 8px 45px; border-radius: 12px; letter-spacing: 0.04em; line-height: 1; }
-    .card-11 .pill-cat { font-size: 26px; padding: 5px 30px; border-radius: 8px; }
+    .btn-outline {
+      background: #fff;
+      color: var(--blue-main);
+      border: 2px solid var(--blue-main);
+    }
 
-    /* MODO VS */
-    .vs-container { display: flex; align-items: center; justify-content: center; gap: 35px; margin-bottom: 35px; }
-    .card-11 .vs-container { gap: 20px; margin-bottom: 20px; }
-    .team-card { display: flex; flex-direction: column; align-items: center; width: 320px; }
-    .card-11 .team-card { width: 190px; }
-    .shield-frame { width: 320px; height: 320px; border: 3px solid var(--blue-bright); border-radius: 20px; display: flex; align-items: center; justify-content: center; padding: 20px; background: #FFFFFF; box-shadow: 0 10px 25px rgba(21, 69, 216, 0.08); overflow: hidden; }
-    .card-11 .shield-frame { width: 190px; height: 190px; padding: 12px; border-radius: 14px; }
-    .shield-frame img { width: 100%; height: 100%; object-fit: contain; }
-    .generated-shield { width: 100%; height: 100%; background: var(--blue-light); border: 2px dashed var(--blue-bright); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 10px; color: var(--blue-main); }
-    .generated-shield .gen-icon { font-size: 48px; color: var(--blue-bright); margin-bottom: 6px; }
-    .card-11 .generated-shield .gen-icon { font-size: 28px; }
-    .generated-shield .gen-text { font-family: var(--font-title); font-size: 28px; line-height: 1; }
-    .card-11 .generated-shield .gen-text { font-size: 18px; }
-    .team-name { margin-top: 14px; font-family: var(--font-title); font-size: 36px; color: var(--blue-main); text-align: center; letter-spacing: 0.02em; }
-    .card-11 .team-name { font-size: 22px; margin-top: 8px; }
-    .vs-label { font-family: var(--font-title); font-size: 90px; color: var(--blue-bright); }
-    .card-11 .vs-label { font-size: 50px; }
+    .btn-outline:hover {
+      background: var(--blue-light);
+    }
 
-    /* MODO CRONOGRAMA LIBRE */
-    .schedule-container { width: 100%; margin: 20px 0 35px 0; display: flex; flex-direction: column; gap: 15px; }
-    .card-11 .schedule-container { margin: 10px 0 20px 0; gap: 8px; }
-    .schedule-row { display: flex; align-items: center; background: #FFFFFF; border: 2px solid var(--blue-bright); border-radius: 16px; overflow: hidden; box-shadow: 0 8px 20px rgba(21, 69, 216, 0.06); }
-    .card-11 .schedule-row { border-radius: 10px; }
-    .sched-time { width: 30%; background: var(--blue-main); color: #fff; font-family: var(--font-title); font-size: 45px; text-align: center; padding: 15px 10px; line-height: 1; }
-    .card-11 .sched-time { font-size: 26px; padding: 8px 5px; }
-    .sched-div { width: 15%; font-family: var(--font-body); font-weight: 800; font-size: 22px; color: var(--grey-sub); text-align: center; border-right: 2px solid var(--grey-border); }
-    .card-11 .sched-div { font-size: 13px; }
-    .sched-cat { width: 55%; font-family: var(--font-title); font-size: 48px; color: var(--blue-bright); padding-left: 25px; letter-spacing: 0.02em; }
-    .card-11 .sched-cat { font-size: 28px; padding-left: 15px; }
+    .btn-small {
+      padding: 4px 8px;
+      font-size: 9px;
+      margin-top: 4px;
+    }
 
-    .stadium-container { text-align: center; margin-bottom: 20px; }
-    .stadium-icon { font-size: 40px; color: var(--blue-bright); margin-bottom: 4px; }
-    .card-11 .stadium-icon { font-size: 24px; }
-    .stadium-main { font-family: var(--font-title); font-size: 52px; color: var(--blue-main); letter-spacing: 0.02em; line-height: 1; }
-    .card-11 .stadium-main { font-size: 32px; }
-    .stadium-sub { font-size: 20px; font-weight: 800; color: var(--grey-sub); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 4px; }
-    .card-11 .stadium-sub { font-size: 13px; }
+    /* ================================================================
+       MODAL CROPPER
+       ================================================================ */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(10, 18, 42, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 15px;
+    }
 
-    .divider-thin { height: 1px; background: var(--grey-border); margin: 25px 0; border: none; }
-    .card-11 .divider-thin { margin: 12px 0; }
+    .modal-overlay.active {
+      display: flex;
+    }
 
-    .info-box { border: 2px solid var(--blue-bright); border-radius: 16px; padding: 20px 30px; display: flex; align-items: center; justify-content: space-around; margin-bottom: 25px; background: #FFFFFF; }
-    .card-11 .info-box { padding: 10px 20px; border-radius: 12px; margin-bottom: 14px; }
-    .info-element { display: flex; align-items: center; gap: 16px; }
-    .card-11 .info-element { gap: 10px; }
-    .info-icon { width: 60px; height: 60px; background: var(--blue-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--blue-bright); }
-    .card-11 .info-icon { width: 38px; height: 38px; border-radius: 8px; font-size: 18px; }
-    .time-text { font-family: var(--font-title); font-size: 75px; color: var(--blue-main); line-height: 1; }
-    .card-11 .time-text { font-size: 42px; }
-    .date-day { font-family: var(--font-title); font-size: 30px; color: var(--blue-bright); line-height: 1; }
-    .card-11 .date-day { font-size: 18px; }
-    .date-num { font-family: var(--font-title); font-size: 65px; color: var(--blue-main); line-height: 0.9; }
-    .card-11 .date-num { font-size: 38px; }
-    .info-pipe { width: 2px; height: 60px; background: var(--grey-border); }
-    .card-11 .info-pipe { height: 38px; }
+    .modal-content {
+      background: #fff;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 480px;
+      padding: 18px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
 
-    .access-box { border: 2px solid var(--blue-bright); border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; gap: 18px; margin-bottom: 15px; background: #FFFFFF; }
-    .card-11 .access-box { padding: 8px 14px; border-radius: 10px; margin-bottom: 8px; gap: 12px; }
-    .access-icon-bg { width: 52px; height: 52px; background: var(--blue-bright); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #FFFFFF; flex-shrink: 0; }
-    .card-11 .access-icon-bg { width: 34px; height: 34px; border-radius: 6px; font-size: 16px; }
-    .access-title { font-family: var(--font-title); font-size: 26px; color: var(--blue-bright); line-height: 1; }
-    .card-11 .access-title { font-size: 16px; }
-    .access-detail { font-size: 20px; font-weight: 800; color: var(--blue-main); text-transform: uppercase; }
-    .card-11 .access-detail { font-size: 12px; }
+    .modal-content h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--blue-main);
+      margin-bottom: 10px;
+      text-align: center;
+    }
 
-    /* MODO RESULTADO */
-    .score-box { display: flex; align-items: center; gap: 18px; font-family: var(--font-title); }
-    .score-num { font-size: 110px; color: var(--blue-main); line-height: 1; }
-    .card-11 .score-num { font-size: 64px; }
-    .score-sep { font-size: 70px; color: var(--blue-bright); }
-    .card-11 .score-sep { font-size: 40px; }
+    .img-container {
+      width: 100%;
+      height: 280px;
+      background: #f0f0f0;
+      margin-bottom: 12px;
+      overflow: hidden;
+      border-radius: 6px;
+    }
 
-    .goleadores-box { width: 100%; border: 2px solid var(--blue-bright); border-radius: 16px; padding: 20px 25px; margin-bottom: 25px; background: #FFFFFF; }
-    .card-11 .goleadores-box { padding: 12px 16px; border-radius: 10px; margin-bottom: 14px; }
-    .goleadores-title { font-family: var(--font-title); font-size: 26px; color: var(--blue-bright); letter-spacing: 0.05em; text-align: center; margin-bottom: 14px; }
-    .card-11 .goleadores-title { font-size: 16px; margin-bottom: 8px; }
-    .goleadores-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-    .goleador-chip { background: var(--blue-light); color: var(--blue-main); font-weight: 800; font-size: 22px; padding: 8px 18px; border-radius: 20px; }
-    .card-11 .goleador-chip { font-size: 13px; padding: 5px 12px; }
+    .img-container img {
+      max-width: 100%;
+    }
 
-    /* MODO GENÉRICO */
-    .generico-container { width: 100%; margin: 20px 0 35px 0; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-    .card-11 .generico-container { margin: 10px 0 20px 0; gap: 12px; }
-    .generico-img-frame { width: 100%; max-height: 620px; border-radius: 16px; overflow: hidden; border: 3px solid var(--blue-bright); background: #fff; display: flex; align-items: center; justify-content: center; }
-    .card-11 .generico-img-frame { max-height: 340px; border-radius: 12px; }
-    .generico-img-frame img { width: 100%; height: 100%; object-fit: cover; }
-    .generico-texto { font-family: var(--font-body); font-weight: 700; font-size: 32px; color: var(--text-dark); text-align: center; line-height: 1.35; white-space: pre-wrap; }
-    .card-11 .generico-texto { font-size: 19px; }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+    }
 
-    /* FRANJA DE PUBLICIDAD (solo aparece si se carga una imagen) */
-    .sponsor-strip { width: 100%; border: 2px solid var(--grey-border); border-radius: 14px; padding: 14px 18px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 20px; background: #FFFFFF; }
-    .card-11 .sponsor-strip { padding: 8px 12px; border-radius: 10px; margin-bottom: 10px; gap: 5px; }
-    .sponsor-label { font-size: 13px; font-weight: 800; color: var(--grey-sub); text-transform: uppercase; letter-spacing: 0.08em; }
-    .card-11 .sponsor-label { font-size: 9px; }
-    .sponsor-strip img { max-width: 100%; max-height: 110px; object-fit: contain; }
-    .card-11 .sponsor-strip img { max-height: 60px; }
+    /* ================================================================
+       VISTA PREVIA (stage)
+       ================================================================ */
+    #stage {
+      flex: 1;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      overflow-y: auto;
+      width: 100%;
+    }
 
-    .footer-section { display: flex; align-items: center; justify-content: space-between; padding-top: 20px; border-top: 3px solid var(--blue-main); margin-top: auto; }
-    .card-11 .footer-section { padding-top: 10px; border-top-width: 2px; }
-    .footer-left { display: flex; align-items: center; gap: 14px; }
-    .footer-mini-logo { width: 50px; height: 50px; }
-    .card-11 .footer-mini-logo { width: 32px; height: 32px; }
-    .footer-mini-logo img { width: 100%; height: 100%; object-fit: contain; }
-    .footer-slogan { font-family: var(--font-title); font-size: 42px; color: var(--blue-bright); }
-    .card-11 .footer-slogan { font-size: 26px; }
-    .footer-right { text-align: right; }
-    .footer-r1 { font-size: 14px; font-weight: 700; color: var(--grey-sub); text-transform: uppercase; }
-    .footer-r2 { font-size: 16px; font-weight: 900; color: var(--blue-main); text-transform: uppercase; }
-    .card-11 .footer-r1 { font-size: 10px; }
-    .card-11 .footer-r2 { font-size: 11px; }
+    .preview-block {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-    #offscreen { position: fixed; left: -9999px; top: 0; }
+    .preview-block h3 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--grey-sub);
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+    }
 
+    .preview-frame {
+      box-shadow: 0 6px 18px rgba(10, 34, 122, 0.10);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    #wrap916 {
+      width: 240px;
+      height: 426px;
+    }
+
+    #wrap11 {
+      width: 300px;
+      height: 300px;
+    }
+
+    .scaler {
+      transform-origin: top left;
+    }
+
+    /* ================================================================
+       ESTILO DEL FLYER (la tarjeta que se genera)
+       ================================================================ */
+    .card {
+      width: 1080px;
+      background: linear-gradient(145deg, #FFFFFF 45%, #EBF1FD 100%);
+      color: var(--blue-main);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    .card-916 {
+      height: 1920px;
+      padding: 70px 65px;
+    }
+
+    .card-11 {
+      height: 1080px;
+      padding: 45px 55px;
+    }
+
+    /* Contenedor interno que permite aplicar overlay de fondo */
+    .card-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-logo-box {
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-11 .header-logo-box {
+      width: 65px;
+      height: 65px;
+    }
+
+    .header-logo-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .header-text {
+      font-family: var(--font-body);
+      font-weight: 900;
+      text-transform: uppercase;
+      color: var(--blue-bright);
+      line-height: 1.15;
+    }
+
+    .header-text .t-sub {
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      display: block;
+    }
+
+    .header-text .t-main {
+      font-size: 26px;
+      letter-spacing: 0.02em;
+      display: block;
+    }
+
+    .card-11 .header-text .t-sub {
+      font-size: 15px;
+    }
+
+    .card-11 .header-text .t-main {
+      font-size: 18px;
+    }
+
+    .title-box {
+      margin-top: 25px;
+      font-family: var(--font-title);
+      text-transform: uppercase;
+      line-height: 0.82;
+      color: var(--blue-main);
+    }
+
+    .title-box .t1 {
+      font-size: 140px;
+      display: block;
+      letter-spacing: 0.02em;
+    }
+
+    .title-box .t2 {
+      font-size: 210px;
+      display: block;
+      letter-spacing: 0.01em;
+    }
+
+    .card-11 .title-box {
+      margin-top: 10px;
+    }
+
+    .card-11 .title-box .t1 {
+      font-size: 80px;
+    }
+
+    .card-11 .title-box .t2 {
+      font-size: 115px;
+    }
+
+    .divider-thick {
+      height: 3px;
+      background: var(--blue-main);
+      margin: 30px 0;
+      border: none;
+    }
+
+    .card-11 .divider-thick {
+      margin: 15px 0;
+    }
+
+    .pill-container {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .card-11 .pill-container {
+      margin-bottom: 20px;
+    }
+
+    .pill-cat {
+      display: inline-block;
+      background: var(--blue-bright);
+      color: #FFFFFF;
+      font-family: var(--font-title);
+      font-size: 44px;
+      padding: 8px 45px;
+      border-radius: 12px;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    .card-11 .pill-cat {
+      font-size: 26px;
+      padding: 5px 30px;
+      border-radius: 8px;
+    }
+
+    /* ===== MODO VS ===== */
+    .vs-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 35px;
+      margin-bottom: 35px;
+    }
+
+    .card-11 .vs-container {
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .team-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 320px;
+    }
+
+    .card-11 .team-card {
+      width: 190px;
+    }
+
+    .shield-frame {
+      width: 320px;
+      height: 320px;
+      border: 3px solid var(--blue-bright);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #FFFFFF;
+      box-shadow: 0 10px 25px rgba(21, 69, 216, 0.08);
+      overflow: hidden;
+    }
+
+    .card-11 .shield-frame {
+      width: 190px;
+      height: 190px;
+      padding: 12px;
+      border-radius: 14px;
+    }
+
+    .shield-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .generated-shield {
+      width: 100%;
+      height: 100%;
+      background: var(--blue-light);
+      border: 2px dashed var(--blue-bright);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px;
+      color: var(--blue-main);
+    }
+
+    .generated-shield .gen-text {
+      font-family: var(--font-title);
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .card-11 .generated-shield .gen-text {
+      font-size: 18px;
+    }
+
+    .team-name {
+      margin-top: 14px;
+      font-family: var(--font-title);
+      font-size: 36px;
+      color: var(--blue-main);
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    .card-11 .team-name {
+      font-size: 22px;
+      margin-top: 8px;
+    }
+
+    .vs-label {
+      font-family: var(--font-title);
+      font-size: 90px;
+      color: var(--blue-bright);
+    }
+
+    .card-11 .vs-label {
+      font-size: 50px;
+    }
+
+    /* ===== MODO CRONOGRAMA ===== */
+    .schedule-container {
+      width: 100%;
+      margin: 20px 0 35px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .card-11 .schedule-container {
+      margin: 10px 0 20px 0;
+      gap: 8px;
+    }
+
+    .schedule-row {
+      display: flex;
+      align-items: center;
+      background: #FFFFFF;
+      border: 2px solid var(--blue-bright);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(21, 69, 216, 0.06);
+    }
+
+    .card-11 .schedule-row {
+      border-radius: 10px;
+    }
+
+    .sched-time {
+      width: 30%;
+      background: var(--blue-main);
+      color: #fff;
+      font-family: var(--font-title);
+      font-size: 45px;
+      text-align: center;
+      padding: 15px 10px;
+      line-height: 1;
+    }
+
+    .card-11 .sched-time {
+      font-size: 26px;
+      padding: 8px 5px;
+    }
+
+    .sched-div {
+      width: 15%;
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--grey-sub);
+      text-align: center;
+      border-right: 2px solid var(--grey-border);
+    }
+
+    .card-11 .sched-div {
+      font-size: 13px;
+    }
+
+    .sched-cat {
+      width: 55%;
+      font-family: var(--font-title);
+      font-size: 48px;
+      color: var(--blue-bright);
+      padding-left: 25px;
+      letter-spacing: 0.02em;
+    }
+
+    .card-11 .sched-cat {
+      font-size: 28px;
+      padding-left: 15px;
+    }
+
+    /* ===== ESTADIO ===== */
+    .stadium-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .stadium-main {
+      font-family: var(--font-title);
+      font-size: 52px;
+      color: var(--blue-main);
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+
+    .card-11 .stadium-main {
+      font-size: 32px;
+    }
+
+    .stadium-sub {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--grey-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 4px;
+    }
+
+    .card-11 .stadium-sub {
+      font-size: 13px;
+    }
+
+    .divider-thin {
+      height: 1px;
+      background: var(--grey-border);
+      margin: 25px 0;
+      border: none;
+    }
+
+    .card-11 .divider-thin {
+      margin: 12px 0;
+    }
+
+    /* ===== INFO HORA/FECHA ===== */
+    .info-box {
+      border: 2px solid var(--blue-bright);
+      border-radius: 16px;
+      padding: 20px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin-bottom: 25px;
+      background: #FFFFFF;
+    }
+
+    .card-11 .info-box {
+      padding: 10px 20px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+    }
+
+    .info-element {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .card-11 .info-element {
+      gap: 10px;
+    }
+
+    .time-text {
+      font-family: var(--font-title);
+      font-size: 75px;
+      color: var(--blue-main);
+      line-height: 1;
+    }
+
+    .card-11 .time-text {
+      font-size: 42px;
+    }
+
+    .date-day {
+      font-family: var(--font-title);
+      font-size: 30px;
+      color: var(--blue-bright);
+      line-height: 1;
+    }
+
+    .card-11 .date-day {
+      font-size: 18px;
+    }
+
+    .date-num {
+      font-family: var(--font-title);
+      font-size: 65px;
+      color: var(--blue-main);
+      line-height: 0.9;
+    }
+
+    .card-11 .date-num {
+      font-size: 38px;
+    }
+
+    .info-pipe {
+      width: 2px;
+      height: 60px;
+      background: var(--grey-border);
+    }
+
+    .card-11 .info-pipe {
+      height: 38px;
+    }
+
+    /* ===== ACCESOS ===== */
+    .access-box {
+      border: 2px solid var(--blue-bright);
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 15px;
+      background: #FFFFFF;
+    }
+
+    .card-11 .access-box {
+      padding: 8px 14px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      gap: 12px;
+    }
+
+    .access-title {
+      font-family: var(--font-title);
+      font-size: 26px;
+      color: var(--blue-bright);
+      line-height: 1;
+    }
+
+    .card-11 .access-title {
+      font-size: 16px;
+    }
+
+    .access-detail {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--blue-main);
+      text-transform: uppercase;
+    }
+
+    .card-11 .access-detail {
+      font-size: 12px;
+    }
+
+    /* ===== MODO RESULTADO ===== */
+    .score-box {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-family: var(--font-title);
+    }
+
+    .score-num {
+      font-size: 110px;
+      color: var(--blue-main);
+      line-height: 1;
+    }
+
+    .card-11 .score-num {
+      font-size: 64px;
+    }
+
+    .score-sep {
+      font-size: 70px;
+      color: var(--blue-bright);
+    }
+
+    .card-11 .score-sep {
+      font-size: 40px;
+    }
+
+    .goleadores-box {
+      width: 100%;
+      border: 2px solid var(--blue-bright);
+      border-radius: 16px;
+      padding: 20px 25px;
+      margin-bottom: 25px;
+      background: #FFFFFF;
+    }
+
+    .card-11 .goleadores-box {
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+    }
+
+    .goleadores-title {
+      font-family: var(--font-title);
+      font-size: 26px;
+      color: var(--blue-bright);
+      letter-spacing: 0.05em;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .card-11 .goleadores-title {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .goleadores-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .goleador-chip {
+      background: var(--blue-light);
+      color: var(--blue-main);
+      font-weight: 800;
+      font-size: 22px;
+      padding: 8px 18px;
+      border-radius: 20px;
+    }
+
+    .card-11 .goleador-chip {
+      font-size: 13px;
+      padding: 5px 12px;
+    }
+
+    /* ===== MODO GENÉRICO ===== */
+    .generico-container {
+      width: 100%;
+      margin: 20px 0 35px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .card-11 .generico-container {
+      margin: 10px 0 20px 0;
+      gap: 12px;
+    }
+
+    .generico-img-frame {
+      width: 100%;
+      max-height: 620px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 3px solid var(--blue-bright);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-11 .generico-img-frame {
+      max-height: 340px;
+      border-radius: 12px;
+    }
+
+    .generico-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .generico-texto {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 32px;
+      color: var(--text-dark);
+      text-align: center;
+      line-height: 1.35;
+      white-space: pre-wrap;
+    }
+
+    .card-11 .generico-texto {
+      font-size: 19px;
+    }
+
+    /* ===== PUBLICIDAD ===== */
+    .sponsor-strip {
+      width: 100%;
+      border: 2px solid var(--grey-border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+
+    .card-11 .sponsor-strip {
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      gap: 5px;
+    }
+
+    .sponsor-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--grey-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .card-11 .sponsor-label {
+      font-size: 9px;
+    }
+
+    .sponsor-strip img {
+      max-width: 100%;
+      max-height: 110px;
+      object-fit: contain;
+    }
+
+    .card-11 .sponsor-strip img {
+      max-height: 60px;
+    }
+
+    /* ===== PIE DE PÁGINA ===== */
+    .footer-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 20px;
+      border-top: 3px solid var(--blue-main);
+      margin-top: auto;
+    }
+
+    .card-11 .footer-section {
+      padding-top: 10px;
+      border-top-width: 2px;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .footer-mini-logo {
+      width: 50px;
+      height: 50px;
+    }
+
+    .card-11 .footer-mini-logo {
+      width: 32px;
+      height: 32px;
+    }
+
+    .footer-mini-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .footer-slogan {
+      font-family: var(--font-title);
+      font-size: 42px;
+      color: var(--blue-bright);
+    }
+
+    .card-11 .footer-slogan {
+      font-size: 26px;
+    }
+
+    .footer-right {
+      text-align: right;
+    }
+
+    .footer-r1 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--grey-sub);
+      text-transform: uppercase;
+    }
+
+    .footer-r2 {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--blue-main);
+      text-transform: uppercase;
+    }
+
+    .card-11 .footer-r1 {
+      font-size: 10px;
+    }
+
+    .card-11 .footer-r2 {
+      font-size: 11px;
+    }
+
+    /* ================================================================
+       ELEMENTO OCULTO PARA EXPORTACIÓN
+       ================================================================ */
+    #offscreen {
+      position: fixed;
+      left: -9999px;
+      top: 0;
+    }
+
+    /* ================================================================
+       RESPONSIVIDAD
+       ================================================================ */
     @media (max-width: 850px) {
-      body { flex-direction: column; }
-      .mobile-tabs { display: flex; }
-      #panel { width: 100%; min-width: 100%; height: auto; position: relative; padding: 16px 16px 30px 16px; box-shadow: none; }
-      #stage { padding: 20px 10px; }
-      #wrap916 { width: 230px; height: 408px; }
-      #wrap11 { width: 290px; height: 290px; }
-      .view-tab-content { display: none; }
-      .view-tab-content.active { display: block; }
-      #exportbar { position: relative; bottom: 0; margin-top: 20px; }
+      body {
+        flex-direction: column;
+      }
+
+      .mobile-tabs {
+        display: flex;
+      }
+
+      #panel {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+        position: relative;
+        padding: 16px;
+        box-shadow: none;
+      }
+
+      #stage {
+        padding: 20px 10px;
+      }
+
+      #wrap916 {
+        width: 200px;
+        height: 355px;
+      }
+
+      #wrap11 {
+        width: 260px;
+        height: 260px;
+      }
+
+      .view-tab-content {
+        display: none;
+      }
+
+      .view-tab-content.active {
+        display: block;
+      }
+
+      #exportbar {
+        position: relative;
+        bottom: 0;
+        margin-top: 20px;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="mobile-tabs">
-  <button class="tab-btn active" onclick="switchTab('editor')"><i class="fas fa-edit"></i> Editor</button>
-  <button class="tab-btn" onclick="switchTab('preview')"><i class="fas fa-eye"></i> Vista Previa</button>
-</div>
-
-<div id="panel" class="view-tab-content active">
-  <div class="panel-header">
-    <h1>Generador de Flyers</h1>
-    <p class="sub">Club Social y Deportivo Cerámica Argentina</p>
+  <!-- ================================================================
+     PESTAÑAS MÓVILES
+     ================================================================ -->
+  <div class="mobile-tabs">
+    <button class="tab-btn active" onclick="switchTab('editor')">Editor</button>
+    <button class="tab-btn" onclick="switchTab('preview')">Vista Previa</button>
   </div>
 
-  <!-- PASO 1: SELECCIÓN GLOBAL DEL ESCUDO DEL CLUB -->
-  <fieldset style="background: #f7f9ff; border-color: var(--blue-bright);">
-    <legend style="background: var(--blue-bright); color:#fff; border-radius: 4px; padding:2px 8px;">1. Escudo del Club (General)</legend>
-    <label>Cargar/Cambiar Escudo de Cerámica:</label>
-    <div class="file-input-group">
-      <img class="mini mini-local" src="" alt="" style="display:none;">
-      <input type="file" accept="image/*" id="file-local">
+  <!-- ================================================================
+     PANEL DE CONTROL
+     ================================================================ -->
+  <div id="panel" class="view-tab-content active">
+    <div class="panel-header">
+      <h1>Generador de Flyers</h1>
+      <p class="sub">Club Social y Deportivo Cerámica Argentina</p>
     </div>
-  </fieldset>
 
-  <!-- PASO 2: CATEGORÍA INSTITUCIONAL (identidad visual) -->
-  <fieldset>
-    <legend>2. Categoría</legend>
-    <label>Seleccioná la categoría del flyer:</label>
-    <div class="cat-selector" id="cat-selector">
-      <div class="cat-opt sel-primera active" data-cat="PRIMERA"><i class="fas fa-futbol"></i>Primera</div>
-      <div class="cat-opt sel-senior" data-cat="SENIOR"><i class="fas fa-medal"></i>Senior</div>
-      <div class="cat-opt sel-inferiores" data-cat="INFERIORES"><i class="fas fa-star"></i>Inferiores</div>
-    </div>
-  </fieldset>
+    <!-- PASO 1: ESCUDO DEL CLUB (general) -->
+    <fieldset style="background: #f7f9ff; border-color: var(--blue-bright);">
+      <legend style="background: var(--blue-bright); color:#fff; border-radius: 4px; padding:2px 8px;">1. Escudo del
+        Club</legend>
+      <label>Cargar / Cambiar Escudo de Cerámica:</label>
+      <div class="file-input-group">
+        <img class="mini mini-local" src="" alt="" style="display:none;">
+        <input type="file" accept="image/*" id="file-local">
+      </div>
+    </fieldset>
 
-  <!-- PASO 3: SELECCIÓN DE TIPO DE FLYER -->
-  <fieldset>
-    <legend>3. Formato de Flyer</legend>
-    <label>Seleccionar Tipo:</label>
-    <select id="in-mode">
-      <option value="VS" selected>Partido Único (VS Escudos)</option>
-      <option value="LIBRE">Cronograma Libre / Múltiples Categorías</option>
-      <option value="RESULTADO">Resultado de la Fecha (Marcador y Goles)</option>
-      <option value="GENERICO">Genérico (Libre / Cualquier Aviso)</option>
-    </select>
-  </fieldset>
-
-  <fieldset>
-    <legend>Encabezado</legend>
-    <label>Línea 1</label>
-    <input type="text" class="in-brand1" value="CLUB SOCIAL Y DEPORTIVO">
-    <label>Línea 2</label>
-    <input type="text" class="in-brand2" value="CERÁMICA ARGENTINA">
-    <label>Título Superior</label>
-    <input type="text" class="in-t1" value="PRÓXIMO">
-    <label>Título Principal</label>
-    <input type="text" class="in-t2" value="PARTIDO">
-    <label>Categoría / Subtítulo Destacado</label>
-    <input type="text" class="in-cat" value="AMISTOSO">
-    <p style="font-size:10px; color:var(--grey-sub); margin-top:-2px; font-weight:600;">
-      Usá este campo para la fecha, el torneo o si es amistoso. La categoría (Primera/Senior/Inferiores) ya se muestra con la insignia de color.
-    </p>
-  </fieldset>
-
-  <!-- SECCIÓN MODO VS -->
-  <div id="field-group-vs">
+    <!-- PASO 2: CATEGORÍA INSTITUCIONAL -->
     <fieldset>
-      <legend>Condición del Partido</legend>
-      <label>Cerámica Argentina juega como:</label>
-      <select id="in-condicion">
-        <option value="LOCAL" selected>LOCAL (Cerámica primero)</option>
-        <option value="VISITANTE">VISITANTE (Rival primero)</option>
+      <legend>2. Categoría</legend>
+      <label>Seleccioná la categoría del flyer:</label>
+      <div class="cat-selector" id="cat-selector">
+        <div class="cat-opt sel-primera active" data-cat="PRIMERA">Primera</div>
+        <div class="cat-opt sel-senior" data-cat="SENIOR">Seniors</div>
+        <div class="cat-opt sel-inferiores" data-cat="INFERIORES">Inferiores</div>
+      </div>
+    </fieldset>
+
+    <!-- PASO 3: TIPO DE FLYER -->
+    <fieldset>
+      <legend>3. Formato de Flyer</legend>
+      <label>Seleccionar Tipo:</label>
+      <select id="in-mode">
+        <option value="VS" selected>Partido Único (VS Escudos)</option>
+        <option value="LIBRE">Cronograma Libre / Múltiples Categorías</option>
+        <option value="RESULTADO">Resultado de la Fecha (Marcador y Goles)</option>
+        <option value="GENERICO">Genérico (Libre / Cualquier Aviso)</option>
       </select>
     </fieldset>
 
+    <!-- ENCABEZADO -->
     <fieldset>
-      <legend>Rival y Escudo</legend>
-      <label>Escudo Rival (JPG/PNG)</label>
-      <div class="file-input-group">
-        <img class="mini mini-rival" src="" alt="" style="display:none;">
-        <input type="file" accept="image/*" id="file-rival">
-      </div>
-      <label>Nombre Rival</label>
-      <input type="text" id="in-nombre-rival" class="in-nombre-rival" value="MOQUEHUA">
+      <legend>Encabezado</legend>
+      <label>Línea 1</label>
+      <input type="text" class="in-brand1" value="CLUB SOCIAL Y DEPORTIVO">
+      <label>Línea 2</label>
+      <input type="text" class="in-brand2" value="CERÁMICA ARGENTINA">
+      <label>Título Superior</label>
+      <input type="text" class="in-t1" value="PRÓXIMO">
+      <label>Título Principal</label>
+      <input type="text" class="in-t2" value="PARTIDO">
+      <label>Subtítulo (se muestra en la pill)</label>
+      <input type="text" class="in-cat" value="AMISTOSO">
+      <p style="font-size:9px; color:var(--grey-sub); margin-top:-2px; font-weight:600;">
+        La categoría (Primera/Seniors/Inferiores) se muestra ahora como una línea minimalista debajo del encabezado.
+      </p>
     </fieldset>
-  </div>
 
-  <!-- SECCIÓN MODO LIBRE / CRONOGRAMA -->
-  <div id="field-group-libre" style="display: none;">
-    <fieldset>
-      <legend>Cronograma de Partidos / Horarios</legend>
-      <div id="schedule-inputs">
-        <div class="schedule-input-row">
-          <input type="text" value="10:30 HS" class="sched-in-time" placeholder="Hora">
-          <input type="text" value="SUB 11" class="sched-in-cat" placeholder="Categoría">
-          <button class="btn-remove-row" onclick="removeScheduleRow(this)"><i class="fas fa-trash"></i></button>
+    <!-- SECCIÓN MODO VS (y también RESULTADO) -->
+    <div id="field-group-vs">
+      <fieldset>
+        <legend>Condición del Partido</legend>
+        <label>Cerámica Argentina juega como:</label>
+        <select id="in-condicion">
+          <option value="LOCAL" selected>LOCAL (Cerámica primero)</option>
+          <option value="VISITANTE">VISITANTE (Rival primero)</option>
+        </select>
+      </fieldset>
+      <fieldset>
+        <legend>Rival y Escudo</legend>
+        <label>Escudo Rival (JPG/PNG)</label>
+        <div class="file-input-group">
+          <img class="mini mini-rival" src="" alt="" style="display:none;">
+          <input type="file" accept="image/*" id="file-rival">
         </div>
-        <div class="schedule-input-row">
-          <input type="text" value="11:30 HS" class="sched-in-time" placeholder="Hora">
-          <input type="text" value="SUB 13" class="sched-in-cat" placeholder="Categoría">
-          <button class="btn-remove-row" onclick="removeScheduleRow(this)"><i class="fas fa-trash"></i></button>
-        </div>
-        <div class="schedule-input-row">
-          <input type="text" value="13:00 HS" class="sched-in-time" placeholder="Hora">
-          <input type="text" value="SUB 17" class="sched-in-cat" placeholder="Categoría">
-          <button class="btn-remove-row" onclick="removeScheduleRow(this)"><i class="fas fa-trash"></i></button>
-        </div>
-        <div class="schedule-input-row">
-          <input type="text" value="15:15 HS" class="sched-in-time" placeholder="Hora">
-          <input type="text" value="SUB 23" class="sched-in-cat" placeholder="Categoría">
-          <button class="btn-remove-row" onclick="removeScheduleRow(this)"><i class="fas fa-trash"></i></button>
-        </div>
-      </div>
-      <button class="btn btn-outline btn-small" id="btn-add-sched"><i class="fas fa-plus"></i> Agregar Horario</button>
-    </fieldset>
-  </div>
+        <label>Nombre Rival</label>
+        <input type="text" id="in-nombre-rival" class="in-nombre-rival" value="MOQUEHUA">
+      </fieldset>
+    </div>
 
-  <!-- SECCIÓN MODO GENÉRICO -->
-  <div id="field-group-generico" style="display: none;">
-    <fieldset>
-      <legend>Contenido Libre</legend>
-      <label>Imagen (Opcional)</label>
-      <div class="file-input-group">
-        <img class="mini mini-generico" src="" alt="" style="display:none;">
-        <input type="file" accept="image/*" id="file-generico">
-      </div>
-      <label>Texto Libre</label>
-      <textarea id="in-gen-texto" rows="5" style="width:100%; padding:10px; font-size:14px; border:1px solid var(--grey-border); border-radius:6px; font-family:inherit; font-weight:600; resize:vertical;" placeholder="Escribí acá lo que necesites: festejo, aviso, agradecimiento, promoción, lo que se te ocurra...">¡Gracias por acompañarnos siempre!</textarea>
-    </fieldset>
-  </div>
+    <!-- SECCIÓN MODO LIBRE (CRONOGRAMA) -->
+    <div id="field-group-libre" style="display: none;">
+      <fieldset>
+        <legend>Cronograma de Partidos / Horarios</legend>
+        <div id="schedule-inputs">
+          <div class="schedule-input-row">
+            <input type="text" value="10:30 HS" class="sched-in-time" placeholder="Hora">
+            <input type="text" value="SUB 11" class="sched-in-cat" placeholder="Categoría">
+            <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+          </div>
+          <div class="schedule-input-row">
+            <input type="text" value="11:30 HS" class="sched-in-time" placeholder="Hora">
+            <input type="text" value="SUB 13" class="sched-in-cat" placeholder="Categoría">
+            <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+          </div>
+          <div class="schedule-input-row">
+            <input type="text" value="13:00 HS" class="sched-in-time" placeholder="Hora">
+            <input type="text" value="SUB 17" class="sched-in-cat" placeholder="Categoría">
+            <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+          </div>
+          <div class="schedule-input-row">
+            <input type="text" value="15:15 HS" class="sched-in-time" placeholder="Hora">
+            <input type="text" value="SUB 23" class="sched-in-cat" placeholder="Categoría">
+            <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-small" id="btn-add-sched">+ Agregar Horario</button>
+      </fieldset>
+    </div>
 
-  <!-- SECCIÓN MODO RESULTADO -->
-  <div id="field-group-resultado" style="display: none;">
-    <fieldset>
-      <legend>Marcador Final</legend>
+    <!-- SECCIÓN MODO GENÉRICO -->
+    <div id="field-group-generico" style="display: none;">
+      <fieldset>
+        <legend>Contenido Libre</legend>
+        <label>Imagen (Opcional)</label>
+        <div class="file-input-group">
+          <img class="mini mini-generico" src="" alt="" style="display:none;">
+          <input type="file" accept="image/*" id="file-generico">
+        </div>
+        <label>Texto Libre</label>
+        <textarea id="in-gen-texto" rows="5"
+          style="width:100%; padding:8px; font-size:12px; border:1px solid var(--grey-border); border-radius:4px; font-family:inherit; font-weight:600; resize:vertical;"
+          placeholder="Escribí acá lo que necesites: festejo, aviso, agradecimiento, promoción, lo que se te ocurra...">¡Gracias por acompañarnos siempre!</textarea>
+      </fieldset>
+    </div>
+
+    <!-- SECCIÓN MODO RESULTADO -->
+    <div id="field-group-resultado" style="display: none;">
+      <fieldset>
+        <legend>Marcador Final</legend>
+        <div class="row2">
+          <div>
+            <label>Goles Cerámica</label>
+            <input type="number" min="0" id="in-goles-local" value="2">
+          </div>
+          <div>
+            <label>Goles Rival</label>
+            <input type="number" min="0" id="in-goles-rival" value="1">
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Goleadores (Opcional)</legend>
+        <div id="goal-inputs">
+          <div class="schedule-input-row">
+            <input type="text" value="15' Pérez" class="goal-in-text" placeholder="Ej: 15' Pérez">
+            <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
+          </div>
+          <div class="schedule-input-row">
+            <input type="text" value="70' Gómez" class="goal-in-text" placeholder="Ej: 70' Gómez">
+            <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-small" id="btn-add-goal">+ Agregar Goleador</button>
+      </fieldset>
+    </div>
+
+    <!-- CANCHA Y HORARIO (visible en modos VS y LIBRE) -->
+    <fieldset id="fieldset-cancha">
+      <legend>Cancha y Horario</legend>
+      <label>Estadio</label>
+      <input type="text" class="in-estadio" value="ESTADIO HECTOR C. CARDOSO">
+      <label>Subtítulo Estadio</label>
+      <input type="text" class="in-estadio-sub" value="CLUB CERAMICA">
       <div class="row2">
-        <div>
-          <label>Goles Cerámica</label>
-          <input type="number" min="0" id="in-goles-local" value="2">
+        <div id="field-hora-vs">
+          <label>Hora</label>
+          <input type="text" class="in-hora" value="15HS">
         </div>
         <div>
-          <label>Goles Rival</label>
-          <input type="number" min="0" id="in-goles-rival" value="1">
+          <label>Fecha</label>
+          <input type="date" id="in-fecha-picker">
         </div>
       </div>
     </fieldset>
+
+    <!-- ACCESOS (visible en modos VS y LIBRE) -->
+    <fieldset id="fieldset-accesos">
+      <legend>Accesos</legend>
+      <label>Acceso Local</label>
+      <input type="text" class="in-acc-local" value='SERGIO "PELA" GIROTTI X CALLE ALEM'>
+      <label>Acceso Visitante</label>
+      <input type="text" class="in-acc-visit" value="SOBRE CALLE BROWN">
+    </fieldset>
+
+    <!-- PUBLICIDAD / AUSPICIANTE -->
     <fieldset>
-      <legend>Goleadores (Opcional)</legend>
-      <div id="goal-inputs">
-        <div class="schedule-input-row">
-          <input type="text" value="15' Pérez" class="goal-in-text" placeholder="Ej: 15' Pérez">
-          <button class="btn-remove-row" onclick="removeGoalRow(this)"><i class="fas fa-trash"></i></button>
-        </div>
-        <div class="schedule-input-row">
-          <input type="text" value="70' Gómez" class="goal-in-text" placeholder="Ej: 70' Gómez">
-          <button class="btn-remove-row" onclick="removeGoalRow(this)"><i class="fas fa-trash"></i></button>
-        </div>
+      <legend>Publicidad / Auspiciante (Opcional)</legend>
+      <label>Logo o imagen del sponsor:</label>
+      <div class="file-input-group">
+        <img class="mini mini-sponsor" src="" alt="" style="display:none;">
+        <input type="file" accept="image/*" id="file-sponsor">
       </div>
-      <button class="btn btn-outline btn-small" id="btn-add-goal"><i class="fas fa-plus"></i> Agregar Goleador</button>
+      <button class="btn btn-outline btn-small" id="btn-remove-sponsor" style="display:none;">✕ Quitar
+        Publicidad</button>
     </fieldset>
-  </div>
 
-  <fieldset id="fieldset-cancha">
-    <legend>Cancha y Horario</legend>
-    <label>Estadio</label>
-    <input type="text" class="in-estadio" value="ESTADIO HECTOR C. CARDOSO">
-    <label>Subtítulo Estadio</label>
-    <input type="text" class="in-estadio-sub" value="CLUB CERAMICA">
-    <div class="row2">
-      <div id="field-hora-vs">
-        <label>Hora</label>
-        <input type="text" class="in-hora" value="15HS">
+    <!-- IMAGEN DE FONDO -->
+    <fieldset>
+      <legend>Fondo de la Plantilla (Opcional)</legend>
+      <label>Imagen de fondo (JPG/PNG):</label>
+      <div class="file-input-group">
+        <img class="mini mini-background" src="" alt="" style="display:none;">
+        <input type="file" accept="image/*" id="file-background">
       </div>
-      <div>
-        <label>Fecha</label>
-        <input type="date" id="in-fecha-picker">
+      <button class="btn btn-outline btn-small" id="btn-remove-background" style="display:none;">✕ Quitar Fondo</button>
+      <p style="font-size:9px; color:var(--grey-sub); margin-top:6px;">Si no cargás nada, se usará el fondo degradado
+        original.</p>
+    </fieldset>
+
+    <!-- PIE DE PÁGINA -->
+    <fieldset>
+      <legend>Pie de Página</legend>
+      <label>Slogan</label>
+      <input type="text" class="in-foot-slogan" value="¡VAMOS CERA!">
+      <label>Liga / Torneo R1</label>
+      <input type="text" class="in-foot-r1" value="LIGA CHIVILCOYANA DE FUTBOL">
+      <label>Liga / Torneo R2</label>
+      <input type="text" class="in-foot-r2" value="TORNEO SENIOR AÑO 2026">
+    </fieldset>
+
+    <!-- BOTONES DE EXPORTACIÓN -->
+    <div id="exportbar">
+      <button class="btn btn-primary" id="btn-916">Descargar JPG (Historia 9:16)</button>
+      <button class="btn btn-outline" id="btn-11">Descargar JPG (Feed 1:1)</button>
+    </div>
+  </div>
+
+  <!-- ================================================================
+     MODAL CROPPER
+     ================================================================ -->
+  <div class="modal-overlay" id="cropModal">
+    <div class="modal-content">
+      <h3>Ajustar y Centrar Escudo</h3>
+      <div class="img-container">
+        <img id="cropImage" src="" alt="Ajustar Imagen">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btnCropSave">Confirmar Recorte</button>
+        <button class="btn btn-outline" id="btnCropCancel">Cancelar</button>
       </div>
     </div>
-  </fieldset>
-
-  <fieldset id="fieldset-accesos">
-    <legend>Accesos</legend>
-    <label>Acceso Local</label>
-    <input type="text" class="in-acc-local" value='SERGIO "PELA" GIROTTI X CALLE ALEM'>
-    <label>Acceso Visitante</label>
-    <input type="text" class="in-acc-visit" value="SOBRE CALLE BROWN">
-  </fieldset>
-
-  <fieldset>
-    <legend>Publicidad / Auspiciante (Opcional)</legend>
-    <label>Logo o imagen del sponsor:</label>
-    <div class="file-input-group">
-      <img class="mini mini-sponsor" src="" alt="" style="display:none;">
-      <input type="file" accept="image/*" id="file-sponsor">
-    </div>
-    <button class="btn btn-outline btn-small" id="btn-remove-sponsor" style="display:none;"><i class="fas fa-trash"></i> Quitar Publicidad</button>
-  </fieldset>
-
-  <fieldset>
-    <legend>Pie de Página</legend>
-    <label>Slogan</label>
-    <input type="text" class="in-foot-slogan" value="¡VAMOS CERA!">
-    <label>Liga / Torneo R1</label>
-    <input type="text" class="in-foot-r1" value="LIGA CHIVILCOYANA DE FUTBOL">
-    <label>Liga / Torneo R2</label>
-    <input type="text" class="in-foot-r2" value="TORNEO SENIOR AÑO 2026">
-  </fieldset>
-
-  <div id="exportbar">
-    <button class="btn btn-primary" id="btn-916"><i class="fas fa-download"></i> Descargar JPG (Historia 9:16)</button>
-    <button class="btn btn-outline" id="btn-11"><i class="fas fa-download"></i> Descargar JPG (Feed 1:1)</button>
   </div>
-</div>
 
-<!-- MODAL CROPPER -->
-<div class="modal-overlay" id="cropModal">
-  <div class="modal-content">
-    <h3>Ajustar y Centrar Escudo</h3>
-    <div class="img-container">
-      <img id="cropImage" src="" alt="Ajustar Imagen">
+  <!-- ================================================================
+     VISTA PREVIA (STAGE)
+     ================================================================ -->
+  <div id="stage" class="view-tab-content">
+    <div class="preview-block">
+      <h3>Formato 9:16 · Historia</h3>
+      <div class="preview-frame" id="wrap916">
+        <div class="scaler" id="scaler916">
+          <div class="card card-916 group916"></div>
+        </div>
+      </div>
     </div>
-    <div class="modal-actions">
-      <button class="btn btn-primary" id="btnCropSave">Confirmar Recorte</button>
-      <button class="btn btn-outline" id="btnCropCancel">Cancelar</button>
+    <div class="preview-block">
+      <h3>Formato 1:1 · Feed</h3>
+      <div class="preview-frame" id="wrap11">
+        <div class="scaler" id="scaler11">
+          <div class="card card-11 group11"></div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- VISTA PREVIA -->
-<div id="stage" class="view-tab-content">
-  <div class="preview-block">
-    <h3>Formato 9:16 · Historia</h3>
-    <div class="preview-frame" id="wrap916">
-      <div class="scaler" id="scaler916"><div class="card card-916 group916"></div></div>
-    </div>
+  <!-- ================================================================
+     ELEMENTOS OCULTOS PARA EXPORTACIÓN
+     ================================================================ -->
+  <div id="offscreen">
+    <div class="card card-916 group916" id="export916"></div>
+    <div class="card card-11 group11" id="export11"></div>
   </div>
-  <div class="preview-block">
-    <h3>Formato 1:1 · Feed</h3>
-    <div class="preview-frame" id="wrap11">
-      <div class="scaler" id="scaler11"><div class="card card-11 group11"></div></div>
-    </div>
-  </div>
-</div>
 
-<!-- ELEMENTOS PARA EXPORTACIÓN -->
-<div id="offscreen">
-  <div class="card card-916 group916" id="export916"></div>
-  <div class="card card-11 group11" id="export11"></div>
-</div>
+  <!-- ================================================================
+     JAVASCRIPT – TODA LA LÓGICA
+     ================================================================ -->
+  <script>
+    // ================================================================
+    //  VARIABLES GLOBALES
+    //  Almacenan las imágenes cargadas (en base64) para usarlas en el flyer.
+    // ================================================================
+    let localShieldSrc = null;        // Escudo de Cerámica
+    let rivalShieldSrc = null;        // Escudo del rival
+    let sponsorSrc = null;           // Logo del sponsor
+    let genericoImgSrc = null;       // Imagen en modo Genérico
+    let backgroundImgSrc = null;     // Imagen de fondo para la plantilla
+    let currentCategory = 'PRIMERA'; // Categoría activa (PRIMERA, SENIOR, INFERIORES)
+    let cropper = null;              // Instancia del Cropper
+    let currentTargetTeam = null;    // 'local' o 'rival' para saber qué escudo estamos recortando
 
-<script>
-  let localShieldSrc = null;
-  let rivalShieldSrc = null;
-  let sponsorSrc = null;
-  let genericoImgSrc = null;
-  let currentCategory = 'PRIMERA';
-  let cropper = null;
-  let currentTargetTeam = null;
+    // ================================================================
+    //  REFERENCIAS A ELEMENTOS DEL DOM
+    // ================================================================
+    const cropModal = document.getElementById('cropModal');
+    const cropImage = document.getElementById('cropImage');
+    const datePicker = document.getElementById('in-fecha-picker');
 
-  const cropModal = document.getElementById('cropModal');
-  const cropImage = document.getElementById('cropImage');
-  const datePicker = document.getElementById('in-fecha-picker');
-  
-  const today = new Date();
-  datePicker.value = today.toISOString().split('T')[0];
+    // Fecha por defecto: hoy
+    const today = new Date();
+    datePicker.value = today.toISOString().split('T')[0];
 
-  function switchTab(tab) {
-    if (window.innerWidth > 850) return;
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.view-tab-content').forEach(c => c.classList.remove('active'));
+    // ================================================================
+    //  FUNCIÓN: switchTab(tab)
+    //  Cambia entre pestañas "Editor" y "Vista Previa" en móviles.
+    // ================================================================
+    function switchTab(tab) {
+      if (window.innerWidth > 850) return; // solo en móviles
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.view-tab-content').forEach(c => c.classList.remove('active'));
 
-    if (tab === 'editor') {
-      document.querySelectorAll('.tab-btn')[0].classList.add('active');
-      document.getElementById('panel').classList.add('active');
-    } else {
-      document.querySelectorAll('.tab-btn')[1].classList.add('active');
-      document.getElementById('stage').classList.add('active');
-      setTimeout(fitAll, 50);
+      if (tab === 'editor') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('panel').classList.add('active');
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('stage').classList.add('active');
+        setTimeout(fitAll, 50);
+      }
     }
-  }
 
-  function getCalculatedDateInfo() {
-    if (!datePicker.value) return { dayName: 'DOMINGO', formattedDate: '9/8' };
-    const parts = datePicker.value.split('-');
-    const dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
-    const days = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
-    return { dayName: days[dateObj.getDay()], formattedDate: `${dateObj.getDate()}/${dateObj.getMonth() + 1}` };
-  }
+    // ================================================================
+    //  FUNCIÓN: getCalculatedDateInfo()
+    //  Devuelve el nombre del día y la fecha formateada (ej. "DOMINGO 9/8")
+    //  a partir del input date.
+    // ================================================================
+    function getCalculatedDateInfo() {
+      if (!datePicker.value) return { dayName: 'DOMINGO', formattedDate: '9/8' };
+      const parts = datePicker.value.split('-');
+      const dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+      const days = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
+      return { dayName: days[dateObj.getDay()], formattedDate: `${dateObj.getDate()}/${dateObj.getMonth() + 1}` };
+    }
 
-  function getRivalShieldHTML() {
-    if (rivalShieldSrc) return `<img src="${rivalShieldSrc}">`;
-    const rivalName = document.getElementById('in-nombre-rival').value.trim() || 'RIVAL';
-    return `<div class="generated-shield"><i class="fas fa-shield-halved gen-icon"></i><div class="gen-text">${rivalName}</div></div>`;
-  }
+    // ================================================================
+    //  FUNCIONES PARA OBTENER EL HTML DE LOS ESCUDOS
+    //  Si no hay imagen cargada, se muestra un texto genérico.
+    // ================================================================
+    function getRivalShieldHTML() {
+      if (rivalShieldSrc) return `<img src="${rivalShieldSrc}">`;
+      const rivalName = document.getElementById('in-nombre-rival').value.trim() || 'RIVAL';
+      return `<div class="generated-shield"><div class="gen-text">${rivalName}</div></div>`;
+    }
 
-  function getCeramicaShieldHTML() {
-    if (localShieldSrc) return `<img src="${localShieldSrc}">`;
-    return `<div class="generated-shield"><i class="fas fa-shield-cat gen-icon"></i><div class="gen-text">CERÁMICA</div></div>`;
-  }
+    function getCeramicaShieldHTML() {
+      if (localShieldSrc) return `<img src="${localShieldSrc}">`;
+      return `<div class="generated-shield"><div class="gen-text">CERÁMICA</div></div>`;
+    }
 
-  function buildGenericoHTML() {
-    const texto = document.getElementById('in-gen-texto').value.trim();
-    const imgHTML = genericoImgSrc ? `<div class="generico-img-frame"><img src="${genericoImgSrc}"></div>` : '';
-    const textoHTML = texto ? `<div class="generico-texto">${texto.replace(/</g, '&lt;')}</div>` : '';
-    return `<div class="generico-container">${imgHTML}${textoHTML}</div>`;
-  }
+    // ================================================================
+    //  FUNCIÓN: buildGenericoHTML()
+    //  Construye el bloque de contenido para el modo Genérico.
+    // ================================================================
+    function buildGenericoHTML() {
+      const texto = document.getElementById('in-gen-texto').value.trim();
+      const imgHTML = genericoImgSrc ? `<div class="generico-img-frame"><img src="${genericoImgSrc}"></div>` : '';
+      const textoHTML = texto ? `<div class="generico-texto">${texto.replace(/</g, '&lt;')}</div>` : '';
+      return `<div class="generico-container">${imgHTML}${textoHTML}</div>`;
+    }
 
-  function buildSponsorHTML() {
-    if (!sponsorSrc) return '';
-    return `
+    // ================================================================
+    //  FUNCIÓN: buildSponsorHTML()
+    //  Si hay un sponsor cargado, muestra la franja.
+    // ================================================================
+    function buildSponsorHTML() {
+      if (!sponsorSrc) return '';
+      return `
       <div class="sponsor-strip">
         <span class="sponsor-label">Auspicia</span>
         <img src="${sponsorSrc}">
       </div>
     `;
-  }
+    }
 
-  function buildScheduleHTML() {
-    const times = document.querySelectorAll('.sched-in-time');
-    const cats = document.querySelectorAll('.sched-in-cat');
-    let html = '<div class="schedule-container">';
-    times.forEach((t, i) => {
-      const timeVal = t.value.trim() || '00:00 HS';
-      const catVal = cats[i].value.trim() || 'CATEGORIA';
-      html += `
+    // ================================================================
+    //  FUNCIÓN: buildScheduleHTML()
+    //  Construye la lista de horarios para el modo Cronograma.
+    // ================================================================
+    function buildScheduleHTML() {
+      const times = document.querySelectorAll('.sched-in-time');
+      const cats = document.querySelectorAll('.sched-in-cat');
+      let html = '<div class="schedule-container">';
+      times.forEach((t, i) => {
+        const timeVal = t.value.trim() || '00:00 HS';
+        const catVal = cats[i].value.trim() || 'CATEGORIA';
+        html += `
         <div class="schedule-row">
           <div class="sched-time">${timeVal}</div>
           <div class="sched-div">DIV</div>
           <div class="sched-cat">${catVal}</div>
         </div>
       `;
-    });
-    html += '</div>';
-    return html;
-  }
+      });
+      html += '</div>';
+      return html;
+    }
 
-  function buildResultadoHTML(isLocal, team1Shield, team1Name, team2Shield, team2Name) {
-    const golesCeramica = parseInt(document.getElementById('in-goles-local').value, 10) || 0;
-    const golesRival = parseInt(document.getElementById('in-goles-rival').value, 10) || 0;
-    const golesTeam1 = isLocal ? golesCeramica : golesRival;
-    const golesTeam2 = isLocal ? golesRival : golesCeramica;
+    // ================================================================
+    //  FUNCIÓN: buildResultadoHTML()
+    //  Construye el bloque de marcador y goleadores para el modo Resultado.
+    // ================================================================
+    function buildResultadoHTML(isLocal, team1Shield, team1Name, team2Shield, team2Name) {
+      const golesCeramica = parseInt(document.getElementById('in-goles-local').value, 10) || 0;
+      const golesRival = parseInt(document.getElementById('in-goles-rival').value, 10) || 0;
+      const golesTeam1 = isLocal ? golesCeramica : golesRival;
+      const golesTeam2 = isLocal ? golesRival : golesCeramica;
 
-    const goles = Array.from(document.querySelectorAll('.goal-in-text'))
-      .map(i => i.value.trim())
-      .filter(Boolean);
-    const goleadoresHTML = goles.length ? `
+      const goles = Array.from(document.querySelectorAll('.goal-in-text'))
+        .map(i => i.value.trim())
+        .filter(Boolean);
+      const goleadoresHTML = goles.length ? `
       <div class="goleadores-box">
-        <div class="goleadores-title"><i class="fas fa-futbol"></i> GOLEADORES</div>
+        <div class="goleadores-title">GOLEADORES</div>
         <div class="goleadores-list">
           ${goles.map(g => `<span class="goleador-chip">${g.replace(/</g, '&lt;')}</span>`).join('')}
         </div>
       </div>
     ` : '';
 
-    return `
+      return `
       <div class="vs-container">
         <div class="team-card">
           <div class="shield-frame">${team1Shield}</div>
@@ -677,33 +1714,50 @@
       </div>
       ${goleadoresHTML}
     `;
-  }
+    }
 
-  function buildCategoryBadgeHTML() {
-    const labels = { PRIMERA: 'PRIMERA DIVISIÓN', SENIOR: 'SENIOR', INFERIORES: 'INFERIORES' };
-    const icons = { PRIMERA: 'fa-futbol', SENIOR: 'fa-medal', INFERIORES: 'fa-star' };
-    return `<div class="cat-badge badge-${currentCategory.toLowerCase()}"><i class="fas ${icons[currentCategory]}"></i>${labels[currentCategory]}</div>`;
-  }
+    // ================================================================
+    //  NUEVA FUNCIÓN: buildCategoryLineHTML()
+    //  Genera la línea de categoría minimalista con guiones y texto.
+    //  Usa la fuente Montserrat (misma que encabezado) pero con peso 600.
+    //  Se muestra debajo del encabezado.
+    // ================================================================
+    function buildCategoryLineHTML() {
+      const labels = { PRIMERA: 'PRIMERA DIVISIÓN', SENIOR: 'SENIORS', INFERIORES: 'INFERIORES' };
+      const label = labels[currentCategory] || 'CATEGORÍA';
+      return `
+      <div class="category-line">
+        <span class="line"></span>
+        <span class="label">${label}</span>
+        <span class="line"></span>
+      </div>
+    `;
+    }
 
-  function buildCardHTML() {
-    const mode = document.getElementById('in-mode').value;
-    const isLocal = document.getElementById('in-condicion').value === 'LOCAL';
-    const ceramicaHTML = getCeramicaShieldHTML();
-    const rivalHTML = getRivalShieldHTML();
-    const rivalName = document.getElementById('in-nombre-rival').value.toUpperCase();
+    // ================================================================
+    //  FUNCIÓN PRINCIPAL: buildCardHTML()
+    //  Construye todo el HTML interno de la tarjeta (flyer) según
+    //  el modo seleccionado y los datos cargados.
+    // ================================================================
+    function buildCardHTML() {
+      const mode = document.getElementById('in-mode').value;
+      const isLocal = document.getElementById('in-condicion').value === 'LOCAL';
+      const ceramicaHTML = getCeramicaShieldHTML();
+      const rivalHTML = getRivalShieldHTML();
+      const rivalName = document.getElementById('in-nombre-rival').value.toUpperCase();
 
-    const team1Shield = isLocal ? ceramicaHTML : rivalHTML;
-    const team1Name = isLocal ? 'CERÁMICA ARGENTINA' : rivalName;
-    const team2Shield = isLocal ? rivalHTML : ceramicaHTML;
-    const team2Name = isLocal ? rivalName : 'CERÁMICA ARGENTINA';
+      const team1Shield = isLocal ? ceramicaHTML : rivalHTML;
+      const team1Name = isLocal ? 'CERÁMICA ARGENTINA' : rivalName;
+      const team2Shield = isLocal ? rivalHTML : ceramicaHTML;
+      const team2Name = isLocal ? rivalName : 'CERÁMICA ARGENTINA';
 
-    const { dayName, formattedDate } = getCalculatedDateInfo();
+      const { dayName, formattedDate } = getCalculatedDateInfo();
 
-    let centralContentHTML = '';
-    let timeDisplayHTML = '';
+      let centralContentHTML = '';
+      let timeDisplayHTML = '';
 
-    if (mode === 'VS') {
-      centralContentHTML = `
+      if (mode === 'VS') {
+        centralContentHTML = `
         <div class="vs-container">
           <div class="team-card">
             <div class="shield-frame">${team1Shield}</div>
@@ -716,351 +1770,445 @@
           </div>
         </div>
       `;
-      timeDisplayHTML = `
+        timeDisplayHTML = `
         <div class="info-element">
-          <div class="info-icon"><i class="far fa-clock"></i></div>
-          <span class="time-text dyn-hora"></span>
+          <div><span class="time-text dyn-hora"></span></div>
         </div>
         <div class="info-pipe"></div>
       `;
-    } else if (mode === 'LIBRE') {
-      centralContentHTML = buildScheduleHTML();
-      timeDisplayHTML = '';
-    } else if (mode === 'RESULTADO') {
-      centralContentHTML = buildResultadoHTML(isLocal, team1Shield, team1Name, team2Shield, team2Name);
-      timeDisplayHTML = '';
-    } else {
-      centralContentHTML = buildGenericoHTML();
-      timeDisplayHTML = '';
-    }
+      } else if (mode === 'LIBRE') {
+        centralContentHTML = buildScheduleHTML();
+        timeDisplayHTML = '';
+      } else if (mode === 'RESULTADO') {
+        centralContentHTML = buildResultadoHTML(isLocal, team1Shield, team1Name, team2Shield, team2Name);
+        timeDisplayHTML = '';
+      } else { // GENERICO
+        centralContentHTML = buildGenericoHTML();
+        timeDisplayHTML = '';
+      }
 
-    const showStadiumAccess = mode === 'VS' || mode === 'LIBRE';
+      const showStadiumAccess = mode === 'VS' || mode === 'LIBRE';
 
-    return `
-      ${buildCategoryBadgeHTML()}
-      <div class="header-row">
-        <div class="header-logo-box">${ceramicaHTML}</div>
-        <div class="header-text">
-          <span class="t-sub dyn-brand1"></span>
-          <span class="t-main dyn-brand2"></span>
+      // ================================================================
+      //  ESTRUCTURA COMPLETA DE LA TARJETA
+      //  La categoría se inserta como una línea decorativa (category-line)
+      //  justo después del encabezado y antes del título.
+      // ================================================================
+      return `
+      <div class="card-content">
+        <div class="header-row">
+          <div class="header-logo-box">${ceramicaHTML}</div>
+          <div class="header-text">
+            <span class="t-sub dyn-brand1"></span>
+            <span class="t-main dyn-brand2"></span>
+          </div>
         </div>
-      </div>
 
-      <div class="title-box">
-        <span class="t1 dyn-t1"></span>
-        <span class="t2 dyn-t2"></span>
-      </div>
+        <!-- NUEVA LÍNEA DE CATEGORÍA (minimalista, debajo del encabezado) -->
+        ${buildCategoryLineHTML()}
 
-      <hr class="divider-thick">
+        <div class="title-box">
+          <span class="t1 dyn-t1"></span>
+          <span class="t2 dyn-t2"></span>
+        </div>
 
-      <div class="pill-container">
-        <span class="pill-cat dyn-cat"></span>
-      </div>
+        <hr class="divider-thick">
 
-      ${centralContentHTML}
+        <div class="pill-container">
+          <span class="pill-cat dyn-cat"></span>
+        </div>
 
-      ${showStadiumAccess ? `
-      <div class="stadium-container">
-        <div class="stadium-icon"><i class="fas fa-stadium"></i></div>
-        <div class="stadium-main dyn-estadio"></div>
-        <div class="stadium-sub dyn-estadio-sub"></div>
-      </div>
+        ${centralContentHTML}
 
-      <hr class="divider-thin">
+        ${showStadiumAccess ? `
+        <div class="stadium-container">
+          <div class="stadium-main dyn-estadio"></div>
+          <div class="stadium-sub dyn-estadio-sub"></div>
+        </div>
 
-      <div class="info-box" style="${mode === 'LIBRE' ? 'justify-content: center;' : ''}">
-        ${timeDisplayHTML}
-        <div class="info-element">
-          <div class="info-icon"><i class="far fa-calendar-alt"></i></div>
+        <hr class="divider-thin">
+
+        <div class="info-box" style="${mode === 'LIBRE' ? 'justify-content: center;' : ''}">
+          ${timeDisplayHTML}
+          <div class="info-element">
+            <div>
+              <div class="date-day">${dayName}</div>
+              <div class="date-num">${formattedDate}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="access-box">
           <div>
-            <div class="date-day">${dayName}</div>
-            <div class="date-num">${formattedDate}</div>
+            <div class="access-title">ACCESO LOCAL</div>
+            <div class="access-detail dyn-acc-local"></div>
+          </div>
+        </div>
+
+        <div class="access-box">
+          <div>
+            <div class="access-title">ACCESO VISITANTE</div>
+            <div class="access-detail dyn-acc-visit"></div>
+          </div>
+        </div>
+        ` : '<hr class="divider-thin">'}
+
+        ${buildSponsorHTML()}
+
+        <div class="footer-section">
+          <div class="footer-left">
+            <div class="footer-mini-logo">${ceramicaHTML}</div>
+            <span class="footer-slogan dyn-foot-slogan"></span>
+          </div>
+          <div class="footer-right">
+            <div class="footer-r1 dyn-foot-r1"></div>
+            <div class="footer-r2 dyn-foot-r2"></div>
           </div>
         </div>
       </div>
-
-      <div class="access-box">
-        <div class="access-icon-bg"><i class="fas fa-user-check"></i></div>
-        <div>
-          <div class="access-title">ACCESO LOCAL</div>
-          <div class="access-detail dyn-acc-local"></div>
-        </div>
-      </div>
-
-      <div class="access-box">
-        <div class="access-icon-bg"><i class="fas fa-users"></i></div>
-        <div>
-          <div class="access-title">ACCESO VISITANTE</div>
-          <div class="access-detail dyn-acc-visit"></div>
-        </div>
-      </div>
-      ` : '<hr class="divider-thin">'}
-
-      ${buildSponsorHTML()}
-
-      <div class="footer-section">
-        <div class="footer-left">
-          <div class="footer-mini-logo">${ceramicaHTML}</div>
-          <span class="footer-slogan dyn-foot-slogan"></span>
-        </div>
-        <div class="footer-right">
-          <div class="footer-r1 dyn-foot-r1"></div>
-          <div class="footer-r2 dyn-foot-r2"></div>
-        </div>
-      </div>
     `;
-  }
+    }
 
-  function renderCards() {
-    document.querySelectorAll('.card').forEach(el => {
-      el.classList.remove('cat-primera', 'cat-senior', 'cat-inferiores');
-      el.classList.add('cat-' + currentCategory.toLowerCase());
-      el.innerHTML = buildCardHTML();
-    });
-    updateAllText();
-  }
+    // ================================================================
+    //  FUNCIÓN: renderCards()
+    //  Actualiza todas las tarjetas (vista previa y exportación)
+    //  con el HTML generado y aplica el fondo si existe.
+    // ================================================================
+    function renderCards() {
+      document.querySelectorAll('.card').forEach(el => {
+        // Quitamos clases de categoría anteriores (ya no se usan para la insignia)
+        el.classList.remove('cat-primera', 'cat-senior', 'cat-inferiores');
+        el.classList.add('cat-' + currentCategory.toLowerCase());
+        // Insertamos el HTML generado
+        el.innerHTML = buildCardHTML();
 
-  function setText(cls, val) {
-    document.querySelectorAll('.' + cls).forEach(el => el.textContent = val);
-  }
+        // ================================================================
+        //  APLICAR IMAGEN DE FONDO (si existe)
+        // ================================================================
+        if (backgroundImgSrc) {
+          el.style.backgroundImage = `url(${backgroundImgSrc})`;
+          el.style.backgroundSize = 'cover';
+          el.style.backgroundPosition = 'center';
+          const content = el.querySelector('.card-content');
+          if (content) {
+            content.style.backgroundColor = 'rgba(255,255,255,0.88)';
+            content.style.padding = 'inherit';
+            content.style.borderRadius = '0';
+          }
+        } else {
+          el.style.backgroundImage = 'linear-gradient(145deg, #FFFFFF 45%, #EBF1FD 100%)';
+          el.style.backgroundSize = 'auto';
+          el.style.backgroundPosition = 'initial';
+          const content = el.querySelector('.card-content');
+          if (content) {
+            content.style.backgroundColor = 'transparent';
+            content.style.padding = '0';
+          }
+        }
+      });
+      updateAllText();
+    }
 
-  function updateAllText() {
-    setText('dyn-brand1', document.querySelector('.in-brand1').value);
-    setText('dyn-brand2', document.querySelector('.in-brand2').value);
-    setText('dyn-t1', document.querySelector('.in-t1').value);
-    setText('dyn-t2', document.querySelector('.in-t2').value);
-    setText('dyn-cat', document.querySelector('.in-cat').value);
-    setText('dyn-estadio', document.querySelector('.in-estadio').value);
-    setText('dyn-estadio-sub', document.querySelector('.in-estadio-sub').value);
-    if (document.querySelector('.in-hora')) setText('dyn-hora', document.querySelector('.in-hora').value);
-    setText('dyn-acc-local', document.querySelector('.in-acc-local').value);
-    setText('dyn-acc-visit', document.querySelector('.in-acc-visit').value);
-    setText('dyn-foot-slogan', document.querySelector('.in-foot-slogan').value);
-    setText('dyn-foot-r1', document.querySelector('.in-foot-r1').value);
-    setText('dyn-foot-r2', document.querySelector('.in-foot-r2').value);
-  }
+    // ================================================================
+    //  FUNCIÓN: setText(cls, val)
+    //  Actualiza el texto de todos los elementos con una clase dada.
+    // ================================================================
+    function setText(cls, val) {
+      document.querySelectorAll('.' + cls).forEach(el => el.textContent = val);
+    }
 
-  // MANEJO MODO VS / LIBRE / RESULTADO / GENÉRICO
-  document.getElementById('in-mode').addEventListener('change', (e) => {
-    const mode = e.target.value;
-    const isVs = mode === 'VS';
-    const isLibre = mode === 'LIBRE';
-    const isResultado = mode === 'RESULTADO';
-    const isGenerico = mode === 'GENERICO';
+    // ================================================================
+    //  FUNCIÓN: updateAllText()
+    //  Lee los campos del panel y actualiza los textos en las tarjetas.
+    // ================================================================
+    function updateAllText() {
+      setText('dyn-brand1', document.querySelector('.in-brand1').value);
+      setText('dyn-brand2', document.querySelector('.in-brand2').value);
+      setText('dyn-t1', document.querySelector('.in-t1').value);
+      setText('dyn-t2', document.querySelector('.in-t2').value);
+      setText('dyn-cat', document.querySelector('.in-cat').value);
+      setText('dyn-estadio', document.querySelector('.in-estadio').value);
+      setText('dyn-estadio-sub', document.querySelector('.in-estadio-sub').value);
+      if (document.querySelector('.in-hora')) setText('dyn-hora', document.querySelector('.in-hora').value);
+      setText('dyn-acc-local', document.querySelector('.in-acc-local').value);
+      setText('dyn-acc-visit', document.querySelector('.in-acc-visit').value);
+      setText('dyn-foot-slogan', document.querySelector('.in-foot-slogan').value);
+      setText('dyn-foot-r1', document.querySelector('.in-foot-r1').value);
+      setText('dyn-foot-r2', document.querySelector('.in-foot-r2').value);
+    }
 
-    // Rival y condición del partido se usan tanto en VS como en Resultado
-    document.getElementById('field-group-vs').style.display = (isVs || isResultado) ? 'block' : 'none';
-    document.getElementById('field-group-libre').style.display = isLibre ? 'block' : 'none';
-    document.getElementById('field-group-resultado').style.display = isResultado ? 'block' : 'none';
-    document.getElementById('field-group-generico').style.display = isGenerico ? 'block' : 'none';
-    document.getElementById('field-hora-vs').style.display = isVs ? 'block' : 'none';
+    // ================================================================
+    //  EVENTOS DEL PANEL
+    // ================================================================
 
-    // En modo Genérico y Resultado no aplican cancha/horario fijo ni accesos de partido
-    const hideCanchaAccesos = isGenerico || isResultado;
-    document.getElementById('fieldset-cancha').style.display = hideCanchaAccesos ? 'none' : 'block';
-    document.getElementById('fieldset-accesos').style.display = hideCanchaAccesos ? 'none' : 'block';
+    // Cambio de modo (VS, LIBRE, RESULTADO, GENERICO)
+    document.getElementById('in-mode').addEventListener('change', (e) => {
+      const mode = e.target.value;
+      const isVs = mode === 'VS';
+      const isLibre = mode === 'LIBRE';
+      const isResultado = mode === 'RESULTADO';
+      const isGenerico = mode === 'GENERICO';
 
-    renderCards();
-  });
+      document.getElementById('field-group-vs').style.display = (isVs || isResultado) ? 'block' : 'none';
+      document.getElementById('field-group-libre').style.display = isLibre ? 'block' : 'none';
+      document.getElementById('field-group-resultado').style.display = isResultado ? 'block' : 'none';
+      document.getElementById('field-group-generico').style.display = isGenerico ? 'block' : 'none';
+      document.getElementById('field-hora-vs').style.display = isVs ? 'block' : 'none';
 
-  // SELECTOR DE CATEGORÍA (identidad visual por Primera / Senior / Inferiores)
-  document.querySelectorAll('.cat-opt').forEach(opt => {
-    opt.addEventListener('click', () => {
-      document.querySelectorAll('.cat-opt').forEach(o => o.classList.remove('active'));
-      opt.classList.add('active');
-      currentCategory = opt.dataset.cat;
+      const hideCanchaAccesos = isGenerico || isResultado;
+      document.getElementById('fieldset-cancha').style.display = hideCanchaAccesos ? 'none' : 'block';
+      document.getElementById('fieldset-accesos').style.display = hideCanchaAccesos ? 'none' : 'block';
+
       renderCards();
     });
-  });
 
-  // TEXTO LIBRE MODO GENÉRICO
-  document.getElementById('in-gen-texto').addEventListener('input', renderCards);
+    // Selector de categoría
+    document.querySelectorAll('.cat-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('.cat-opt').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        currentCategory = opt.dataset.cat;
+        renderCards();
+      });
+    });
 
-  // PUBLICIDAD / SPONSOR (opcional, no aparece nada si no se carga)
-  document.getElementById('file-sponsor').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      sponsorSrc = ev.target.result;
+    // Campo de texto libre (modo genérico)
+    document.getElementById('in-gen-texto').addEventListener('input', renderCards);
+
+    // ================================================================
+    //  PUBLICIDAD / SPONSOR
+    // ================================================================
+    document.getElementById('file-sponsor').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        sponsorSrc = ev.target.result;
+        const mini = document.querySelector('.mini-sponsor');
+        mini.src = sponsorSrc; mini.style.display = 'block';
+        document.getElementById('btn-remove-sponsor').style.display = 'block';
+        renderCards();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('btn-remove-sponsor').addEventListener('click', () => {
+      sponsorSrc = null;
+      document.getElementById('file-sponsor').value = '';
       const mini = document.querySelector('.mini-sponsor');
-      mini.src = sponsorSrc; mini.style.display = 'block';
-      document.getElementById('btn-remove-sponsor').style.display = 'block';
+      mini.src = ''; mini.style.display = 'none';
+      document.getElementById('btn-remove-sponsor').style.display = 'none';
       renderCards();
-    };
-    reader.readAsDataURL(file);
-  });
+    });
 
-  document.getElementById('btn-remove-sponsor').addEventListener('click', () => {
-    sponsorSrc = null;
-    document.getElementById('file-sponsor').value = '';
-    const mini = document.querySelector('.mini-sponsor');
-    mini.src = ''; mini.style.display = 'none';
-    document.getElementById('btn-remove-sponsor').style.display = 'none';
-    renderCards();
-  });
+    // ================================================================
+    //  IMAGEN OPCIONAL MODO GENÉRICO
+    // ================================================================
+    document.getElementById('file-generico').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        genericoImgSrc = ev.target.result;
+        const mini = document.querySelector('.mini-generico');
+        mini.src = genericoImgSrc; mini.style.display = 'block';
+        renderCards();
+      };
+      reader.readAsDataURL(file);
+    });
 
-  // IMAGEN OPCIONAL MODO GENÉRICO
-  document.getElementById('file-generico').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      genericoImgSrc = ev.target.result;
-      const mini = document.querySelector('.mini-generico');
-      mini.src = genericoImgSrc; mini.style.display = 'block';
+    // ================================================================
+    //  IMAGEN DE FONDO
+    // ================================================================
+    document.getElementById('file-background').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        backgroundImgSrc = ev.target.result;
+        const mini = document.querySelector('.mini-background');
+        mini.src = backgroundImgSrc; mini.style.display = 'block';
+        document.getElementById('btn-remove-background').style.display = 'block';
+        renderCards();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('btn-remove-background').addEventListener('click', () => {
+      backgroundImgSrc = null;
+      document.getElementById('file-background').value = '';
+      const mini = document.querySelector('.mini-background');
+      mini.src = ''; mini.style.display = 'none';
+      document.getElementById('btn-remove-background').style.display = 'none';
       renderCards();
-    };
-    reader.readAsDataURL(file);
-  });
+    });
 
-  // GESTIÓN DE FILAS CRONOGRAMA
-  document.getElementById('btn-add-sched').addEventListener('click', () => {
-    const container = document.getElementById('schedule-inputs');
-    const div = document.createElement('div');
-    div.className = 'schedule-input-row';
-    div.innerHTML = `
+    // ================================================================
+    //  GESTIÓN DE FILAS DE CRONOGRAMA
+    // ================================================================
+    document.getElementById('btn-add-sched').addEventListener('click', () => {
+      const container = document.getElementById('schedule-inputs');
+      const div = document.createElement('div');
+      div.className = 'schedule-input-row';
+      div.innerHTML = `
       <input type="text" value="16:00 HS" class="sched-in-time" placeholder="Hora">
       <input type="text" value="NUEVA CAT" class="sched-in-cat" placeholder="Categoría">
-      <button class="btn-remove-row" onclick="removeScheduleRow(this)"><i class="fas fa-trash"></i></button>
+      <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
     `;
-    container.appendChild(div);
+      container.appendChild(div);
+      attachScheduleEvents();
+      renderCards();
+    });
+
+    function removeScheduleRow(btn) {
+      btn.parentElement.remove();
+      renderCards();
+    }
+
+    function attachScheduleEvents() {
+      document.querySelectorAll('.sched-in-time, .sched-in-cat').forEach(inp => {
+        inp.removeEventListener('input', renderCards);
+        inp.addEventListener('input', renderCards);
+      });
+    }
     attachScheduleEvents();
-    renderCards();
-  });
 
-  function removeScheduleRow(btn) {
-    btn.parentElement.remove();
-    renderCards();
-  }
-
-  function attachScheduleEvents() {
-    document.querySelectorAll('.sched-in-time, .sched-in-cat').forEach(inp => {
-      inp.removeEventListener('input', renderCards);
-      inp.addEventListener('input', renderCards);
-    });
-  }
-  attachScheduleEvents();
-
-  // GESTIÓN DE FILAS DE GOLEADORES
-  document.getElementById('btn-add-goal').addEventListener('click', () => {
-    const container = document.getElementById('goal-inputs');
-    const div = document.createElement('div');
-    div.className = 'schedule-input-row';
-    div.innerHTML = `
+    // ================================================================
+    //  GESTIÓN DE FILAS DE GOLEADORES
+    // ================================================================
+    document.getElementById('btn-add-goal').addEventListener('click', () => {
+      const container = document.getElementById('goal-inputs');
+      const div = document.createElement('div');
+      div.className = 'schedule-input-row';
+      div.innerHTML = `
       <input type="text" value="" class="goal-in-text" placeholder="Ej: 45' Fernández">
-      <button class="btn-remove-row" onclick="removeGoalRow(this)"><i class="fas fa-trash"></i></button>
+      <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
     `;
-    container.appendChild(div);
+      container.appendChild(div);
+      attachGoalEvents();
+      renderCards();
+    });
+
+    function removeGoalRow(btn) {
+      btn.parentElement.remove();
+      renderCards();
+    }
+
+    function attachGoalEvents() {
+      document.querySelectorAll('.goal-in-text').forEach(inp => {
+        inp.removeEventListener('input', renderCards);
+        inp.addEventListener('input', renderCards);
+      });
+    }
     attachGoalEvents();
-    renderCards();
-  });
 
-  function removeGoalRow(btn) {
-    btn.parentElement.remove();
-    renderCards();
-  }
+    document.getElementById('in-goles-local').addEventListener('input', renderCards);
+    document.getElementById('in-goles-rival').addEventListener('input', renderCards);
 
-  function attachGoalEvents() {
-    document.querySelectorAll('.goal-in-text').forEach(inp => {
-      inp.removeEventListener('input', renderCards);
-      inp.addEventListener('input', renderCards);
-    });
-  }
-  attachGoalEvents();
-
-  document.getElementById('in-goles-local').addEventListener('input', renderCards);
-  document.getElementById('in-goles-rival').addEventListener('input', renderCards);
-
-  // CROPPER
-  function openCropperModal(file, target) {
-    currentTargetTeam = target;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      cropImage.src = e.target.result;
-      cropModal.classList.add('active');
-      if (cropper) cropper.destroy();
-      cropper = new Cropper(cropImage, { aspectRatio: 1, viewMode: 1, background: false, autoCropArea: 0.9, responsive: true });
-    };
-    reader.readAsDataURL(file);
-  }
-
-  document.getElementById('file-local').addEventListener('change', (e) => { if (e.target.files[0]) openCropperModal(e.target.files[0], 'local'); });
-  document.getElementById('file-rival').addEventListener('change', (e) => { if (e.target.files[0]) openCropperModal(e.target.files[0], 'rival'); });
-
-  document.getElementById('btnCropSave').addEventListener('click', () => {
-    if (!cropper) return;
-    const canvas = cropper.getCroppedCanvas({ width: 500, height: 500 });
-    const croppedUrl = canvas.toDataURL('image/png');
-
-    if (currentTargetTeam === 'local') {
-      localShieldSrc = croppedUrl;
-      const mini = document.querySelector('.mini-local');
-      mini.src = localShieldSrc; mini.style.display = 'block';
-    } else {
-      rivalShieldSrc = croppedUrl;
-      const mini = document.querySelector('.mini-rival');
-      mini.src = rivalShieldSrc; mini.style.display = 'block';
+    // ================================================================
+    //  CROPPER (recorte de escudos)
+    // ================================================================
+    function openCropperModal(file, target) {
+      currentTargetTeam = target;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        cropImage.src = e.target.result;
+        cropModal.classList.add('active');
+        if (cropper) cropper.destroy();
+        cropper = new Cropper(cropImage, { aspectRatio: 1, viewMode: 1, background: false, autoCropArea: 0.9, responsive: true });
+      };
+      reader.readAsDataURL(file);
     }
 
-    cropModal.classList.remove('active');
-    cropper.destroy(); cropper = null;
-    renderCards();
-  });
+    document.getElementById('file-local').addEventListener('change', (e) => { if (e.target.files[0]) openCropperModal(e.target.files[0], 'local'); });
+    document.getElementById('file-rival').addEventListener('change', (e) => { if (e.target.files[0]) openCropperModal(e.target.files[0], 'rival'); });
 
-  document.getElementById('btnCropCancel').addEventListener('click', () => {
-    cropModal.classList.remove('active');
-    if (cropper) cropper.destroy(); cropper = null;
-  });
+    document.getElementById('btnCropSave').addEventListener('click', () => {
+      if (!cropper) return;
+      const canvas = cropper.getCroppedCanvas({ width: 500, height: 500 });
+      const croppedUrl = canvas.toDataURL('image/png');
 
-  document.querySelectorAll('#panel input[type="text"]').forEach(inp => {
-    inp.addEventListener('input', () => {
-      if (inp.classList.contains('in-nombre-rival')) renderCards();
-      else updateAllText();
+      if (currentTargetTeam === 'local') {
+        localShieldSrc = croppedUrl;
+        const mini = document.querySelector('.mini-local');
+        mini.src = localShieldSrc; mini.style.display = 'block';
+      } else {
+        rivalShieldSrc = croppedUrl;
+        const mini = document.querySelector('.mini-rival');
+        mini.src = rivalShieldSrc; mini.style.display = 'block';
+      }
+
+      cropModal.classList.remove('active');
+      cropper.destroy(); cropper = null;
+      renderCards();
     });
-  });
 
-  document.getElementById('in-condicion').addEventListener('change', renderCards);
-  datePicker.addEventListener('change', renderCards);
+    document.getElementById('btnCropCancel').addEventListener('click', () => {
+      cropModal.classList.remove('active');
+      if (cropper) cropper.destroy(); cropper = null;
+    });
 
-  function scalePreview(scalerId, wrapId, fullW, fullH) {
-    const wrap = document.getElementById(wrapId);
-    const scaler = document.getElementById(scalerId);
-    if (!wrap || !scaler) return;
-    const s = wrap.clientWidth / fullW;
-    scaler.style.transform = `scale(${s})`;
-    scaler.style.width = fullW + 'px';
-    scaler.style.height = fullH + 'px';
-  }
+    // ================================================================
+    //  EVENTOS DE TEXTO EN EL PANEL
+    // ================================================================
+    document.querySelectorAll('#panel input[type="text"]').forEach(inp => {
+      inp.addEventListener('input', () => {
+        if (inp.classList.contains('in-nombre-rival')) renderCards();
+        else updateAllText();
+      });
+    });
 
-  function fitAll() {
-    scalePreview('scaler916', 'wrap916', 1080, 1920);
-    scalePreview('scaler11', 'wrap11', 1080, 1080);
-  }
+    document.getElementById('in-condicion').addEventListener('change', renderCards);
+    datePicker.addEventListener('change', renderCards);
 
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 850) {
-      document.getElementById('panel').classList.add('active');
-      document.getElementById('stage').classList.add('active');
+    // ================================================================
+    //  ESCALADO DE LA VISTA PREVIA
+    // ================================================================
+    function scalePreview(scalerId, wrapId, fullW, fullH) {
+      const wrap = document.getElementById(wrapId);
+      const scaler = document.getElementById(scalerId);
+      if (!wrap || !scaler) return;
+      const s = wrap.clientWidth / fullW;
+      scaler.style.transform = `scale(${s})`;
+      scaler.style.width = fullW + 'px';
+      scaler.style.height = fullH + 'px';
     }
-    fitAll();
-  });
 
-  renderCards();
-  document.fonts.ready.then(fitAll);
+    function fitAll() {
+      scalePreview('scaler916', 'wrap916', 1080, 1920);
+      scalePreview('scaler11', 'wrap11', 1080, 1080);
+    }
 
-  function exportCard(elementId, filename) {
-    const el = document.getElementById(elementId);
-    html2canvas(el, { backgroundColor: '#ffffff', scale: 1, useCORS: true, logging: false }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = filename;
-      link.href = canvas.toDataURL('image/jpeg', 0.98);
-      link.click();
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 850) {
+        document.getElementById('panel').classList.add('active');
+        document.getElementById('stage').classList.add('active');
+      }
+      fitAll();
     });
-  }
 
-  document.getElementById('btn-916').addEventListener('click', () => exportCard('export916', 'proximo-partido-historia.jpg'));
-  document.getElementById('btn-11').addEventListener('click', () => exportCard('export11', 'proximo-partido-feed.jpg'));
-</script>
+    // ================================================================
+    //  INICIALIZACIÓN
+    // ================================================================
+    renderCards();
+    document.fonts.ready.then(fitAll);
+
+    // ================================================================
+    //  EXPORTACIÓN (descarga de JPG)
+    // ================================================================
+    function exportCard(elementId, filename) {
+      const el = document.getElementById(elementId);
+      html2canvas(el, { backgroundColor: '#ffffff', scale: 1, useCORS: true, logging: false }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = filename;
+        link.href = canvas.toDataURL('image/jpeg', 0.98);
+        link.click();
+      });
+    }
+
+    document.getElementById('btn-916').addEventListener('click', () => exportCard('export916', 'proximo-partido-historia.jpg'));
+    document.getElementById('btn-11').addEventListener('click', () => exportCard('export11', 'proximo-partido-feed.jpg'));
+  </script>
 </body>
+
 </html>
