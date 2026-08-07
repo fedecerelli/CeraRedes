@@ -1167,7 +1167,7 @@
 
     .generico-img-frame {
       width: 100%;
-      max-height: 620px;
+      aspect-ratio: 950 / 620;
       border-radius: 22px;
       overflow: hidden;
       border: 3px solid var(--blue-bright);
@@ -1178,7 +1178,7 @@
     }
 
     .card-11 .generico-img-frame {
-      max-height: 340px;
+      aspect-ratio: 970 / 340;
       border-radius: 16px;
     }
 
@@ -1529,6 +1529,20 @@
             <img class="mini mini-generico" src="" alt="" style="display:none;">
             <input type="file" accept="image/*" id="file-generico">
           </div>
+          <div id="generico-img-actions" style="display:none; flex-direction:column; gap:6px; margin-bottom:8px;">
+            <p style="font-size:9px; color:var(--grey-sub); font-weight:600; margin:0;">
+              Historia y Feed tienen formas distintas: ajustá el recorte para cada uno.
+            </p>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <button class="btn btn-outline btn-small" id="btn-edit-generico-916" style="flex:1; margin-bottom:0;">📱 Historia 9:16</button>
+              <img class="mini mini-generico-916" src="" alt="" style="display:none; width:26px; height:26px; object-fit:cover; border-radius:6px; border:1px solid #ccc; flex-shrink:0;">
+            </div>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <button class="btn btn-outline btn-small" id="btn-edit-generico-11" style="flex:1; margin-bottom:0;">◻️ Feed 1:1</button>
+              <img class="mini mini-generico-11" src="" alt="" style="display:none; width:26px; height:26px; object-fit:cover; border-radius:6px; border:1px solid #ccc; flex-shrink:0;">
+            </div>
+            <button class="btn btn-outline btn-small" id="btn-remove-generico" style="margin-bottom:0;">✕ Quitar imagen</button>
+          </div>
           <label>Texto Libre</label>
           <textarea id="in-gen-texto" rows="5"
             style="width:100%; padding:8px; font-size:12px; border:1px solid var(--grey-border); border-radius:6px; font-family:inherit; font-weight:600; resize:vertical;"
@@ -1661,10 +1675,13 @@
      ================================================================ -->
   <div class="modal-overlay" id="cropModal">
     <div class="modal-content">
-      <h3>Ajustar y Centrar Escudo</h3>
+      <h3 id="cropModalTitle">Ajustar y Centrar Escudo</h3>
       <div class="img-container">
         <img id="cropImage" src="" alt="Ajustar Imagen">
       </div>
+      <p id="cropModalHint" style="display:none; font-size:11px; color:var(--grey-sub); text-align:center; margin:-4px 0 12px 0; font-weight:600;">
+        El recuadro ya tiene el tamaño y la forma exactos que va a ocupar en el flyer. Arrastrá la foto para moverla y usá los dedos (o la ruedita) para hacer zoom hasta que quede como querés.
+      </p>
       <div class="modal-actions">
         <button class="btn btn-primary" id="btnCropSave">Confirmar Recorte</button>
         <button class="btn btn-outline" id="btnCropCancel">Cancelar</button>
@@ -1712,7 +1729,10 @@
     let localShieldSrc = null;
     let rivalShieldSrc = null;
     let sponsorSrc = null;
-    let genericoImgSrc = null;
+    let genericoImgSrcStory = null;  // recorte para el formato Historia 9:16
+    let genericoImgSrcFeed = null;   // recorte para el formato Feed 1:1
+    let genericoOriginalSrc = null;  // imagen original sin recortar (para poder re-ajustar sin perder calidad)
+    let genericoPendingChain = false; // true mientras se está guiando el recorte de los 2 formatos seguidos
     let backgroundImgSrc = null;
     let currentCategory = 'PRIMERA';
     let cropper = null;
@@ -1767,9 +1787,12 @@
       return `<div class="generated-shield"><div class="gen-text">CERÁMICA</div></div>`;
     }
 
-    function buildGenericoHTML() {
+    function buildGenericoHTML(format) {
       const texto = document.getElementById('in-gen-texto').value.trim();
-      const imgHTML = genericoImgSrc ? `<div class="generico-img-frame"><img src="${genericoImgSrc}"></div>` : '';
+      // Cada formato usa SU propio recorte (proporciones distintas: 950x620 en
+      // Historia vs 970x340 en Feed), ya ajustado por el usuario en el modal.
+      const src = format === '11' ? genericoImgSrcFeed : genericoImgSrcStory;
+      const imgHTML = src ? `<div class="generico-img-frame"><img src="${src}"></div>` : '';
       const textoHTML = texto ? `<div class="generico-texto">${texto.replace(/</g, '&lt;')}</div>` : '';
       return `<div class="generico-container">${imgHTML}${textoHTML}</div>`;
     }
@@ -1853,7 +1876,7 @@
     `;
     }
 
-    function buildCardHTML() {
+    function buildCardHTML(format) {
       const mode = document.getElementById('in-mode').value;
       const isLocal = document.getElementById('in-condicion').value === 'LOCAL';
       const ceramicaHTML = getCeramicaShieldHTML();
@@ -1897,7 +1920,7 @@
         centralContentHTML = buildResultadoHTML(isLocal, team1Shield, team1Name, team2Shield, team2Name);
         timeDisplayHTML = '';
       } else {
-        centralContentHTML = buildGenericoHTML();
+        centralContentHTML = buildGenericoHTML(format);
         timeDisplayHTML = '';
       }
 
@@ -1981,7 +2004,8 @@
       document.querySelectorAll('.card').forEach(el => {
         el.classList.remove('cat-primera', 'cat-senior', 'cat-inferiores');
         el.classList.add('cat-' + currentCategory.toLowerCase());
-        el.innerHTML = buildCardHTML();
+        const format = el.classList.contains('card-11') ? '11' : '916';
+        el.innerHTML = buildCardHTML(format);
 
         if (backgroundImgSrc) {
           el.style.backgroundImage = `url(${backgroundImgSrc})`;
@@ -2103,14 +2127,35 @@
     document.getElementById('file-generico').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        genericoImgSrc = ev.target.result;
-        const mini = document.querySelector('.mini-generico');
-        mini.src = genericoImgSrc; mini.style.display = 'block';
-        renderCards();
-      };
-      reader.readAsDataURL(file);
+      // Flujo guiado: primero se recorta para Historia y, al confirmar, se
+      // abre automáticamente el recorte para Feed usando la misma foto original.
+      genericoPendingChain = true;
+      openCropperModal(file, 'generico-916');
+      e.target.value = ''; // permite volver a elegir el mismo archivo más adelante
+    });
+
+    document.getElementById('btn-edit-generico-916').addEventListener('click', () => {
+      if (!genericoOriginalSrc) return;
+      fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => openCropperModal(blob, 'generico-916'));
+    });
+
+    document.getElementById('btn-edit-generico-11').addEventListener('click', () => {
+      if (!genericoOriginalSrc) return;
+      fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => openCropperModal(blob, 'generico-11'));
+    });
+
+    document.getElementById('btn-remove-generico').addEventListener('click', () => {
+      genericoImgSrcStory = null;
+      genericoImgSrcFeed = null;
+      genericoOriginalSrc = null;
+      genericoPendingChain = false;
+      document.getElementById('file-generico').value = '';
+      const mini = document.querySelector('.mini-generico');
+      mini.src = ''; mini.style.display = 'none';
+      document.querySelector('.mini-generico-916').style.display = 'none';
+      document.querySelector('.mini-generico-11').style.display = 'none';
+      document.getElementById('generico-img-actions').style.display = 'none';
+      renderCards();
     });
 
     // ================================================================
@@ -2204,14 +2249,40 @@
     // ================================================================
     //  CROPPER (recorte de escudos)
     // ================================================================
+    // Relaciones de aspecto EXACTAS del marco de la imagen en cada formato del
+    // flyer — son la "referencia de tamaño" que pide el usuario: el recuadro
+    // de recorte tiene ya esa forma, así no hay que adivinar medidas.
+    const GENERICO_RATIOS = {
+      'generico-916': 950 / 620,  // marco dentro de la Historia (vertical)
+      'generico-11': 970 / 340    // marco dentro del Feed (cuadrado)
+    };
+
     function openCropperModal(file, target) {
       currentTargetTeam = target;
       const reader = new FileReader();
       reader.onload = (e) => {
         cropImage.src = e.target.result;
+        if (target === 'generico-916' || target === 'generico-11') genericoOriginalSrc = genericoOriginalSrc || e.target.result;
+
+        const titles = {
+          'generico-916': 'Encuadrar Imagen · Historia 9:16',
+          'generico-11': 'Encuadrar Imagen · Feed 1:1'
+        };
+        document.getElementById('cropModalTitle').textContent = titles[target] || 'Ajustar y Centrar Escudo';
+        document.getElementById('cropModalHint').style.display = GENERICO_RATIOS[target] ? 'block' : 'none';
+
         cropModal.classList.add('active');
         if (cropper) cropper.destroy();
-        cropper = new Cropper(cropImage, { aspectRatio: 1, viewMode: 1, background: false, autoCropArea: 0.9, responsive: true });
+
+        // Escudos: recorte cuadrado fijo. Imagen genérica: recorte con la
+        // relación de aspecto EXACTA del marco de cada formato — el propio
+        // recuadro es la referencia visual del tamaño/forma que debe tener.
+        // El usuario solo arrastra y hace zoom para elegir qué parte mostrar.
+        const options = GENERICO_RATIOS[target]
+          ? { aspectRatio: GENERICO_RATIOS[target], viewMode: 1, background: false, autoCropArea: 0.95, responsive: true, dragMode: 'move', cropBoxResizable: true, cropBoxMovable: true, guides: true, zoomOnWheel: true }
+          : { aspectRatio: 1, viewMode: 1, background: false, autoCropArea: 0.9, responsive: true };
+
+        cropper = new Cropper(cropImage, options);
       };
       reader.readAsDataURL(file);
     }
@@ -2221,9 +2292,43 @@
 
     document.getElementById('btnCropSave').addEventListener('click', () => {
       if (!cropper) return;
+
+      if (GENERICO_RATIOS[currentTargetTeam]) {
+        // Como el recuadro ya tiene la proporción exacta del marco, alcanza con
+        // limitar la resolución máxima; el resultado siempre calza perfecto.
+        const canvas = cropper.getCroppedCanvas({ maxWidth: 1600, maxHeight: 1600, imageSmoothingQuality: 'high' });
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+
+        if (currentTargetTeam === 'generico-916') {
+          genericoImgSrcStory = dataUrl;
+          document.querySelector('.mini-generico-916').src = dataUrl;
+          document.querySelector('.mini-generico-916').style.display = 'block';
+        } else {
+          genericoImgSrcFeed = dataUrl;
+          document.querySelector('.mini-generico-11').src = dataUrl;
+          document.querySelector('.mini-generico-11').style.display = 'block';
+        }
+        const mini = document.querySelector('.mini-generico');
+        mini.src = dataUrl; mini.style.display = 'block';
+        document.getElementById('generico-img-actions').style.display = 'flex';
+
+        cropModal.classList.remove('active');
+        cropper.destroy(); cropper = null;
+        renderCards();
+
+        // Encadenado: recién subida la foto, después de ajustar Historia
+        // pasamos directo a pedir el ajuste de Feed con la misma imagen.
+        if (currentTargetTeam === 'generico-916' && genericoPendingChain) {
+          genericoPendingChain = false;
+          fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => {
+            setTimeout(() => openCropperModal(blob, 'generico-11'), 200);
+          });
+        }
+        return;
+      }
+
       const canvas = cropper.getCroppedCanvas({ width: 500, height: 500 });
       const croppedUrl = canvas.toDataURL('image/png');
-
       if (currentTargetTeam === 'local') {
         localShieldSrc = croppedUrl;
         const mini = document.querySelector('.mini-local');
@@ -2242,6 +2347,7 @@
     document.getElementById('btnCropCancel').addEventListener('click', () => {
       cropModal.classList.remove('active');
       if (cropper) cropper.destroy(); cropper = null;
+      genericoPendingChain = false;
     });
 
     // ================================================================
@@ -2306,10 +2412,42 @@
       return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
 
-    function exportCard(elementId, filename, mobileWindow) {
+    // Muestra la imagen en una pestaña nueva usando una data: URL (en vez de
+    // blob:), que es lo que realmente funciona al navegar una pestaña/ventana
+    // distinta en la mayoría de los navegadores móviles. Con blob: la pestaña
+    // suele quedar en blanco y por eso la "descarga" nunca se veía en el celular.
+    function showBlobInNewTab(blob, filename, existingWindow) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result;
+        const html = `<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>${filename}</title></head>
+          <body style="margin:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;">
+          <img src="${dataUrl}" style="max-width:100%;height:auto;display:block;">
+          <p style="color:#fff;font-size:13px;margin:14px 8px;text-align:center;">Mantené el dedo presionado sobre la imagen y elegí "Guardar imagen" / "Añadir a Fotos".</p>
+          </body></html>`;
+        const w = existingWindow && !existingWindow.closed ? existingWindow : window.open('', '_blank');
+        if (w) {
+          w.document.open();
+          w.document.write(html);
+          w.document.close();
+        }
+      };
+      reader.readAsDataURL(blob);
+    }
+
+    function exportCard(elementId, filename) {
       const el = document.getElementById(elementId);
       const buttons = document.querySelectorAll('#exportbar .btn');
       buttons.forEach(b => b.disabled = true);
+
+      const mobile = isMobileDevice();
+      const hasShareApi = mobile && !!navigator.share;
+
+      // Si no hay Web Share API, abrimos la pestaña YA (de forma síncrona con
+      // el clic) porque algunos navegadores móviles bloquean la apertura si
+      // ocurre después de una operación asíncrona como html2canvas.
+      const mobileWindow = (mobile && !hasShareApi) ? window.open('', '_blank') : null;
 
       html2canvas(el, {
         backgroundColor: '#ffffff',
@@ -2320,25 +2458,43 @@
         width: el.offsetWidth,
         height: el.offsetHeight
       }).then(canvas => {
-        canvas.toBlob((blob) => {
+        canvas.toBlob(async (blob) => {
           buttons.forEach(b => b.disabled = false);
           if (!blob) {
             if (mobileWindow) mobileWindow.close();
             return;
           }
-          const url = URL.createObjectURL(blob);
 
-          if (mobileWindow) {
-            // La pestaña ya estaba abierta desde el clic del usuario.
-            mobileWindow.location.href = url;
-          } else {
-            const link = document.createElement('a');
-            link.download = filename;
-            link.href = url;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+          // En celular: preferimos el panel nativo de compartir, porque incluye
+          // "Guardar imagen" / "Guardar en Fotos" directamente, sin depender de
+          // que el usuario sepa que tiene que mantener presionada la imagen.
+          if (hasShareApi) {
+            const file = new File([blob], filename, { type: 'image/jpeg' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              try {
+                await navigator.share({ files: [file], title: filename });
+                return;
+              } catch (err) {
+                if (err && err.name === 'AbortError') return; // el usuario canceló
+                // si falla por otro motivo, seguimos con el plan B de abajo
+              }
+            }
+            showBlobInNewTab(blob, filename, null);
+            return;
           }
+
+          if (mobile) {
+            showBlobInNewTab(blob, filename, mobileWindow);
+            return;
+          }
+
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.download = filename;
+          link.href = url;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
           setTimeout(() => URL.revokeObjectURL(url), 60000);
         }, 'image/jpeg', 0.98);
       }).catch(() => {
@@ -2348,13 +2504,11 @@
     }
 
     document.getElementById('btn-916').addEventListener('click', () => {
-      const mobileWindow = isMobileDevice() ? window.open('', '_blank') : null;
-      exportCard('export916', 'proximo-partido-historia.jpg', mobileWindow);
+      exportCard('export916', 'proximo-partido-historia.jpg');
     });
 
     document.getElementById('btn-11').addEventListener('click', () => {
-      const mobileWindow = isMobileDevice() ? window.open('', '_blank') : null;
-      exportCard('export11', 'proximo-partido-feed.jpg', mobileWindow);
+      exportCard('export11', 'proximo-partido-feed.jpg');
     });
   </script>
 </body>
