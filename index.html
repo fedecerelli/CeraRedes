@@ -155,6 +155,32 @@
       background: var(--inferiores-light);
     }
 
+    .style-selector {
+      display: flex;
+      gap: 8px;
+    }
+
+    .style-opt {
+      flex: 1;
+      border: 2px solid var(--grey-border);
+      border-radius: 8px;
+      padding: 10px 6px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      background: #fff;
+      color: var(--grey-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .style-opt.active {
+      border-color: var(--blue-bright);
+      color: var(--blue-main);
+      background: var(--blue-light);
+    }
+
     /* ================================================================
        RESET Y ESTRUCTURA BASE
        ================================================================ */
@@ -1202,6 +1228,173 @@
       font-size: 19px;
     }
 
+    /* ================================================================
+       MODO GENÉRICO · ESTILO MINIMALISTA (VIDRIO)
+       Foto a pantalla completa (se extiende hasta los bordes de la
+       tarjeta, invadiendo el padding) con encabezado y pie flotando
+       encima como barras "glass" semi-transparentes con blur.
+       ================================================================ */
+    .card-content.generico-minimal {
+      justify-content: space-between;
+    }
+
+    .generico-minimal-bg {
+      position: absolute;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--blue-light);
+      z-index: 1;
+    }
+
+    .card-916 .generico-minimal-bg {
+      top: -70px;
+      left: -65px;
+      right: -65px;
+      bottom: -70px;
+    }
+
+    .card-11 .generico-minimal-bg {
+      top: -45px;
+      left: -55px;
+      right: -55px;
+      bottom: -45px;
+    }
+
+    .generico-glass {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.62);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      box-shadow: 0 10px 30px rgba(10, 34, 122, 0.16);
+    }
+
+    .generico-minimal-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 28px;
+      border-radius: 26px;
+    }
+
+    .card-11 .generico-minimal-header {
+      padding: 12px 18px;
+      gap: 12px;
+      border-radius: 18px;
+    }
+
+    .generico-minimal-mid {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      text-align: center;
+      padding: 24px 10px;
+    }
+
+    .generico-minimal-category {
+      display: inline-block;
+      font-family: var(--font-title);
+      font-size: 40px;
+      color: var(--blue-main);
+      padding: 8px 36px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    .card-11 .generico-minimal-category {
+      font-size: 22px;
+      padding: 5px 24px;
+    }
+
+    .generico-minimal-title {
+      font-family: var(--font-title);
+      color: var(--blue-main);
+      text-transform: uppercase;
+      line-height: 0.9;
+      padding: 14px 34px;
+      border-radius: 24px;
+    }
+
+    .generico-minimal-title .t1 {
+      font-size: 74px;
+      display: block;
+      letter-spacing: 0.02em;
+    }
+
+    .generico-minimal-title .t2 {
+      font-size: 108px;
+      display: block;
+      letter-spacing: 0.01em;
+    }
+
+    .card-11 .generico-minimal-title {
+      padding: 8px 20px;
+      border-radius: 16px;
+    }
+
+    .card-11 .generico-minimal-title .t1 {
+      font-size: 40px;
+    }
+
+    .card-11 .generico-minimal-title .t2 {
+      font-size: 58px;
+    }
+
+    .generico-minimal-texto {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 26px;
+      color: var(--text-dark);
+      line-height: 1.35;
+      white-space: pre-wrap;
+      max-width: 82%;
+      padding: 16px 26px;
+      border-radius: 20px;
+    }
+
+    .card-11 .generico-minimal-texto {
+      font-size: 15px;
+      padding: 10px 16px;
+      border-radius: 14px;
+    }
+
+    .generico-minimal-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px 26px;
+      border-radius: 26px;
+    }
+
+    .card-11 .generico-minimal-footer {
+      padding: 12px 18px;
+      gap: 8px;
+      border-radius: 18px;
+    }
+
+    .generico-minimal-footer .footer-section {
+      padding-top: 0;
+      border-top: none;
+      margin-top: 0;
+    }
+
+    .generico-minimal-footer .sponsor-strip {
+      border: none;
+      padding: 0 0 12px 0;
+      margin-bottom: 0;
+    }
+
+    .card-11 .generico-minimal-footer .sponsor-strip {
+      padding-bottom: 8px;
+    }
+
     /* ===== PUBLICIDAD ===== */
     .sponsor-strip {
       width: 100%;
@@ -1524,7 +1717,16 @@
       <details class="fs" open>
         <summary>Contenido Libre</summary>
         <div class="fs-body">
-          <label>Imagen (Opcional)</label>
+          <label>Formato de la imagen</label>
+          <select id="in-gen-imgformat">
+            <option value="1/1">Cuadrada (1:1)</option>
+            <option value="4/5" selected>Vertical (4:5)</option>
+            <option value="9/16">Vertical alta (9:16)</option>
+            <option value="3/4">Vertical clásica (3:4)</option>
+            <option value="16/9">Horizontal (16:9)</option>
+            <option value="21/9">Panorámica (21:9)</option>
+            <option value="libre">Libre (a tu gusto)</option>
+          </select>
           <div class="file-input-group">
             <img class="mini mini-generico" src="" alt="" style="display:none;">
             <input type="file" accept="image/*" id="file-generico">
@@ -1547,6 +1749,43 @@
           <textarea id="in-gen-texto" rows="5"
             style="width:100%; padding:8px; font-size:12px; border:1px solid var(--grey-border); border-radius:6px; font-family:inherit; font-weight:600; resize:vertical;"
             placeholder="Escribí acá lo que necesites: festejo, aviso, agradecimiento, promoción, lo que se te ocurra...">¡Gracias por acompañarnos siempre!</textarea>
+        </div>
+      </details>
+
+      <details class="fs" open>
+        <summary>Estilo y Elementos</summary>
+        <div class="fs-body">
+          <label>Estilo del diseño</label>
+          <div class="style-selector" id="generico-style-selector">
+            <div class="style-opt active" data-style="tradicional">Tradicional</div>
+            <div class="style-opt" data-style="minimal">Minimalista (vidrio)</div>
+          </div>
+          <p style="font-size:9px; color:var(--grey-sub); font-weight:600; margin:6px 0 10px 0;">
+            "Minimalista" pone la foto a pantalla completa y deja el encabezado y el pie como
+            barras finas semi-transparentes (efecto vidrio) flotando sobre la imagen.
+          </p>
+
+          <label>Elementos a mostrar</label>
+          <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+              <input type="checkbox" id="in-gen-show-header" checked style="width:auto; margin:0;"> Encabezado (escudo + marca)
+            </label>
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+              <input type="checkbox" id="in-gen-show-categoria" checked style="width:auto; margin:0;"> Categoría
+            </label>
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+              <input type="checkbox" id="in-gen-show-titulo" checked style="width:auto; margin:0;"> Título grande
+            </label>
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+              <input type="checkbox" id="in-gen-show-texto" checked style="width:auto; margin:0;"> Texto libre
+            </label>
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+              <input type="checkbox" id="in-gen-show-sponsors" checked style="width:auto; margin:0;"> Sponsors
+            </label>
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+              <input type="checkbox" id="in-gen-show-footer" checked style="width:auto; margin:0;"> Pie de página
+            </label>
+          </div>
         </div>
       </details>
     </div>
@@ -1731,8 +1970,11 @@
     let sponsorSrc = null;
     let genericoImgSrcStory = null;  // recorte para el formato Historia 9:16
     let genericoImgSrcFeed = null;   // recorte para el formato Feed 1:1
+    let genericoImgRatioStory = null; // relación de aspecto (ancho/alto) del recorte de Historia
+    let genericoImgRatioFeed = null;  // relación de aspecto (ancho/alto) del recorte de Feed
     let genericoOriginalSrc = null;  // imagen original sin recortar (para poder re-ajustar sin perder calidad)
     let genericoPendingChain = false; // true mientras se está guiando el recorte de los 2 formatos seguidos
+    let genericoStyle = 'tradicional'; // 'tradicional' | 'minimal'
     let backgroundImgSrc = null;
     let currentCategory = 'PRIMERA';
     let cropper = null;
@@ -1787,14 +2029,99 @@
       return `<div class="generated-shield"><div class="gen-text">CERÁMICA</div></div>`;
     }
 
-    function buildGenericoHTML(format) {
+    function parseImgRatio(str) {
+      if (!str || str === 'libre') return null;
+      const [w, h] = str.split('/').map(Number);
+      if (!w || !h) return null;
+      return w / h;
+    }
+
+    // Arma la tarjeta ENTERA del modo Genérico (header, título, imagen, texto,
+    // sponsors y pie), respetando qué elementos eligió mostrar el usuario y el
+    // estilo elegido (Tradicional en flujo normal, o Minimalista con la foto a
+    // pantalla completa y encabezado/pie como barras de vidrio flotando encima).
+    function buildGenericoCardContent(format) {
+      const showHeader = document.getElementById('in-gen-show-header').checked;
+      const showCategoria = document.getElementById('in-gen-show-categoria').checked;
+      const showTitulo = document.getElementById('in-gen-show-titulo').checked;
+      const showTexto = document.getElementById('in-gen-show-texto').checked;
+      const showSponsors = document.getElementById('in-gen-show-sponsors').checked && !!sponsorSrc;
+      const showFooter = document.getElementById('in-gen-show-footer').checked;
+
+      const ceramicaHTML = getCeramicaShieldHTML();
       const texto = document.getElementById('in-gen-texto').value.trim();
-      // Cada formato usa SU propio recorte (proporciones distintas: 950x620 en
-      // Historia vs 970x340 en Feed), ya ajustado por el usuario en el modal.
       const src = format === '11' ? genericoImgSrcFeed : genericoImgSrcStory;
-      const imgHTML = src ? `<div class="generico-img-frame"><img src="${src}"></div>` : '';
-      const textoHTML = texto ? `<div class="generico-texto">${texto.replace(/</g, '&lt;')}</div>` : '';
-      return `<div class="generico-container">${imgHTML}${textoHTML}</div>`;
+      const ratio = format === '11' ? genericoImgRatioFeed : genericoImgRatioStory;
+
+      const headerInnerHTML = `
+        <div class="header-logo-box">${ceramicaHTML}</div>
+        <div class="header-text">
+          <span class="t-sub dyn-brand1"></span>
+          <span class="t-main dyn-brand2"></span>
+        </div>
+      `;
+
+      const footerInnerHTML = `
+        <div class="footer-left">
+          <span class="footer-slogan dyn-foot-slogan"></span>
+        </div>
+        <div class="footer-right">
+          <div class="footer-r1 dyn-foot-r1"></div>
+          <div class="footer-r2 dyn-foot-r2"></div>
+        </div>
+      `;
+
+      if (genericoStyle === 'minimal') {
+        const bgStyle = src ? ` style="background-image:url(${src});"` : '';
+        return `
+        <div class="card-content generico-minimal">
+          <div class="generico-minimal-bg"${bgStyle}></div>
+          ${showHeader ? `<div class="generico-glass generico-minimal-header">${headerInnerHTML}</div>` : '<div></div>'}
+          <div class="generico-minimal-mid">
+            ${showCategoria ? `<span class="generico-minimal-category generico-glass dyn-cat"></span>` : ''}
+            ${showTitulo ? `<div class="generico-minimal-title generico-glass"><span class="t1 dyn-t1"></span><span class="t2 dyn-t2"></span></div>` : ''}
+            ${(showTexto && texto) ? `<div class="generico-minimal-texto generico-glass">${texto.replace(/</g, '&lt;')}</div>` : ''}
+          </div>
+          ${(showFooter || showSponsors) ? `
+          <div class="generico-glass generico-minimal-footer">
+            ${showSponsors ? buildSponsorHTML() : ''}
+            ${showFooter ? `<div class="footer-section">${footerInnerHTML}</div>` : ''}
+          </div>` : '<div></div>'}
+        </div>
+      `;
+      }
+
+      // ===== ESTILO TRADICIONAL =====
+      const frameStyle = ratio ? ` style="aspect-ratio:${ratio};"` : '';
+      const imgHTML = src ? `<div class="generico-img-frame"${frameStyle}><img src="${src}"></div>` : '';
+      const textoHTML = (showTexto && texto) ? `<div class="generico-texto">${texto.replace(/</g, '&lt;')}</div>` : '';
+
+      return `
+      <div class="card-content">
+        ${showHeader ? `<div class="header-row">${headerInnerHTML}</div>` : ''}
+        ${showCategoria ? buildCategoryLineHTML() : ''}
+        ${showTitulo ? `
+        <div class="title-box">
+          <span class="t1 dyn-t1"></span>
+          <span class="t2 dyn-t2"></span>
+        </div>
+        <hr class="divider-thick">
+        ` : ''}
+        ${showCategoria ? `
+        <div class="pill-container">
+          <span class="pill-cat dyn-cat"></span>
+        </div>
+        ` : ''}
+
+        <div class="generico-container">${imgHTML}${textoHTML}</div>
+
+        <hr class="divider-thin">
+
+        ${showSponsors ? buildSponsorHTML() : ''}
+
+        ${showFooter ? `<div class="footer-section">${footerInnerHTML}</div>` : ''}
+      </div>
+    `;
     }
 
     function buildSponsorHTML() {
@@ -1878,6 +2205,13 @@
 
     function buildCardHTML(format) {
       const mode = document.getElementById('in-mode').value;
+
+      // El modo Genérico arma su propia tarjeta de punta a punta (elementos
+      // opcionales + estilo tradicional/vidrio), por eso se resuelve aparte.
+      if (mode === 'GENERICO') {
+        return buildGenericoCardContent(format);
+      }
+
       const isLocal = document.getElementById('in-condicion').value === 'LOCAL';
       const ceramicaHTML = getCeramicaShieldHTML();
       const rivalHTML = getRivalShieldHTML();
@@ -1918,9 +2252,6 @@
         timeDisplayHTML = '';
       } else if (mode === 'RESULTADO') {
         centralContentHTML = buildResultadoHTML(isLocal, team1Shield, team1Name, team2Shield, team2Name);
-        timeDisplayHTML = '';
-      } else {
-        centralContentHTML = buildGenericoHTML(format);
         timeDisplayHTML = '';
       }
 
@@ -2147,6 +2478,8 @@
     document.getElementById('btn-remove-generico').addEventListener('click', () => {
       genericoImgSrcStory = null;
       genericoImgSrcFeed = null;
+      genericoImgRatioStory = null;
+      genericoImgRatioFeed = null;
       genericoOriginalSrc = null;
       genericoPendingChain = false;
       document.getElementById('file-generico').value = '';
@@ -2249,38 +2582,38 @@
     // ================================================================
     //  CROPPER (recorte de escudos)
     // ================================================================
-    // Relaciones de aspecto EXACTAS del marco de la imagen en cada formato del
-    // flyer — son la "referencia de tamaño" que pide el usuario: el recuadro
-    // de recorte tiene ya esa forma, así no hay que adivinar medidas.
-    const GENERICO_RATIOS = {
-      'generico-916': 950 / 620,  // marco dentro de la Historia (vertical)
-      'generico-11': 970 / 340    // marco dentro del Feed (cuadrado)
-    };
+    function isGenericoTarget(target) {
+      return target === 'generico-916' || target === 'generico-11';
+    }
 
     function openCropperModal(file, target) {
       currentTargetTeam = target;
       const reader = new FileReader();
       reader.onload = (e) => {
         cropImage.src = e.target.result;
-        if (target === 'generico-916' || target === 'generico-11') genericoOriginalSrc = genericoOriginalSrc || e.target.result;
+        if (isGenericoTarget(target)) genericoOriginalSrc = genericoOriginalSrc || e.target.result;
 
         const titles = {
           'generico-916': 'Encuadrar Imagen · Historia 9:16',
           'generico-11': 'Encuadrar Imagen · Feed 1:1'
         };
         document.getElementById('cropModalTitle').textContent = titles[target] || 'Ajustar y Centrar Escudo';
-        document.getElementById('cropModalHint').style.display = GENERICO_RATIOS[target] ? 'block' : 'none';
+        document.getElementById('cropModalHint').style.display = isGenericoTarget(target) ? 'block' : 'none';
 
         cropModal.classList.add('active');
         if (cropper) cropper.destroy();
 
-        // Escudos: recorte cuadrado fijo. Imagen genérica: recorte con la
-        // relación de aspecto EXACTA del marco de cada formato — el propio
-        // recuadro es la referencia visual del tamaño/forma que debe tener.
-        // El usuario solo arrastra y hace zoom para elegir qué parte mostrar.
-        const options = GENERICO_RATIOS[target]
-          ? { aspectRatio: GENERICO_RATIOS[target], viewMode: 1, background: false, autoCropArea: 0.95, responsive: true, dragMode: 'move', cropBoxResizable: true, cropBoxMovable: true, guides: true, zoomOnWheel: true }
-          : { aspectRatio: 1, viewMode: 1, background: false, autoCropArea: 0.9, responsive: true };
+        // Escudos: recorte cuadrado fijo. Imagen genérica: recorte con el
+        // FORMATO que el usuario eligió en el selector (cuadrada, vertical,
+        // horizontal, panorámica o libre) — el propio recuadro ya tiene esa
+        // forma como referencia. El usuario solo arrastra y hace zoom.
+        let options;
+        if (isGenericoTarget(target)) {
+          const chosenRatio = parseImgRatio(document.getElementById('in-gen-imgformat').value);
+          options = { aspectRatio: chosenRatio === null ? NaN : chosenRatio, viewMode: 1, background: false, autoCropArea: 0.95, responsive: true, dragMode: 'move', cropBoxResizable: true, cropBoxMovable: true, guides: true, zoomOnWheel: true };
+        } else {
+          options = { aspectRatio: 1, viewMode: 1, background: false, autoCropArea: 0.9, responsive: true };
+        }
 
         cropper = new Cropper(cropImage, options);
       };
@@ -2293,18 +2626,21 @@
     document.getElementById('btnCropSave').addEventListener('click', () => {
       if (!cropper) return;
 
-      if (GENERICO_RATIOS[currentTargetTeam]) {
-        // Como el recuadro ya tiene la proporción exacta del marco, alcanza con
-        // limitar la resolución máxima; el resultado siempre calza perfecto.
+      if (isGenericoTarget(currentTargetTeam)) {
+        // Limitamos la resolución máxima por performance; la proporción queda
+        // definida por el formato elegido (o libre, según lo que estiró el usuario).
         const canvas = cropper.getCroppedCanvas({ maxWidth: 1600, maxHeight: 1600, imageSmoothingQuality: 'high' });
         const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+        const resultRatio = canvas.width / canvas.height;
 
         if (currentTargetTeam === 'generico-916') {
           genericoImgSrcStory = dataUrl;
+          genericoImgRatioStory = resultRatio;
           document.querySelector('.mini-generico-916').src = dataUrl;
           document.querySelector('.mini-generico-916').style.display = 'block';
         } else {
           genericoImgSrcFeed = dataUrl;
+          genericoImgRatioFeed = resultRatio;
           document.querySelector('.mini-generico-11').src = dataUrl;
           document.querySelector('.mini-generico-11').style.display = 'block';
         }
@@ -2348,6 +2684,21 @@
       cropModal.classList.remove('active');
       if (cropper) cropper.destroy(); cropper = null;
       genericoPendingChain = false;
+    });
+
+    // Cambiar el estilo del diseño genérico (Tradicional / Minimalista vidrio)
+    document.querySelectorAll('#generico-style-selector .style-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('#generico-style-selector .style-opt').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        genericoStyle = opt.dataset.style;
+        renderCards();
+      });
+    });
+
+    // Checkboxes de elementos a mostrar / ocultar en el modo Genérico
+    ['in-gen-show-header', 'in-gen-show-categoria', 'in-gen-show-titulo', 'in-gen-show-texto', 'in-gen-show-sponsors', 'in-gen-show-footer'].forEach(id => {
+      document.getElementById(id).addEventListener('change', renderCards);
     });
 
     // ================================================================
