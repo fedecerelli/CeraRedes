@@ -4,18 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Generador de Flyers · Cerámica Argentina</title>
-  <!-- Fuentes profesionales -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <!-- Librerías para recorte y exportación -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
   <style>
     /* ================================================================
-       VARIABLES GLOBALES (colores institucionales y de categoría)
+       VARIABLES GLOBALES
        ================================================================ */
     :root {
       --blue-deep: #0B132B;
@@ -29,7 +27,7 @@
     }
 
     /* ================================================================
-       SELECTOR DE CATEGORÍA (en el panel de control) – igual que antes
+       SELECTOR DE CATEGORÍA (panel)
        ================================================================ */
     .cat-selector { display: flex; gap: 8px; }
     .cat-opt {
@@ -68,7 +66,7 @@
     .style-opt.active { border-color: #1545D8; color: #0A227A; background: #F0F4FF; }
 
     /* ================================================================
-       RESET Y ESTRUCTURA BASE (sin cambios en la interfaz)
+       RESET Y ESTRUCTURA BASE
        ================================================================ */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -159,7 +157,7 @@
     .export-hint { font-size: 9px; color: #656E85; text-align: center; margin-top: 6px; font-weight: 600; line-height: 1.4; }
 
     /* ================================================================
-       MODAL CROPPER (sin cambios)
+       MODAL CROPPER
        ================================================================ */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -201,7 +199,7 @@
     .scaler { transform-origin: top left; }
 
     /* ================================================================
-       NUEVO DISEÑO DEL FLYER – PROFESIONAL, SIN TARJETAS, FONDO DE ESTADIO
+       DISEÑO DEL FLYER – FONDO DE ESTADIO
        ================================================================ */
     .card {
       border-radius: 0 !important;
@@ -213,7 +211,6 @@
     .card-916 { height: 1920px; width: 1080px; }
     .card-11 { height: 1080px; width: 1080px; }
 
-    /* Contenedor del contenido – ocupa toda la tarjeta */
     .card-content {
       position: relative;
       width: 100%;
@@ -226,6 +223,11 @@
       color: #fff;
     }
 
+    /* Para Historia 9:16, bajamos el contenido para evitar el nombre de usuario de Instagram */
+    .card-916 .card-content {
+      padding-top: 90px !important;
+    }
+
     /* ===== FONDOS ===== */
     .flyer-background {
       position: absolute;
@@ -233,31 +235,25 @@
       width: 100%; height: 100%;
       z-index: 1;
       background:
-        /* Luces de estadio */
         radial-gradient(ellipse at 30% 10%, rgba(46,134,171,0.25) 0%, transparent 50%),
         radial-gradient(ellipse at 70% 10%, rgba(46,134,171,0.25) 0%, transparent 50%),
         radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.04) 0%, transparent 60%),
-        /* Reflectores */
         radial-gradient(ellipse at 20% 0%, rgba(46,134,171,0.15) 0%, transparent 30%),
         radial-gradient(ellipse at 80% 0%, rgba(46,134,171,0.15) 0%, transparent 30%),
-        /* Gradiente base azul profundo */
         linear-gradient(180deg, #0B132B 0%, #141E3A 40%, #1A2A6C 100%);
       background-size: cover;
       background-position: center;
     }
 
-    /* Overlay oscuro con viñeta */
     .flyer-overlay {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: 2;
-      background:
-        radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.6) 100%);
+      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.6) 100%);
       pointer-events: none;
     }
 
-    /* Textura deportiva: líneas de césped + grano */
     .flyer-texture {
       position: absolute;
       top: 0; left: 0;
@@ -406,7 +402,7 @@
       text-shadow: 0 2px 12px rgba(0,0,0,0.4);
     }
 
-    /* ===== INFORMACIÓN (fecha | hora | estadio) ===== */
+    /* ===== INFORMACIÓN ===== */
     .flyer-info {
       display: flex;
       align-items: stretch;
@@ -511,33 +507,72 @@
     }
 
     /* ================================================================
-       AJUSTES PARA FORMATO 1:1
+       MODO FOTO – Fondo completo con imagen, encabezado superpuesto
        ================================================================ */
-    .card-11 .flyer-header .club-crest { width: 50px; height: 50px; }
-    .card-11 .flyer-header .club-name .line1 { font-size: 16px; }
-    .card-11 .flyer-header .club-name .line2 { font-size: 20px; }
+    .flyer-foto .flyer-background {
+      background-size: cover !important; /* controlado por JS */
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+    }
+    .flyer-foto .flyer-overlay {
+      background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.6) 100%) !important;
+    }
+    .flyer-foto .card-content {
+      padding: 20px 30px !important;
+      justify-content: flex-start !important;
+    }
+    .flyer-foto .flyer-header {
+      width: 100%;
+      margin: 0;
+      border-radius: 0 !important;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 16px 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      gap: 16px;
+      box-sizing: border-box;
+    }
+    .flyer-foto .flyer-header .club-crest {
+      width: 60px;
+      height: 60px;
+    }
+    .flyer-foto .flyer-header .club-name .line1 {
+      font-size: 18px;
+      color: rgba(255,255,255,0.8);
+    }
+    .flyer-foto .flyer-header .club-name .line2 {
+      font-size: 22px;
+      color: #fff;
+    }
+    .flyer-foto .flyer-category {
+      font-size: 28px;
+      margin: 4px 0 8px 0;
+      letter-spacing: 0.2em;
+    }
 
-    .card-11 .flyer-category { font-size: 24px; margin: 4px 0 8px 0; }
-
-    .card-11 .flyer-title .dyn-t1 { font-size: 70px; }
-    .card-11 .flyer-title .dyn-t2 { font-size: 100px; }
-
-    .card-11 .team .team-crest { width: 130px; height: 130px; }
-    .card-11 .team .team-name { font-size: 22px; }
-    .card-11 .team-vs { font-size: 40px; }
-
-    .card-11 .flyer-info .info-date,
-    .card-11 .flyer-info .info-time { font-size: 32px; }
-    .card-11 .flyer-info .info-stadium { font-size: 18px; }
-    .card-11 .flyer-info .info-day { font-size: 13px; }
-    .card-11 .flyer-info .info-label { font-size: 12px; }
-
-    .card-11 .flyer-competition { font-size: 14px; }
-    .card-11 .flyer-slogan { font-size: 20px; }
-    .card-11 .flyer-sponsor img { max-height: 60px; max-width: 150px; }
+    /* Ajustes para 1:1 en modo foto */
+    .card-11.flyer-foto .flyer-header {
+      padding: 12px 18px;
+      gap: 12px;
+    }
+    .card-11.flyer-foto .flyer-header .club-crest {
+      width: 45px;
+      height: 45px;
+    }
+    .card-11.flyer-foto .flyer-header .club-name .line1 {
+      font-size: 14px;
+    }
+    .card-11.flyer-foto .flyer-header .club-name .line2 {
+      font-size: 18px;
+    }
+    .card-11.flyer-foto .flyer-category {
+      font-size: 22px;
+    }
 
     /* ================================================================
-       MODO LIBRE (CRONOGRAMA) – se integra en .flyer-teams
+       MODO LIBRE (CRONOGRAMA)
        ================================================================ */
     .flyer-schedule {
       width: 100%;
@@ -576,7 +611,7 @@
     .card-11 .flyer-schedule .sched-cat { font-size: 20px; }
 
     /* ================================================================
-       MODO RESULTADO (marcador) – se integra en .flyer-teams
+       MODO RESULTADO
        ================================================================ */
     .flyer-resultado {
       display: flex;
@@ -623,7 +658,7 @@
     .card-11 .flyer-goleadores .gol-chip { font-size: 14px; padding: 3px 10px; }
 
     /* ================================================================
-       MODO GENÉRICO – se adapta al nuevo estilo
+       MODO GENÉRICO
        ================================================================ */
     .flyer-generico {
       display: flex;
@@ -662,15 +697,6 @@
     }
     .card-11 .flyer-generico .gen-texto { font-size: 20px; }
     .card-11 .flyer-generico .gen-img-frame { max-width: 500px; }
-
-    /* ===== FONDO PERSONALIZADO ===== */
-    .card.has-custom-bg .flyer-background {
-      background-size: cover !important;
-      background-position: center !important;
-    }
-    .card.has-custom-bg .flyer-overlay {
-      background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.7) 100%) !important;
-    }
 
     /* ================================================================
        ELEMENTO OCULTO PARA EXPORTACIÓN
@@ -760,6 +786,7 @@
           <option value="LIBRE">Cronograma Libre / Múltiples Categorías</option>
           <option value="RESULTADO">Resultado de la Fecha (Marcador y Goles)</option>
           <option value="GENERICO">Genérico (Libre / Cualquier Aviso)</option>
+          <option value="FOTO">Foto (Solo encabezado)</option>
         </select>
       </div>
     </details>
@@ -842,97 +869,116 @@
       </details>
     </div>
 
-    <!-- SECCIÓN MODO GENÉRICO -->
+    <!-- SECCIÓN MODO GENÉRICO (también usado por FOTO) -->
     <div id="field-group-generico" style="display: none;">
       <details class="fs" open>
         <summary>Contenido Libre</summary>
         <div class="fs-body">
-          <label>Formato de la imagen</label>
-          <select id="in-gen-imgformat">
-            <option value="1/1">Cuadrada (1:1)</option>
-            <option value="4/5" selected>Vertical (4:5)</option>
-            <option value="9/16">Vertical alta (9:16)</option>
-            <option value="3/4">Vertical clásica (3:4)</option>
-            <option value="16/9">Horizontal (16:9)</option>
-            <option value="21/9">Panorámica (21:9)</option>
-            <option value="libre">Libre (a tu gusto)</option>
-          </select>
-          <div class="file-input-group">
-            <img class="mini mini-generico" src="" alt="" style="display:none;">
-            <input type="file" accept="image/*" id="file-generico">
-          </div>
-          <div id="generico-img-actions" style="display:none; flex-direction:column; gap:6px; margin-bottom:8px;">
-            <p style="font-size:9px; color:#656E85; font-weight:600; margin:0;">
-              Historia y Feed tienen formas distintas: ajustá el recorte para cada uno.
-            </p>
-            <div style="display:flex; gap:6px; align-items:center;">
-              <button class="btn btn-outline btn-small" id="btn-edit-generico-916" style="flex:1; margin-bottom:0;">📱 Historia 9:16</button>
-              <img class="mini mini-generico-916" src="" alt="" style="display:none; width:26px; height:26px; object-fit:cover; border-radius:6px; border:1px solid #ccc; flex-shrink:0;">
+          <!-- Bloque de carga de imagen (visible siempre) -->
+          <div id="generico-upload-block">
+            <label>Imagen de fondo o contenido</label>
+            <div class="file-input-group">
+              <img class="mini mini-generico" src="" alt="" style="display:none;">
+              <input type="file" accept="image/*" id="file-generico">
             </div>
-            <div style="display:flex; gap:6px; align-items:center;">
-              <button class="btn btn-outline btn-small" id="btn-edit-generico-11" style="flex:1; margin-bottom:0;">◻️ Feed 1:1</button>
-              <img class="mini mini-generico-11" src="" alt="" style="display:none; width:26px; height:26px; object-fit:cover; border-radius:6px; border:1px solid #ccc; flex-shrink:0;">
-            </div>
-            <button class="btn btn-outline btn-small" id="btn-remove-generico" style="margin-bottom:0;">✕ Quitar imagen</button>
+            <div id="generico-img-actions" style="display:none; flex-direction:column; gap:6px; margin-bottom:8px;">
+              <p style="font-size:9px; color:#656E85; font-weight:600; margin:0;">
+                Historia y Feed tienen formas distintas: ajustá el recorte para cada uno.
+              </p>
+              <div style="display:flex; gap:6px; align-items:center;">
+                <button class="btn btn-outline btn-small" id="btn-edit-generico-916" style="flex:1; margin-bottom:0;">📱 Historia 9:16</button>
+                <img class="mini mini-generico-916" src="" alt="" style="display:none; width:26px; height:26px; object-fit:cover; border-radius:6px; border:1px solid #ccc; flex-shrink:0;">
+              </div>
+              <div style="display:flex; gap:6px; align-items:center;">
+                <button class="btn btn-outline btn-small" id="btn-edit-generico-11" style="flex:1; margin-bottom:0;">◻️ Feed 1:1</button>
+                <img class="mini mini-generico-11" src="" alt="" style="display:none; width:26px; height:26px; object-fit:cover; border-radius:6px; border:1px solid #ccc; flex-shrink:0;">
+              </div>
+              <button class="btn btn-outline btn-small" id="btn-remove-generico" style="margin-bottom:0;">✕ Quitar imagen</button>
 
-            <label style="margin-top:8px;">Posición de la imagen</label>
-            <div class="row2">
-              <div>
-                <label style="margin:0 0 2px 0;">Horizontal</label>
-                <input type="range" id="in-gen-posx" min="0" max="100" value="50" step="1">
+              <label style="margin-top:8px;">Posición de la imagen</label>
+              <div class="row2">
+                <div>
+                  <label style="margin:0 0 2px 0;">Horizontal</label>
+                  <input type="range" id="in-gen-posx" min="0" max="100" value="50" step="1">
+                </div>
+                <div>
+                  <label style="margin:0 0 2px 0;">Vertical</label>
+                  <input type="range" id="in-gen-posy" min="0" max="100" value="50" step="1">
+                </div>
               </div>
-              <div>
-                <label style="margin:0 0 2px 0;">Vertical</label>
-                <input type="range" id="in-gen-posy" min="0" max="100" value="50" step="1">
+
+              <!-- Nuevo control de zoom -->
+              <label style="margin-top:8px;">Zoom</label>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <input type="range" id="in-gen-zoom" min="50" max="200" value="100" step="5" style="flex:1;">
+                <span id="zoom-label" style="font-size:11px; font-weight:600; color:#0A227A; min-width:40px;">100%</span>
               </div>
+              <p style="font-size:9px; color:#656E85; font-weight:600; margin:0 0 6px 0;">
+                Ajusta el zoom para encuadrar mejor la imagen.
+              </p>
             </div>
-            <p style="font-size:9px; color:#656E85; font-weight:600; margin:0 0 6px 0;">
-              Solo tiene efecto cuando el formato de la imagen no llena todo el espacio disponible.
-            </p>
           </div>
-          <label>Texto Libre</label>
-          <textarea id="in-gen-texto" rows="5"
-            style="width:100%; padding:8px; font-size:12px; border:1px solid #D1D9ED; border-radius:6px; font-family:inherit; font-weight:600; resize:vertical;"
-            placeholder="Escribí acá lo que necesites: festejo, aviso, agradecimiento, promoción, lo que se te ocurra...">¡Gracias por acompañarnos siempre!</textarea>
+
+          <!-- Opciones adicionales (ocultas en modo FOTO) -->
+          <div id="generico-options" style="display:block;">
+            <label>Formato de la imagen</label>
+            <select id="in-gen-imgformat">
+              <option value="1/1">Cuadrada (1:1)</option>
+              <option value="4/5" selected>Vertical (4:5)</option>
+              <option value="9/16">Vertical alta (9:16)</option>
+              <option value="3/4">Vertical clásica (3:4)</option>
+              <option value="16/9">Horizontal (16:9)</option>
+              <option value="21/9">Panorámica (21:9)</option>
+              <option value="libre">Libre (a tu gusto)</option>
+            </select>
+
+            <label>Texto Libre</label>
+            <textarea id="in-gen-texto" rows="5"
+              style="width:100%; padding:8px; font-size:12px; border:1px solid #D1D9ED; border-radius:6px; font-family:inherit; font-weight:600; resize:vertical;"
+              placeholder="Escribí acá lo que necesites: festejo, aviso, agradecimiento, promoción, lo que se te ocurra...">¡Gracias por acompañarnos siempre!</textarea>
+          </div>
         </div>
       </details>
 
-      <details class="fs" open>
-        <summary>Estilo y Elementos</summary>
-        <div class="fs-body">
-          <label>Estilo del diseño</label>
-          <div class="style-selector" id="generico-style-selector">
-            <div class="style-opt active" data-style="tradicional">Tradicional</div>
-            <div class="style-opt" data-style="minimal">Minimalista (vidrio)</div>
-          </div>
-          <p style="font-size:9px; color:#656E85; font-weight:600; margin:6px 0 10px 0;">
-            "Minimalista" pone la foto a pantalla completa y deja el encabezado y el pie como
-            barras finas semi-transparentes (efecto vidrio) flotando sobre la imagen.
-          </p>
+      <!-- Opciones de estilo (ocultas en modo FOTO) -->
+      <div id="generico-style-block" style="display:block;">
+        <details class="fs" open>
+          <summary>Estilo y Elementos</summary>
+          <div class="fs-body">
+            <label>Estilo del diseño</label>
+            <div class="style-selector" id="generico-style-selector">
+              <div class="style-opt active" data-style="tradicional">Tradicional</div>
+              <div class="style-opt" data-style="minimal">Minimalista (vidrio)</div>
+            </div>
+            <p style="font-size:9px; color:#656E85; font-weight:600; margin:6px 0 10px 0;">
+              "Minimalista" pone la foto a pantalla completa y deja el encabezado y el pie como
+              barras finas semi-transparentes (efecto vidrio) flotando sobre la imagen.
+            </p>
 
-          <label>Elementos a mostrar</label>
-          <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
-              <input type="checkbox" id="in-gen-show-header" checked style="width:auto; margin:0;"> Encabezado (escudo + marca)
-            </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
-              <input type="checkbox" id="in-gen-show-categoria" checked style="width:auto; margin:0;"> Categoría
-            </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
-              <input type="checkbox" id="in-gen-show-titulo" checked style="width:auto; margin:0;"> Título grande
-            </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
-              <input type="checkbox" id="in-gen-show-texto" checked style="width:auto; margin:0;"> Texto libre
-            </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
-              <input type="checkbox" id="in-gen-show-sponsors" checked style="width:auto; margin:0;"> Sponsors
-            </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
-              <input type="checkbox" id="in-gen-show-footer" checked style="width:auto; margin:0;"> Pie de página
-            </label>
+            <label>Elementos a mostrar</label>
+            <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
+              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+                <input type="checkbox" id="in-gen-show-header" checked style="width:auto; margin:0;"> Encabezado (escudo + marca)
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+                <input type="checkbox" id="in-gen-show-categoria" checked style="width:auto; margin:0;"> Categoría
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+                <input type="checkbox" id="in-gen-show-titulo" checked style="width:auto; margin:0;"> Título grande
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+                <input type="checkbox" id="in-gen-show-texto" checked style="width:auto; margin:0;"> Texto libre
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+                <input type="checkbox" id="in-gen-show-sponsors" checked style="width:auto; margin:0;"> Sponsors
+              </label>
+              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+                <input type="checkbox" id="in-gen-show-footer" checked style="width:auto; margin:0;"> Pie de página
+              </label>
+            </div>
           </div>
-        </div>
-      </details>
+        </details>
+      </div>
     </div>
 
     <!-- SECCIÓN MODO RESULTADO -->
@@ -970,7 +1016,7 @@
       </details>
     </div>
 
-    <!-- CANCHA Y HORARIO (visible en modos VS y LIBRE) -->
+    <!-- CANCHA Y HORARIO -->
     <details class="fs" id="fieldset-cancha">
       <summary>Cancha y Horario</summary>
       <div class="fs-body">
@@ -991,7 +1037,7 @@
       </div>
     </details>
 
-    <!-- ACCESOS (visible en modos VS y LIBRE) -->
+    <!-- ACCESOS -->
     <details class="fs" id="fieldset-accesos">
       <summary>Accesos</summary>
       <div class="fs-body">
@@ -1002,7 +1048,7 @@
       </div>
     </details>
 
-    <!-- PUBLICIDAD / AUSPICIANTE -->
+    <!-- PUBLICIDAD -->
     <details class="fs">
       <summary>Publicidad / Auspiciante (Opcional)</summary>
       <div class="fs-body">
@@ -1015,7 +1061,7 @@
       </div>
     </details>
 
-    <!-- IMAGEN DE FONDO -->
+    <!-- FONDO PERSONALIZADO -->
     <details class="fs">
       <summary>Fondo de la Plantilla (Opcional)</summary>
       <div class="fs-body">
@@ -1120,6 +1166,7 @@
     let genericoStyle = 'tradicional';
     let genericoImgPosX = 50;
     let genericoImgPosY = 50;
+    let genericoZoom = 100; // porcentaje (50-200)
     let backgroundImgSrc = null;
     let currentCategory = 'PRIMERA';
     let cropper = null;
@@ -1131,6 +1178,17 @@
 
     const today = new Date();
     datePicker.value = today.toISOString().split('T')[0];
+
+    // Actualizar etiqueta del zoom
+    const zoomInput = document.getElementById('in-gen-zoom');
+    const zoomLabel = document.getElementById('zoom-label');
+    if (zoomInput && zoomLabel) {
+      zoomInput.addEventListener('input', () => {
+        genericoZoom = Number(zoomInput.value);
+        zoomLabel.textContent = genericoZoom + '%';
+        renderCards();
+      });
+    }
 
     function switchTab(tab) {
       if (window.innerWidth > 850) return;
@@ -1174,7 +1232,7 @@
     }
 
     // ================================================================
-    //  CONSTRUCCIÓN DEL FLYER – NUEVO DISEÑO
+    //  CONSTRUCCIÓN DEL FLYER
     // ================================================================
 
     function buildCardHTML(format) {
@@ -1182,30 +1240,40 @@
       if (mode === 'VS') return buildVSHTML(format);
       if (mode === 'LIBRE') return buildLibreHTML(format);
       if (mode === 'RESULTADO') return buildResultadoHTML(format);
+      if (mode === 'FOTO') return buildFotoHTML(format);
       if (mode === 'GENERICO') return buildGenericoHTML(format);
       return '';
     }
 
-    function buildBaseContent(innerContent, format) {
+    // ---- MODO FOTO ----
+    function buildFotoHTML(format) {
       const is916 = format === '916';
+      const ceramicaShield = getCeramicaShieldHTML();
       const brand1 = document.querySelector('.in-brand1').value;
       const brand2 = document.querySelector('.in-brand2').value;
-      const t1 = document.querySelector('.in-t1').value;
-      const t2 = document.querySelector('.in-t2').value;
-      const footR1 = document.querySelector('.in-foot-r1').value;
-      const footR2 = document.querySelector('.in-foot-r2').value;
-      const slogan = document.querySelector('.in-foot-slogan').value;
-      const sponsor = sponsorSrc ? `<div class="flyer-sponsor"><img src="${sponsorSrc}" alt="Sponsor"></div>` : '';
-      const ceramicaShield = getCeramicaShieldHTML();
+      const src = is916 ? genericoImgSrcStory : genericoImgSrcFeed;
+      const blurSrc = is916 ? genericoImgBlurStory : genericoImgBlurFeed;
 
-      let html = `
-        <div class="card-content">
-          <div class="flyer-background"></div>
+      // Construir style para background
+      let bgStyle = '';
+      if (src) {
+        const zoomPercent = genericoZoom / 100;
+        bgStyle = `background-image: url(${src}); background-size: ${zoomPercent * 100}% auto; background-position: ${genericoImgPosX}% ${genericoImgPosY}%; background-repeat: no-repeat;`;
+      }
+
+      // Estilo del encabezado: sin bordes redondeados, ancho completo
+      let headerStyle = 'width:100%; margin:0; border-radius:0 !important; background: rgba(255,255,255,0.12); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); padding: 16px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); box-sizing: border-box;';
+      if (blurSrc) {
+        headerStyle = `width:100%; margin:0; border-radius:0 !important; background: linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.46) 100%), url(${blurSrc}); background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.15); padding: 16px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-sizing: border-box;`;
+      }
+
+      const html = `
+        <div class="card-content flyer-foto">
+          <div class="flyer-background" style="${bgStyle}"></div>
           <div class="flyer-overlay"></div>
           <div class="flyer-texture"></div>
 
-          <!-- Header -->
-          <div class="flyer-header">
+          <div class="flyer-header" style="${headerStyle}">
             <div class="club-crest">${ceramicaShield}</div>
             <div class="club-name">
               <span class="line1 dyn-brand1">${brand1}</span>
@@ -1213,27 +1281,8 @@
             </div>
           </div>
 
-          <!-- Categoría -->
+          <!-- Categoría siempre visible en modo foto -->
           <div class="flyer-category">${currentCategory}</div>
-
-          <!-- Título -->
-          <div class="flyer-title">
-            <span class="dyn-t1">${t1}</span>
-            <span class="dyn-t2">${t2}</span>
-          </div>
-
-          ${innerContent}
-
-          <!-- Competencia -->
-          <div class="flyer-competition">
-            <span class="dyn-foot-r1">${footR1}</span>
-            <span class="dyn-foot-r2">${footR2}</span>
-          </div>
-
-          <!-- Slogan -->
-          <div class="flyer-slogan dyn-foot-slogan">${slogan}</div>
-
-          ${sponsor}
         </div>
       `;
       return html;
@@ -1285,7 +1334,7 @@
       return buildBaseContent(inner, format);
     }
 
-    // ---- MODO LIBRE (cronograma) ----
+    // ---- MODO LIBRE ----
     function buildLibreHTML(format) {
       const times = document.querySelectorAll('.sched-in-time');
       const cats = document.querySelectorAll('.sched-in-cat');
@@ -1301,10 +1350,7 @@
         `;
       });
 
-      const inner = `
-        <div class="flyer-schedule">${scheduleRows}</div>
-      `;
-
+      const inner = `<div class="flyer-schedule">${scheduleRows}</div>`;
       return buildBaseContent(inner, format);
     }
 
@@ -1353,7 +1399,7 @@
       return buildBaseContent(inner, format);
     }
 
-    // ---- MODO GENÉRICO ----
+    // ---- MODO GENÉRICO (con todos los controles) ----
     function buildGenericoHTML(format) {
       const is916 = format === '916';
       const showHeader = document.getElementById('in-gen-show-header').checked;
@@ -1368,17 +1414,20 @@
       const texto = document.getElementById('in-gen-texto').value.trim();
       const ceramicaShield = getCeramicaShieldHTML();
 
-      // Para el estilo minimalista, reutilizamos la lógica anterior pero adaptada
+      // Minimalista
       if (genericoStyle === 'minimal') {
-        // Construir versión minimalista con vidrio
         const blurSrc = is916 ? genericoImgBlurStory : genericoImgBlurFeed;
-        const bgStyle = src ? ` background-image:url(${src}); background-position:${genericoImgPosX}% ${genericoImgPosY}%; background-size:cover;` : '';
+        const zoomPercent = genericoZoom / 100;
+        let bgStyle = '';
+        if (src) {
+          bgStyle = ` background-image:url(${src}); background-position:${genericoImgPosX}% ${genericoImgPosY}%; background-size: ${zoomPercent * 100}% auto; background-repeat: no-repeat;`;
+        }
         const glassBg = blurSrc ?
           `background-image: linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.46) 100%), url(${blurSrc}); background-size: cover; background-position: center;` :
           `background: rgba(255,255,255,0.2); backdrop-filter: blur(12px);`;
 
         let headerHTML = showHeader ? `
-          <div class="flyer-header" style="${glassBg}; padding: 12px 24px; border-radius: 16px; backdrop-filter: blur(8px);">
+          <div class="flyer-header" style="${glassBg}; padding: 12px 24px; backdrop-filter: blur(8px); width:100%; box-sizing:border-box; border-radius:0 !important;">
             <div class="club-crest">${ceramicaShield}</div>
             <div class="club-name">
               <span class="line1 dyn-brand1"></span>
@@ -1390,30 +1439,30 @@
         let categoryHTML = showCategoria ? `<div class="flyer-category" style="${glassBg}; padding: 4px 20px; border-radius: 40px; display:inline-block; backdrop-filter: blur(8px);">${currentCategory}</div>` : '';
 
         let titleHTML = showTitulo ? `
-          <div class="flyer-title" style="${glassBg}; padding: 8px 24px; border-radius: 16px; backdrop-filter: blur(8px);">
+          <div class="flyer-title" style="${glassBg}; padding: 8px 24px; backdrop-filter: blur(8px); width:100%; box-sizing:border-box; border-radius:0 !important;">
             <span class="dyn-t1"></span>
             <span class="dyn-t2"></span>
           </div>
         ` : '';
 
         let textoHTML = (showTexto && texto) ? `
-          <div class="flyer-generico-texto" style="${glassBg}; padding: 12px 24px; border-radius: 16px; backdrop-filter: blur(8px); font-size: ${is916 ? '28px' : '20px'}; font-weight:700; color:#fff; text-align:center;">
+          <div class="flyer-generico-texto" style="${glassBg}; padding: 12px 24px; backdrop-filter: blur(8px); font-size: ${is916 ? '28px' : '20px'}; font-weight:700; color:#fff; text-align:center; width:100%; box-sizing:border-box; border-radius:0 !important;">
             ${texto.replace(/</g, '&lt;')}
           </div>
         ` : '';
 
         let footerHTML = '';
         if (showFooter || showSponsors) {
-          let sponsorHTML = showSponsors ? `<div class="flyer-sponsor" style="${glassBg}; padding: 8px 16px; border-radius: 12px; backdrop-filter: blur(8px);"><img src="${sponsorSrc}" style="max-height:60px;"></div>` : '';
-          let sloganHTML = showFooter ? `<div class="flyer-slogan" style="${glassBg}; padding: 4px 16px; border-radius: 12px; backdrop-filter: blur(8px);">${document.querySelector('.in-foot-slogan').value}</div>` : '';
+          let sponsorHTML = showSponsors ? `<div class="flyer-sponsor" style="${glassBg}; padding: 8px 16px; border-radius: 0; backdrop-filter: blur(8px);"><img src="${sponsorSrc}" style="max-height:60px;"></div>` : '';
+          let sloganHTML = showFooter ? `<div class="flyer-slogan" style="${glassBg}; padding: 4px 16px; border-radius: 0; backdrop-filter: blur(8px);">${document.querySelector('.in-foot-slogan').value}</div>` : '';
           let compHTML = showFooter ? `
-            <div class="flyer-competition" style="${glassBg}; padding: 4px 16px; border-radius: 12px; backdrop-filter: blur(8px);">
+            <div class="flyer-competition" style="${glassBg}; padding: 4px 16px; border-radius: 0; backdrop-filter: blur(8px);">
               <span class="dyn-foot-r1"></span>
               <span class="dyn-foot-r2"></span>
             </div>
           ` : '';
           footerHTML = `
-            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; width:100%;">
               ${sponsorHTML}
               ${sloganHTML}
               ${compHTML}
@@ -1421,14 +1470,13 @@
           `;
         }
 
-        // Fondo de la tarjeta
         const bgDiv = `<div class="flyer-background" style="${bgStyle}"></div><div class="flyer-overlay"></div><div class="flyer-texture"></div>`;
 
         let inner = `
           ${bgDiv}
           <div class="card-content" style="justify-content: space-between; padding: 30px 40px; position:relative; z-index:4; display:flex; flex-direction:column; height:100%;">
             ${headerHTML}
-            <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; justify-content:center;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; justify-content:center; width:100%;">
               ${categoryHTML}
               ${titleHTML}
               ${textoHTML}
@@ -1442,7 +1490,6 @@
       // ---- Estilo tradicional ----
       let imgHTML = '';
       if (src) {
-        // Usar la misma lógica de posicionamiento que antes
         const canvas = is916 ? { w: 950, h: 620 } : { w: 970, h: 340 };
         let w = canvas.w, h = canvas.h;
         if (ratio) {
@@ -1467,8 +1514,6 @@
         </div>
       ` : '';
 
-      // Construir el contenido interior para el modo genérico tradicional
-      // Usamos el mismo sistema de base pero con el contenido personalizado
       const brand1 = document.querySelector('.in-brand1').value;
       const brand2 = document.querySelector('.in-brand2').value;
       const t1 = document.querySelector('.in-t1').value;
@@ -1499,7 +1544,7 @@
           </div>
           ` : ''}
 
-          <div class="flyer-generico" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
+          <div class="flyer-generico" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; width:100%;">
             ${imgHTML}
             ${textoHTML}
           </div>
@@ -1516,7 +1561,6 @@
         </div>
       `;
 
-      // Añadir fondo
       inner = `
         <div class="flyer-background"></div>
         <div class="flyer-overlay"></div>
@@ -1527,11 +1571,80 @@
       return inner;
     }
 
+    // ===== BASE COMÚN PARA VS, LIBRE, RESULTADO =====
+    function buildBaseContent(innerContent, format) {
+      const brand1 = document.querySelector('.in-brand1').value;
+      const brand2 = document.querySelector('.in-brand2').value;
+      const t1 = document.querySelector('.in-t1').value;
+      const t2 = document.querySelector('.in-t2').value;
+      const footR1 = document.querySelector('.in-foot-r1').value;
+      const footR2 = document.querySelector('.in-foot-r2').value;
+      const slogan = document.querySelector('.in-foot-slogan').value;
+      const sponsor = sponsorSrc ? `<div class="flyer-sponsor"><img src="${sponsorSrc}" alt="Sponsor"></div>` : '';
+      const ceramicaShield = getCeramicaShieldHTML();
+
+      let html = `
+        <div class="card-content">
+          <div class="flyer-background"></div>
+          <div class="flyer-overlay"></div>
+          <div class="flyer-texture"></div>
+
+          <div class="flyer-header">
+            <div class="club-crest">${ceramicaShield}</div>
+            <div class="club-name">
+              <span class="line1 dyn-brand1">${brand1}</span>
+              <span class="line2 dyn-brand2">${brand2}</span>
+            </div>
+          </div>
+
+          <div class="flyer-category">${currentCategory}</div>
+
+          <div class="flyer-title">
+            <span class="dyn-t1">${t1}</span>
+            <span class="dyn-t2">${t2}</span>
+          </div>
+
+          ${innerContent}
+
+          <div class="flyer-competition">
+            <span class="dyn-foot-r1">${footR1}</span>
+            <span class="dyn-foot-r2">${footR2}</span>
+          </div>
+
+          <div class="flyer-slogan dyn-foot-slogan">${slogan}</div>
+
+          ${sponsor}
+        </div>
+      `;
+      return html;
+    }
+
     // ================================================================
     //  RENDER Y ACTUALIZACIÓN
     // ================================================================
 
     function renderCards() {
+      const mode = document.getElementById('in-mode').value;
+      const isFoto = mode === 'FOTO';
+
+      // Ajustar visibilidad de opciones en el panel
+      document.getElementById('generico-options').style.display = isFoto ? 'none' : 'block';
+      document.getElementById('generico-style-block').style.display = isFoto ? 'none' : 'block';
+
+      // Si es foto, forzar checkboxes y estilo minimalista
+      if (isFoto) {
+        document.getElementById('in-gen-show-header').checked = true;
+        document.getElementById('in-gen-show-categoria').checked = false;
+        document.getElementById('in-gen-show-titulo').checked = false;
+        document.getElementById('in-gen-show-texto').checked = false;
+        document.getElementById('in-gen-show-sponsors').checked = false;
+        document.getElementById('in-gen-show-footer').checked = false;
+        // Forzar minimalista
+        document.querySelectorAll('#generico-style-selector .style-opt').forEach(o => o.classList.remove('active'));
+        document.querySelector('#generico-style-selector .style-opt[data-style="minimal"]').classList.add('active');
+        genericoStyle = 'minimal';
+      }
+
       document.querySelectorAll('.card').forEach(el => {
         const format = el.classList.contains('card-11') ? '11' : '916';
         el.innerHTML = buildCardHTML(format);
@@ -1552,6 +1665,13 @@
           }
           el.classList.remove('has-custom-bg');
         }
+
+        // Si es modo foto, agregar clase para estilos específicos
+        if (isFoto) {
+          el.classList.add('flyer-foto');
+        } else {
+          el.classList.remove('flyer-foto');
+        }
       });
       updateAllText();
     }
@@ -1568,7 +1688,6 @@
       setText('dyn-foot-r1', document.querySelector('.in-foot-r1').value);
       setText('dyn-foot-r2', document.querySelector('.in-foot-r2').value);
       setText('dyn-foot-slogan', document.querySelector('.in-foot-slogan').value);
-      // Los demás campos (estadio, hora, fecha) se actualizan al regenerar el HTML
     }
 
     // ================================================================
@@ -1581,14 +1700,15 @@
       const isLibre = mode === 'LIBRE';
       const isResultado = mode === 'RESULTADO';
       const isGenerico = mode === 'GENERICO';
+      const isFoto = mode === 'FOTO';
 
       document.getElementById('field-group-vs').style.display = (isVs || isResultado) ? 'block' : 'none';
       document.getElementById('field-group-libre').style.display = isLibre ? 'block' : 'none';
       document.getElementById('field-group-resultado').style.display = isResultado ? 'block' : 'none';
-      document.getElementById('field-group-generico').style.display = isGenerico ? 'block' : 'none';
+      document.getElementById('field-group-generico').style.display = (isGenerico || isFoto) ? 'block' : 'none';
       document.getElementById('field-hora-vs').style.display = isVs ? 'block' : 'none';
 
-      const hideCanchaAccesos = isGenerico || isResultado;
+      const hideCanchaAccesos = isGenerico || isResultado || isFoto;
       document.getElementById('fieldset-cancha').style.display = hideCanchaAccesos ? 'none' : 'block';
       document.getElementById('fieldset-accesos').style.display = hideCanchaAccesos ? 'none' : 'block';
 
@@ -1616,16 +1736,12 @@
     datePicker.addEventListener('change', renderCards);
     document.getElementById('in-goles-local').addEventListener('input', renderCards);
     document.getElementById('in-goles-rival').addEventListener('input', renderCards);
-
-    // Texto genérico
     document.getElementById('in-gen-texto').addEventListener('input', renderCards);
 
-    // Checkboxes genéricos
     ['in-gen-show-header', 'in-gen-show-categoria', 'in-gen-show-titulo', 'in-gen-show-texto', 'in-gen-show-sponsors', 'in-gen-show-footer'].forEach(id => {
       document.getElementById(id).addEventListener('change', renderCards);
     });
 
-    // Estilo genérico
     document.querySelectorAll('#generico-style-selector .style-opt').forEach(opt => {
       opt.addEventListener('click', () => {
         document.querySelectorAll('#generico-style-selector .style-opt').forEach(o => o.classList.remove('active'));
@@ -1635,7 +1751,6 @@
       });
     });
 
-    // Posición imagen genérica
     document.getElementById('in-gen-posx').addEventListener('input', (e) => {
       genericoImgPosX = Number(e.target.value);
       renderCards();
