@@ -637,6 +637,10 @@
     .card-11 {
       height: 1080px;
       padding: 45px 55px;
+      /* El Feed se sube tal cual a Instagram: sin esquinas redondeadas
+         propias, para que no queden triángulos de fondo visibles en las
+         puntas del cuadrado cuando se publica. */
+      border-radius: 0;
     }
 
     .card-content {
@@ -1191,24 +1195,33 @@
       gap: 12px;
     }
 
-    .generico-img-frame {
+    .generico-img-canvas {
+      position: relative;
       width: 100%;
-      aspect-ratio: 950 / 620;
       border-radius: 22px;
+      overflow: hidden;
+      background: var(--blue-light);
+    }
+
+    .card-11 .generico-img-canvas {
+      /* Feed = Instagram: sin esquinas redondeadas propias (ver .card-11) */
+      border-radius: 0;
+    }
+
+    .generico-img-frame {
+      position: absolute;
+      border-radius: 14px;
       overflow: hidden;
       border: 3px solid var(--blue-bright);
       background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .card-11 .generico-img-frame {
-      aspect-ratio: 970 / 340;
-      border-radius: 16px;
+      border-radius: 0;
     }
 
     .generico-img-frame img {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -1263,11 +1276,9 @@
     .generico-glass {
       position: relative;
       z-index: 2;
-      background: rgba(255, 255, 255, 0.62);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, 0.55);
-      box-shadow: 0 10px 30px rgba(10, 34, 122, 0.16);
+      background-repeat: no-repeat;
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      box-shadow: 0 10px 30px rgba(10, 34, 122, 0.18);
     }
 
     .generico-minimal-header {
@@ -1744,6 +1755,21 @@
               <img class="mini mini-generico-11" src="" alt="" style="display:none; width:26px; height:26px; object-fit:cover; border-radius:6px; border:1px solid #ccc; flex-shrink:0;">
             </div>
             <button class="btn btn-outline btn-small" id="btn-remove-generico" style="margin-bottom:0;">✕ Quitar imagen</button>
+
+            <label style="margin-top:8px;">Posición de la imagen</label>
+            <div class="row2">
+              <div>
+                <label style="margin:0 0 2px 0;">Horizontal</label>
+                <input type="range" id="in-gen-posx" min="0" max="100" value="50" step="1">
+              </div>
+              <div>
+                <label style="margin:0 0 2px 0;">Vertical</label>
+                <input type="range" id="in-gen-posy" min="0" max="100" value="50" step="1">
+              </div>
+            </div>
+            <p style="font-size:9px; color:var(--grey-sub); font-weight:600; margin:0 0 6px 0;">
+              Solo tiene efecto cuando el formato de la imagen no llena todo el espacio disponible (por ejemplo, una foto cuadrada dentro de un espacio horizontal).
+            </p>
           </div>
           <label>Texto Libre</label>
           <textarea id="in-gen-texto" rows="5"
@@ -1970,11 +1996,15 @@
     let sponsorSrc = null;
     let genericoImgSrcStory = null;  // recorte para el formato Historia 9:16
     let genericoImgSrcFeed = null;   // recorte para el formato Feed 1:1
+    let genericoImgBlurStory = null; // versión desenfocada (para el "vidrio") de Historia
+    let genericoImgBlurFeed = null;  // versión desenfocada (para el "vidrio") de Feed
     let genericoImgRatioStory = null; // relación de aspecto (ancho/alto) del recorte de Historia
     let genericoImgRatioFeed = null;  // relación de aspecto (ancho/alto) del recorte de Feed
     let genericoOriginalSrc = null;  // imagen original sin recortar (para poder re-ajustar sin perder calidad)
     let genericoPendingChain = false; // true mientras se está guiando el recorte de los 2 formatos seguidos
     let genericoStyle = 'tradicional'; // 'tradicional' | 'minimal'
+    let genericoImgPosX = 50; // posición horizontal de la imagen dentro de su espacio (0-100%)
+    let genericoImgPosY = 50; // posición vertical de la imagen dentro de su espacio (0-100%)
     let backgroundImgSrc = null;
     let currentCategory = 'PRIMERA';
     let cropper = null;
@@ -2036,6 +2066,41 @@
       return w / h;
     }
 
+    // Tamaño (en px, a resolución real del export) del espacio reservado para
+    // la foto en cada formato: ancho de contenido y una altura fija, igual
+    // que antes. Es el "lienzo" dentro del cual el usuario puede mover la foto.
+    const GENERICO_CANVAS = {
+      '916': { w: 950, h: 620 },
+      '11': { w: 970, h: 340 }
+    };
+
+    // Calcula el tamaño de la foto (ajustada por proporción, sin recortar
+    // más de lo que el usuario ya recortó) y su posición dentro del lienzo,
+    // en base a los sliders de posición horizontal/vertical (0-100%).
+    function computeGenericoPlacement(format, ratio) {
+      const canvas = GENERICO_CANVAS[format];
+      let w = canvas.w, h = canvas.h;
+      if (ratio) {
+        w = canvas.h * ratio;
+        h = canvas.h;
+        if (w > canvas.w) { w = canvas.w; h = canvas.w / ratio; }
+      }
+      const left = (canvas.w - w) * (genericoImgPosX / 100);
+      const top = (canvas.h - h) * (genericoImgPosY / 100);
+      return { canvasW: canvas.w, canvasH: canvas.h, w, h, left, top };
+    }
+
+    // Fondo de cada panel "vidrio": degradado blanco translúcido por encima
+    // de la versión desenfocada de la foto (si ya está lista) — sin
+    // backdrop-filter, para que se exporte igual que se ve en pantalla.
+    function glassBgStyle(blurSrc) {
+      const gradient = 'linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.46) 100%)';
+      if (blurSrc) {
+        return `background-image:${gradient}, url('${blurSrc}'); background-size: cover; background-position: center; background-repeat:no-repeat;`;
+      }
+      return `background-image:${gradient};`;
+    }
+
     // Arma la tarjeta ENTERA del modo Genérico (header, título, imagen, texto,
     // sponsors y pie), respetando qué elementos eligió mostrar el usuario y el
     // estilo elegido (Tradicional en flujo normal, o Minimalista con la foto a
@@ -2072,18 +2137,27 @@
       `;
 
       if (genericoStyle === 'minimal') {
-        const bgStyle = src ? ` style="background-image:url(${src});"` : '';
+        const blurSrc = format === '11' ? genericoImgBlurFeed : genericoImgBlurStory;
+        // En minimalista la foto es fondo completo: los sliders de posición
+        // controlan el encuadre (background-position) de esa foto de fondo.
+        const bgStyle = src ? ` style="background-image:url(${src}); background-position:${genericoImgPosX}% ${genericoImgPosY}%;"` : '';
+        // "Vidrio" sin backdrop-filter (no se puede usar: rompe la exportación
+        // a JPG). En su lugar, cada panel muestra su propia versión desenfocada
+        // de la foto de fondo, cubierta por un degradado blanco translúcido —
+        // se ve y se exporta igual, porque ya es una imagen "horneada", no un
+        // filtro CSS en vivo.
+        const glassBg = glassBgStyle(blurSrc);
         return `
         <div class="card-content generico-minimal">
           <div class="generico-minimal-bg"${bgStyle}></div>
-          ${showHeader ? `<div class="generico-glass generico-minimal-header">${headerInnerHTML}</div>` : '<div></div>'}
+          ${showHeader ? `<div class="generico-glass generico-minimal-header" style="${glassBg}">${headerInnerHTML}</div>` : '<div></div>'}
           <div class="generico-minimal-mid">
-            ${showCategoria ? `<span class="generico-minimal-category generico-glass dyn-cat"></span>` : ''}
-            ${showTitulo ? `<div class="generico-minimal-title generico-glass"><span class="t1 dyn-t1"></span><span class="t2 dyn-t2"></span></div>` : ''}
-            ${(showTexto && texto) ? `<div class="generico-minimal-texto generico-glass">${texto.replace(/</g, '&lt;')}</div>` : ''}
+            ${showCategoria ? `<span class="generico-minimal-category generico-glass dyn-cat" style="${glassBg}"></span>` : ''}
+            ${showTitulo ? `<div class="generico-minimal-title generico-glass" style="${glassBg}"><span class="t1 dyn-t1"></span><span class="t2 dyn-t2"></span></div>` : ''}
+            ${(showTexto && texto) ? `<div class="generico-minimal-texto generico-glass" style="${glassBg}">${texto.replace(/</g, '&lt;')}</div>` : ''}
           </div>
           ${(showFooter || showSponsors) ? `
-          <div class="generico-glass generico-minimal-footer">
+          <div class="generico-glass generico-minimal-footer" style="${glassBg}">
             ${showSponsors ? buildSponsorHTML() : ''}
             ${showFooter ? `<div class="footer-section">${footerInnerHTML}</div>` : ''}
           </div>` : '<div></div>'}
@@ -2092,8 +2166,21 @@
       }
 
       // ===== ESTILO TRADICIONAL =====
-      const frameStyle = ratio ? ` style="aspect-ratio:${ratio};"` : '';
-      const imgHTML = src ? `<div class="generico-img-frame"${frameStyle}><img src="${src}"></div>` : '';
+      // La foto vive dentro de un "lienzo" de tamaño fijo; el usuario la
+      // mueve con los sliders de posición dentro de ese espacio (en px reales,
+      // nada de transform/aspect-ratio, para que la exportación sea 1 a 1
+      // idéntica a la vista previa).
+      let imgHTML = '';
+      if (src) {
+        const p = computeGenericoPlacement(format, ratio);
+        imgHTML = `
+          <div class="generico-img-canvas" style="height:${p.canvasH}px;">
+            <div class="generico-img-frame" style="width:${p.w}px; height:${p.h}px; left:${p.left}px; top:${p.top}px;">
+              <img src="${src}">
+            </div>
+          </div>
+        `;
+      }
       const textoHTML = (showTexto && texto) ? `<div class="generico-texto">${texto.replace(/</g, '&lt;')}</div>` : '';
 
       return `
@@ -2478,6 +2565,8 @@
     document.getElementById('btn-remove-generico').addEventListener('click', () => {
       genericoImgSrcStory = null;
       genericoImgSrcFeed = null;
+      genericoImgBlurStory = null;
+      genericoImgBlurFeed = null;
       genericoImgRatioStory = null;
       genericoImgRatioFeed = null;
       genericoOriginalSrc = null;
@@ -2586,6 +2675,32 @@
       return target === 'generico-916' || target === 'generico-11';
     }
 
+    // Genera una versión REALMENTE desenfocada de una imagen usando <canvas>
+    // (ctx.filter = blur). A diferencia de backdrop-filter en CSS, esto se
+    // "hornea" en píxeles reales, así que se ve idéntico en la vista previa
+    // y en el JPG exportado — no depende de que html2canvas soporte el filtro.
+    function makeBlurredDataUrl(srcDataUrl, blurPx = 18) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxDim = 480; // resolución de trabajo: alcanza y de sobra para un fondo desenfocado
+          const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+          const w = Math.max(1, Math.round(img.width * scale));
+          const h = Math.max(1, Math.round(img.height * scale));
+          const c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          const ctx = c.getContext('2d');
+          try {
+            ctx.filter = `blur(${blurPx}px)`;
+          } catch (e) { /* si el navegador no soporta ctx.filter, se dibuja sin blur */ }
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve(c.toDataURL('image/jpeg', 0.82));
+        };
+        img.onerror = () => resolve(null);
+        img.src = srcDataUrl;
+      });
+    }
+
     function openCropperModal(file, target) {
       currentTargetTeam = target;
       const reader = new FileReader();
@@ -2632,8 +2747,9 @@
         const canvas = cropper.getCroppedCanvas({ maxWidth: 1600, maxHeight: 1600, imageSmoothingQuality: 'high' });
         const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
         const resultRatio = canvas.width / canvas.height;
+        const targetNow = currentTargetTeam;
 
-        if (currentTargetTeam === 'generico-916') {
+        if (targetNow === 'generico-916') {
           genericoImgSrcStory = dataUrl;
           genericoImgRatioStory = resultRatio;
           document.querySelector('.mini-generico-916').src = dataUrl;
@@ -2652,9 +2768,19 @@
         cropper.destroy(); cropper = null;
         renderCards();
 
+        // El estilo "vidrio" necesita una versión REALMENTE desenfocada de la
+        // foto (backdrop-filter no se puede usar: rompe la exportación a JPG).
+        // Se genera con <canvas> — funciona igual en pantalla y en el archivo
+        // final porque ya no depende de ningún filtro CSS al exportar.
+        makeBlurredDataUrl(dataUrl).then(blurUrl => {
+          if (targetNow === 'generico-916') genericoImgBlurStory = blurUrl;
+          else genericoImgBlurFeed = blurUrl;
+          renderCards();
+        });
+
         // Encadenado: recién subida la foto, después de ajustar Historia
         // pasamos directo a pedir el ajuste de Feed con la misma imagen.
-        if (currentTargetTeam === 'generico-916' && genericoPendingChain) {
+        if (targetNow === 'generico-916' && genericoPendingChain) {
           genericoPendingChain = false;
           fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => {
             setTimeout(() => openCropperModal(blob, 'generico-11'), 200);
@@ -2699,6 +2825,16 @@
     // Checkboxes de elementos a mostrar / ocultar en el modo Genérico
     ['in-gen-show-header', 'in-gen-show-categoria', 'in-gen-show-titulo', 'in-gen-show-texto', 'in-gen-show-sponsors', 'in-gen-show-footer'].forEach(id => {
       document.getElementById(id).addEventListener('change', renderCards);
+    });
+
+    // Posición de la imagen dentro de su espacio (arrastre vía sliders X/Y)
+    document.getElementById('in-gen-posx').addEventListener('input', (e) => {
+      genericoImgPosX = Number(e.target.value);
+      renderCards();
+    });
+    document.getElementById('in-gen-posy').addEventListener('input', (e) => {
+      genericoImgPosY = Number(e.target.value);
+      renderCards();
     });
 
     // ================================================================
