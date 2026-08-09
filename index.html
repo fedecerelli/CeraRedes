@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,10 +7,8 @@
   <!-- Fuentes profesionales -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800;900&display=swap"
-    rel="stylesheet">
-  <!-- Librerías gratuitas para recorte y exportación -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Librerías para recorte y exportación -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
@@ -21,110 +18,23 @@
        VARIABLES GLOBALES (colores institucionales y de categoría)
        ================================================================ */
     :root {
-      --blue-main: #0A227A;
-      --blue-bright: #1545D8;
-      --blue-light: #F0F4FF;
-      --text-dark: #0A122A;
-      --grey-border: #D1D9ED;
-      --grey-sub: #656E85;
-      --font-title: 'Bebas Neue', sans-serif;
-      --font-body: 'Montserrat', sans-serif;
-      --radius-card: 30px;
-      --radius-box: 14px;
-
-      --primera-main: #0A227A;
-      --primera-bright: #1545D8;
-      --primera-light: #F0F4FF;
-
-      --senior-main: #7A4B0A;
-      --senior-bright: #D89A1E;
-      --senior-light: #FFF6E8;
-
-      --inferiores-main: #0A6B3A;
-      --inferiores-bright: #1FAE63;
-      --inferiores-light: #EAFBF2;
+      --blue-deep: #0B132B;
+      --blue-mid: #141E3A;
+      --blue-institutional: #0A227A;
+      --blue-electric: #2E86AB;
+      --blue-bright: #4AA3C2;
+      --white: #FFFFFF;
+      --grey-light: rgba(255,255,255,0.15);
+      --grey-text: rgba(255,255,255,0.7);
     }
 
     /* ================================================================
-       MEJORA 7: INSIGNIA DE CATEGORÍA DESTACADA
-       Minimalista: sin caja ni fondo, solo tipografía grande con mucho
-       tracking, un punto de color y un subrayado grueso del color de
-       la categoría. Resalta por tamaño, peso y color, no por adornos.
+       SELECTOR DE CATEGORÍA (en el panel de control) – igual que antes
        ================================================================ */
-    .category-line {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin: 16px 0 22px 0;
-    }
-
-    .category-line .dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--blue-bright);
-      flex-shrink: 0;
-    }
-
-    .category-line .label {
-      font-family: var(--font-body);
-      font-weight: 900;
-      font-size: 32px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--blue-main);
-      line-height: 1;
-      padding-bottom: 8px;
-      border-bottom: 5px solid var(--blue-bright);
-    }
-
-    .cat-senior .category-line .dot {
-      background: var(--senior-bright);
-    }
-
-    .cat-senior .category-line .label {
-      color: var(--senior-main);
-      border-bottom-color: var(--senior-bright);
-    }
-
-    .cat-inferiores .category-line .dot {
-      background: var(--inferiores-bright);
-    }
-
-    .cat-inferiores .category-line .label {
-      color: var(--inferiores-main);
-      border-bottom-color: var(--inferiores-bright);
-    }
-
-    .card-11 .category-line {
-      gap: 8px;
-      margin: 8px 0 12px 0;
-    }
-
-    .card-11 .category-line .dot {
-      width: 8px;
-      height: 8px;
-    }
-
-    .card-11 .category-line .label {
-      font-size: 17px;
-      letter-spacing: 0.12em;
-      padding-bottom: 4px;
-      border-bottom-width: 3px;
-    }
-
-    /* ================================================================
-       SELECTOR DE CATEGORÍA (en el panel de control)
-       ================================================================ */
-    .cat-selector {
-      display: flex;
-      gap: 8px;
-    }
-
+    .cat-selector { display: flex; gap: 8px; }
     .cat-opt {
       flex: 1;
-      border: 2px solid var(--grey-border);
+      border: 2px solid #D1D9ED;
       border-radius: 8px;
       padding: 10px 6px;
       text-align: center;
@@ -132,37 +42,18 @@
       font-weight: 800;
       cursor: pointer;
       background: #fff;
-      color: var(--grey-sub);
+      color: #656E85;
       text-transform: uppercase;
       letter-spacing: 0.02em;
     }
+    .cat-opt.sel-primera.active { border-color: #1545D8; color: #0A227A; background: #F0F4FF; }
+    .cat-opt.sel-senior.active { border-color: #D89A1E; color: #7A4B0A; background: #FFF6E8; }
+    .cat-opt.sel-inferiores.active { border-color: #1FAE63; color: #0A6B3A; background: #EAFBF2; }
 
-    .cat-opt.sel-primera.active {
-      border-color: var(--primera-bright);
-      color: var(--primera-main);
-      background: var(--primera-light);
-    }
-
-    .cat-opt.sel-senior.active {
-      border-color: var(--senior-bright);
-      color: var(--senior-main);
-      background: var(--senior-light);
-    }
-
-    .cat-opt.sel-inferiores.active {
-      border-color: var(--inferiores-bright);
-      color: var(--inferiores-main);
-      background: var(--inferiores-light);
-    }
-
-    .style-selector {
-      display: flex;
-      gap: 8px;
-    }
-
+    .style-selector { display: flex; gap: 8px; }
     .style-opt {
       flex: 1;
-      border: 2px solid var(--grey-border);
+      border: 2px solid #D1D9ED;
       border-radius: 8px;
       padding: 10px 6px;
       text-align: center;
@@ -170,39 +61,26 @@
       font-weight: 800;
       cursor: pointer;
       background: #fff;
-      color: var(--grey-sub);
+      color: #656E85;
       text-transform: uppercase;
       letter-spacing: 0.02em;
     }
-
-    .style-opt.active {
-      border-color: var(--blue-bright);
-      color: var(--blue-main);
-      background: var(--blue-light);
-    }
+    .style-opt.active { border-color: #1545D8; color: #0A227A; background: #F0F4FF; }
 
     /* ================================================================
-       RESET Y ESTRUCTURA BASE
+       RESET Y ESTRUCTURA BASE (sin cambios en la interfaz)
        ================================================================ */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: var(--font-body);
+      font-family: 'Montserrat', sans-serif;
       background: #E8ECF5;
-      color: var(--text-dark);
+      color: #0A122A;
       display: flex;
       flex-direction: row;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* ================================================================
-       PANEL DE CONTROL (izquierda)
-       ================================================================ */
     #panel {
       width: 360px;
       min-width: 300px;
@@ -214,1311 +92,588 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+      box-shadow: 2px 0 8px rgba(0,0,0,0.04);
     }
 
-    .panel-header h1 {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--blue-main);
-      margin-bottom: 2px;
-      letter-spacing: -0.02em;
-    }
+    .panel-header h1 { font-size: 18px; font-weight: 800; color: #0A227A; margin-bottom: 2px; letter-spacing: -0.02em; }
+    .panel-header p.sub { font-size: 12px; color: #656E85; margin-bottom: 10px; font-weight: 500; }
 
-    .panel-header p.sub {
-      font-size: 12px;
-      color: var(--grey-sub);
-      margin-bottom: 10px;
-      font-weight: 500;
-    }
-
-    /* ================================================================
-       MEJORA 9: acciones rápidas para expandir/contraer todo y así
-       reducir el scroll de la barra lateral.
-       ================================================================ */
-    .panel-quick-actions {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-
+    .panel-quick-actions { display: flex; gap: 6px; margin-bottom: 14px; }
     .panel-quick-actions button {
-      flex: 1;
-      font-size: 9px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 6px 4px;
-      border-radius: 6px;
-      border: 1px solid var(--grey-border);
-      background: #fff;
-      color: var(--blue-main);
-      cursor: pointer;
+      flex: 1; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
+      padding: 6px 4px; border-radius: 6px; border: 1px solid #D1D9ED; background: #fff;
+      color: #0A227A; cursor: pointer;
     }
+    .panel-quick-actions button:hover { background: #F0F4FF; }
 
-    .panel-quick-actions button:hover {
-      background: var(--blue-light);
-    }
+    .mobile-tabs { display: none; background: #fff; border-bottom: 1px solid #D1D9ED; position: sticky; top: 0; z-index: 100; }
+    .tab-btn { flex: 1; padding: 12px; text-align: center; font-weight: 800; font-size: 13px; border: none; background: transparent; color: #656E85; cursor: pointer; }
+    .tab-btn.active { color: #1545D8; border-bottom: 3px solid #1545D8; }
 
-    /* Pestañas móviles */
-    .mobile-tabs {
-      display: none;
-      background: #fff;
-      border-bottom: 1px solid var(--grey-border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 12px;
-      text-align: center;
-      font-weight: 800;
-      font-size: 13px;
-      border: none;
-      background: transparent;
-      color: var(--grey-sub);
-      cursor: pointer;
-    }
-
-    .tab-btn.active {
-      color: var(--blue-bright);
-      border-bottom: 3px solid var(--blue-bright);
-    }
-
-    /* ================================================================
-       MEJORA 5 y 9: SECCIONES COLAPSABLES (details/summary nativo)
-       Reemplazan los fieldset fijos: se pueden contraer y expandir
-       para optimizar el espacio y reducir el scroll de la barra.
-       ================================================================ */
     details.fs {
-      border: 1px solid var(--grey-border);
-      border-radius: 8px;
-      margin-bottom: 8px;
-      overflow: hidden;
-      background: #fff;
+      border: 1px solid #D1D9ED; border-radius: 8px; margin-bottom: 8px; overflow: hidden; background: #fff;
     }
-
     details.fs summary {
-      list-style: none;
-      cursor: pointer;
-      padding: 9px 10px;
-      font-size: 10px;
-      font-weight: 800;
-      color: var(--blue-bright);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      background: var(--blue-light);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+      list-style: none; cursor: pointer; padding: 9px 10px; font-size: 10px; font-weight: 800;
+      color: #1545D8; text-transform: uppercase; letter-spacing: 0.04em; background: #F0F4FF;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
     }
-
-    details.fs summary::-webkit-details-marker {
-      display: none;
-    }
-
+    details.fs summary::-webkit-details-marker { display: none; }
     details.fs summary::after {
-      content: '';
-      flex-shrink: 0;
-      width: 0;
-      height: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 6px solid var(--blue-bright);
-      transition: transform 0.15s ease;
+      content: ''; flex-shrink: 0; width: 0; height: 0;
+      border-left: 5px solid transparent; border-right: 5px solid transparent;
+      border-top: 6px solid #1545D8; transition: transform 0.15s ease;
     }
+    details.fs[open] summary::after { transform: rotate(180deg); }
+    details.fs.fs-highlight summary { background: #1545D8; color: #fff; }
+    details.fs.fs-highlight summary::after { border-top-color: #fff; }
+    .fs-body { padding: 10px 10px 4px 10px; }
 
-    details.fs[open] summary::after {
-      transform: rotate(180deg);
+    label { display: block; font-size: 9px; font-weight: 700; color: #3A4259; margin: 4px 0 2px 0; text-transform: uppercase; letter-spacing: 0.03em; }
+    input[type="text"], input[type="date"], input[type="time"], input[type="number"], select, textarea {
+      width: 100%; padding: 6px 8px; font-size: 12px; border: 1px solid #D1D9ED; border-radius: 6px;
+      font-family: inherit; font-weight: 600; background: #fff; transition: border 0.15s; margin-bottom: 6px;
     }
-
-    details.fs.fs-highlight summary {
-      background: var(--blue-bright);
-      color: #fff;
-    }
-
-    details.fs.fs-highlight summary::after {
-      border-top-color: #fff;
-    }
-
-    .fs-body {
-      padding: 10px 10px 4px 10px;
-    }
-
-    label {
-      display: block;
-      font-size: 9px;
-      font-weight: 700;
-      color: #3A4259;
-      margin: 4px 0 2px 0;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-
-    input[type="text"],
-    input[type="date"],
-    input[type="time"],
-    input[type="number"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 6px 8px;
-      font-size: 12px;
-      border: 1px solid var(--grey-border);
-      border-radius: 6px;
-      font-family: inherit;
-      font-weight: 600;
-      background: #fff;
-      transition: border 0.15s;
-      margin-bottom: 6px;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      outline: none;
-      border-color: var(--blue-bright);
-    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #1545D8; }
 
     .file-input-group {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--blue-light);
-      padding: 4px 6px;
-      border-radius: 6px;
-      border: 1px dashed var(--grey-border);
-      margin-bottom: 6px;
+      display: flex; align-items: center; gap: 6px; background: #F0F4FF; padding: 4px 6px;
+      border-radius: 6px; border: 1px dashed #D1D9ED; margin-bottom: 6px;
     }
+    .file-input-group img { width: 28px; height: 28px; object-fit: contain; background: #fff; border-radius: 6px; border: 1px solid #ccc; }
+    .row2 { display: flex; gap: 6px; }
+    .row2>div { flex: 1; }
 
-    .file-input-group img {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-      background: #fff;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
+    .schedule-input-row { display: flex; gap: 4px; margin-bottom: 4px; align-items: center; }
+    .schedule-input-row input { flex: 1; font-size: 11px; padding: 5px 6px; margin-bottom: 0; }
+    .btn-remove-row { background: #e74c3c; color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 11px; }
 
-    .row2 {
-      display: flex;
-      gap: 6px;
-    }
+    .btn { display: block; width: 100%; padding: 8px 10px; border: none; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; margin-bottom: 4px; text-align: center; text-transform: uppercase; letter-spacing: 0.04em; }
+    .btn:disabled { opacity: 0.6; cursor: wait; }
+    .btn-primary { background: #0A227A; color: #fff; transition: background 0.15s; }
+    .btn-primary:hover { background: #1545D8; }
+    .btn-outline { background: #fff; color: #0A227A; border: 2px solid #0A227A; }
+    .btn-outline:hover { background: #F0F4FF; }
+    .btn-small { padding: 4px 8px; font-size: 9px; margin-top: 4px; }
 
-    .row2>div {
-      flex: 1;
-    }
+    .export-hint { font-size: 9px; color: #656E85; text-align: center; margin-top: 6px; font-weight: 600; line-height: 1.4; }
 
     /* ================================================================
-       FILAS DINÁMICAS (cronograma, goleadores)
-       ================================================================ */
-    .schedule-input-row {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 4px;
-      align-items: center;
-    }
-
-    .schedule-input-row input {
-      flex: 1;
-      font-size: 11px;
-      padding: 5px 6px;
-      margin-bottom: 0;
-    }
-
-    .btn-remove-row {
-      background: #e74c3c;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 11px;
-    }
-
-    /* ================================================================
-       BOTONES
-       ================================================================ */
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 8px 10px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 800;
-      font-size: 11px;
-      cursor: pointer;
-      margin-bottom: 4px;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
-
-    .btn-primary {
-      background: var(--blue-main);
-      color: #fff;
-      transition: background 0.15s;
-    }
-
-    .btn-primary:hover {
-      background: var(--blue-bright);
-    }
-
-    .btn-outline {
-      background: #fff;
-      color: var(--blue-main);
-      border: 2px solid var(--blue-main);
-    }
-
-    .btn-outline:hover {
-      background: var(--blue-light);
-    }
-
-    .btn-small {
-      padding: 4px 8px;
-      font-size: 9px;
-      margin-top: 4px;
-    }
-
-    .export-hint {
-      font-size: 9px;
-      color: var(--grey-sub);
-      text-align: center;
-      margin-top: 6px;
-      font-weight: 600;
-      line-height: 1.4;
-    }
-
-    /* ================================================================
-       MODAL CROPPER
+       MODAL CROPPER (sin cambios)
        ================================================================ */
     .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(10, 18, 42, 0.85);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      padding: 15px;
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(10,18,42,0.85); display: none; align-items: center; justify-content: center;
+      z-index: 9999; padding: 15px;
     }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
+    .modal-overlay.active { display: flex; }
     .modal-content {
-      background: #fff;
-      border-radius: 14px;
-      width: 100%;
-      max-width: 480px;
-      padding: 18px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      background: #fff; border-radius: 14px; width: 100%; max-width: 480px; padding: 18px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
-
-    .modal-content h3 {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--blue-main);
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    .img-container {
-      width: 100%;
-      height: 280px;
-      background: #f0f0f0;
-      margin-bottom: 12px;
-      overflow: hidden;
-      border-radius: 10px;
-    }
-
-    .img-container img {
-      max-width: 100%;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-    }
+    .modal-content h3 { font-size: 16px; font-weight: 800; color: #0A227A; margin-bottom: 10px; text-align: center; }
+    .img-container { width: 100%; height: 280px; background: #f0f0f0; margin-bottom: 12px; overflow: hidden; border-radius: 10px; }
+    .img-container img { max-width: 100%; }
+    .modal-actions { display: flex; gap: 10px; }
 
     /* ================================================================
        VISTA PREVIA (stage)
        ================================================================ */
     #stage {
-      flex: 1;
-      padding: 24px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
-      overflow-y: auto;
-      width: 100%;
+      flex: 1; padding: 24px 20px; display: flex; flex-direction: column;
+      align-items: center; gap: 30px; overflow-y: auto; width: 100%;
     }
-
-    .preview-block {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
+    .preview-block { width: 100%; display: flex; flex-direction: column; align-items: center; }
     .preview-block h3 {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--grey-sub);
-      text-transform: uppercase;
-      text-align: center;
-      margin-bottom: 8px;
-      letter-spacing: 0.06em;
+      font-size: 11px; font-weight: 700; color: #656E85; text-transform: uppercase;
+      text-align: center; margin-bottom: 8px; letter-spacing: 0.06em;
     }
 
-    /* ================================================================
-       MEJORA 6 (revisada): la vista previa usa el espacio disponible
-       automáticamente en lugar de tener un tamaño fijo pequeño con
-       controles de zoom manuales. El ancho se calcula con clamp() en
-       base al viewport, y la función fitAll() (JS) reescala el flyer
-       cada vez que cambia el tamaño de pantalla.
-       ================================================================ */
     .preview-frame {
-      box-shadow: 0 6px 18px rgba(10, 34, 122, 0.10);
-      border-radius: var(--radius-card);
+      box-shadow: 0 6px 18px rgba(10,34,122,0.10);
+      border-radius: 0;
       overflow: hidden;
-      background: #fff;
+      background: transparent;
     }
 
-    #wrap916 {
-      width: clamp(240px, 30vw, 460px);
-      aspect-ratio: 9 / 16;
-    }
-
-    #wrap11 {
-      width: clamp(280px, 34vw, 520px);
-      aspect-ratio: 1 / 1;
-    }
-
-    .scaler {
-      transform-origin: top left;
-    }
+    #wrap916 { width: clamp(240px, 30vw, 460px); aspect-ratio: 9 / 16; }
+    #wrap11 { width: clamp(280px, 34vw, 520px); aspect-ratio: 1 / 1; }
+    .scaler { transform-origin: top left; }
 
     /* ================================================================
-       ESTILO DEL FLYER (la tarjeta que se genera)
-       MEJORA 1: esquinas redondeadas en toda la tarjeta
+       NUEVO DISEÑO DEL FLYER – PROFESIONAL, SIN TARJETAS, FONDO DE ESTADIO
        ================================================================ */
     .card {
-      width: 1080px;
-      background: linear-gradient(145deg, #FFFFFF 45%, #EBF1FD 100%);
-      color: var(--blue-main);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      box-sizing: border-box;
-      border-radius: var(--radius-card);
+      border-radius: 0 !important;
+      background: transparent !important;
       overflow: hidden;
+      position: relative;
     }
 
-    .card-916 {
-      height: 1920px;
-      padding: 70px 65px;
-    }
+    .card-916 { height: 1920px; width: 1080px; }
+    .card-11 { height: 1080px; width: 1080px; }
 
-    .card-11 {
-      height: 1080px;
-      padding: 45px 55px;
-      /* El Feed se sube tal cual a Instagram: sin esquinas redondeadas
-         propias, para que no queden triángulos de fondo visibles en las
-         puntas del cuadrado cuando se publica. */
-      border-radius: 0;
-    }
-
+    /* Contenedor del contenido – ocupa toda la tarjeta */
     .card-content {
       position: relative;
-      z-index: 2;
       width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 50px;
+      z-index: 4;
+      color: #fff;
     }
 
-    .header-row {
+    /* ===== FONDOS ===== */
+    .flyer-background {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      background:
+        /* Luces de estadio */
+        radial-gradient(ellipse at 30% 10%, rgba(46,134,171,0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 10%, rgba(46,134,171,0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.04) 0%, transparent 60%),
+        /* Reflectores */
+        radial-gradient(ellipse at 20% 0%, rgba(46,134,171,0.15) 0%, transparent 30%),
+        radial-gradient(ellipse at 80% 0%, rgba(46,134,171,0.15) 0%, transparent 30%),
+        /* Gradiente base azul profundo */
+        linear-gradient(180deg, #0B132B 0%, #141E3A 40%, #1A2A6C 100%);
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Overlay oscuro con viñeta */
+    .flyer-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 2;
+      background:
+        radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.6) 100%);
+      pointer-events: none;
+    }
+
+    /* Textura deportiva: líneas de césped + grano */
+    .flyer-texture {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 3;
+      pointer-events: none;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 20px),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      background-blend-mode: overlay;
+    }
+
+    /* ===== ENCABEZADO ===== */
+    .flyer-header {
       display: flex;
       align-items: center;
       gap: 20px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 5;
     }
 
-    .header-logo-box {
-      width: 100px;
-      height: 100px;
+    .flyer-header .club-crest {
+      width: 70px;
+      height: 70px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+    }
+    .flyer-header .club-crest img {
+      width: 100%; height: 100%; object-fit: contain;
+    }
+
+    .flyer-header .club-name {
+      display: flex;
+      flex-direction: column;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.1;
+      letter-spacing: 0.04em;
+    }
+    .flyer-header .club-name .line1 {
+      font-size: 22px;
+      color: rgba(255,255,255,0.7);
+    }
+    .flyer-header .club-name .line2 {
+      font-size: 28px;
+      color: #fff;
+    }
+
+    /* ===== CATEGORÍA ===== */
+    .flyer-category {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 34px;
+      letter-spacing: 0.25em;
+      color: var(--blue-electric);
+      text-transform: uppercase;
+      margin: 6px 0 12px 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* ===== TÍTULO ===== */
+    .flyer-title {
+      font-family: 'Bebas Neue', sans-serif;
+      text-transform: uppercase;
+      line-height: 0.85;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 5;
+    }
+    .flyer-title .dyn-t1 {
+      font-size: 110px;
+      color: #fff;
+      display: block;
+      letter-spacing: 0.02em;
+    }
+    .flyer-title .dyn-t2 {
+      font-size: 160px;
+      color: var(--blue-electric);
+      display: block;
+      letter-spacing: 0.01em;
+    }
+
+    /* ===== EQUIPOS ===== */
+    .flyer-teams {
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 40px;
+      margin: 20px 0 30px 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    .team {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      min-width: 0;
+    }
+    .team .team-crest {
+      width: 200px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .team .team-crest img {
+      width: 100%; height: 100%; object-fit: contain;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+    }
+    .team .team-crest .generated-shield {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: #fff;
+      text-align: center;
+      background: rgba(255,255,255,0.1);
+      border: 2px dashed rgba(255,255,255,0.3);
+      border-radius: 50%;
+      padding: 10px;
+    }
+    .team .team-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: #fff;
+      text-transform: uppercase;
+      text-align: center;
+      margin-top: 12px;
+      letter-spacing: 0.04em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    }
+
+    .team-vs {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 60px;
+      color: var(--blue-electric);
+      font-weight: 700;
+      flex-shrink: 0;
+      padding: 0 10px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+
+    /* ===== INFORMACIÓN (fecha | hora | estadio) ===== */
+    .flyer-info {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0 20px 0;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      padding: 20px 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      text-align: center;
+      min-width: 0;
+    }
+    .info-divider {
+      width: 1px;
+      background: rgba(255,255,255,0.2);
       flex-shrink: 0;
     }
 
-    .card-11 .header-logo-box {
-      width: 65px;
-      height: 65px;
-    }
-
-    .header-logo-box img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-
-    .header-text {
-      font-family: var(--font-body);
-      font-weight: 900;
+    .info-item .info-day {
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.7);
       text-transform: uppercase;
-      color: var(--blue-bright);
-      line-height: 1.15;
+      letter-spacing: 0.1em;
     }
-
-    .header-text .t-sub {
-      font-size: 22px;
-      letter-spacing: 0.02em;
-      display: block;
-    }
-
-    .header-text .t-main {
-      font-size: 26px;
-      letter-spacing: 0.02em;
-      display: block;
-    }
-
-    .card-11 .header-text .t-sub {
-      font-size: 15px;
-    }
-
-    .card-11 .header-text .t-main {
-      font-size: 18px;
-    }
-
-    .title-box {
-      margin-top: 25px;
-      font-family: var(--font-title);
-      text-transform: uppercase;
-      line-height: 0.82;
-      color: var(--blue-main);
-    }
-
-    .title-box .t1 {
-      font-size: 140px;
-      display: block;
-      letter-spacing: 0.02em;
-    }
-
-    .title-box .t2 {
-      font-size: 210px;
-      display: block;
-      letter-spacing: 0.01em;
-    }
-
-    .card-11 .title-box {
-      margin-top: 10px;
-    }
-
-    .card-11 .title-box .t1 {
-      font-size: 80px;
-    }
-
-    .card-11 .title-box .t2 {
-      font-size: 115px;
-    }
-
-    .divider-thick {
-      height: 3px;
-      background: var(--blue-main);
-      margin: 30px 0;
-      border: none;
-      border-radius: 3px;
-    }
-
-    .card-11 .divider-thick {
-      margin: 15px 0;
-    }
-
-    .pill-container {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-
-    .card-11 .pill-container {
-      margin-bottom: 20px;
-    }
-
-    .pill-cat {
-      display: inline-block;
-      background: var(--blue-bright);
-      color: #FFFFFF;
-      font-family: var(--font-title);
-      font-size: 44px;
-      padding: 8px 45px;
-      border-radius: 999px;
-      letter-spacing: 0.04em;
-      line-height: 1;
-    }
-
-    .card-11 .pill-cat {
-      font-size: 26px;
-      padding: 5px 30px;
-    }
-
-    /* ===== MODO VS ===== */
-    .vs-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 35px;
-      margin-bottom: 35px;
-    }
-
-    .card-11 .vs-container {
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-
-    .team-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 320px;
-    }
-
-    .card-11 .team-card {
-      width: 190px;
-    }
-
-    .shield-frame {
-      width: 320px;
-      height: 320px;
-      border: 3px solid var(--blue-bright);
-      border-radius: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: #FFFFFF;
-      box-shadow: 0 10px 25px rgba(21, 69, 216, 0.08);
-      overflow: hidden;
-    }
-
-    .card-11 .shield-frame {
-      width: 190px;
-      height: 190px;
-      padding: 12px;
-      border-radius: 18px;
-    }
-
-    .shield-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .generated-shield {
-      width: 100%;
-      height: 100%;
-      background: var(--blue-light);
-      border: 2px dashed var(--blue-bright);
-      border-radius: 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 10px;
-      color: var(--blue-main);
-    }
-
-    .generated-shield .gen-text {
-      font-family: var(--font-title);
-      font-size: 28px;
-      line-height: 1;
-    }
-
-    .card-11 .generated-shield .gen-text {
-      font-size: 18px;
-    }
-
-    .team-name {
-      margin-top: 14px;
-      font-family: var(--font-title);
-      font-size: 36px;
-      color: var(--blue-main);
-      text-align: center;
-      letter-spacing: 0.02em;
-    }
-
-    .card-11 .team-name {
-      font-size: 22px;
-      margin-top: 8px;
-    }
-
-    .vs-label {
-      font-family: var(--font-title);
-      font-size: 90px;
-      color: var(--blue-bright);
-    }
-
-    .card-11 .vs-label {
-      font-size: 50px;
-    }
-
-    /* ===== MODO CRONOGRAMA ===== */
-    .schedule-container {
-      width: 100%;
-      margin: 20px 0 35px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .card-11 .schedule-container {
-      margin: 10px 0 20px 0;
-      gap: 8px;
-    }
-
-    .schedule-row {
-      display: flex;
-      align-items: center;
-      background: #FFFFFF;
-      border: 2px solid var(--blue-bright);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(21, 69, 216, 0.06);
-    }
-
-    .card-11 .schedule-row {
-      border-radius: 14px;
-    }
-
-    .sched-time {
-      width: 30%;
-      background: var(--blue-main);
-      color: #fff;
-      font-family: var(--font-title);
-      font-size: 45px;
-      text-align: center;
-      padding: 15px 10px;
-      line-height: 1;
-    }
-
-    .card-11 .sched-time {
-      font-size: 26px;
-      padding: 8px 5px;
-    }
-
-    .sched-div {
-      width: 15%;
-      font-family: var(--font-body);
-      font-weight: 800;
-      font-size: 22px;
-      color: var(--grey-sub);
-      text-align: center;
-      border-right: 2px solid var(--grey-border);
-    }
-
-    .card-11 .sched-div {
-      font-size: 13px;
-    }
-
-    .sched-cat {
-      width: 55%;
-      font-family: var(--font-title);
+    .info-item .info-date {
       font-size: 48px;
-      color: var(--blue-bright);
-      padding-left: 25px;
-      letter-spacing: 0.02em;
-    }
-
-    .card-11 .sched-cat {
-      font-size: 28px;
-      padding-left: 15px;
-    }
-
-    /* ===== ESTADIO ===== */
-    .stadium-container {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .stadium-main {
-      font-family: var(--font-title);
-      font-size: 52px;
-      color: var(--blue-main);
-      letter-spacing: 0.02em;
+      font-family: 'Bebas Neue', sans-serif;
+      color: #fff;
       line-height: 1;
     }
-
-    .card-11 .stadium-main {
-      font-size: 32px;
+    .info-item .info-time {
+      font-size: 48px;
+      font-family: 'Bebas Neue', sans-serif;
+      color: #fff;
+      line-height: 1;
+    }
+    .info-item .info-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .info-item .info-stadium {
+      font-size: 24px;
+      font-family: 'Bebas Neue', sans-serif;
+      color: #fff;
+      line-height: 1.2;
     }
 
-    .stadium-sub {
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--grey-sub);
+    /* ===== COMPETENCIA ===== */
+    .flyer-competition {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      margin-top: 4px;
+      line-height: 1.4;
+      margin-top: 10px;
+      position: relative;
+      z-index: 5;
     }
+    .flyer-competition .dyn-foot-r1 { display: block; }
+    .flyer-competition .dyn-foot-r2 { display: block; color: var(--blue-electric); }
 
-    .card-11 .stadium-sub {
-      font-size: 13px;
-    }
-
-    .divider-thin {
-      height: 1px;
-      background: var(--grey-border);
-      margin: 25px 0;
-      border: none;
-    }
-
-    .card-11 .divider-thin {
-      margin: 12px 0;
-    }
-
-    /* ===== INFO HORA/FECHA ===== */
-    .info-box {
-      border: 2px solid var(--blue-bright);
-      border-radius: 22px;
-      padding: 20px 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      margin-bottom: 25px;
-      background: #FFFFFF;
-    }
-
-    .card-11 .info-box {
-      padding: 10px 20px;
-      border-radius: 16px;
-      margin-bottom: 14px;
-    }
-
-    .info-element {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .card-11 .info-element {
-      gap: 10px;
-    }
-
-    .time-text {
-      font-family: var(--font-title);
-      font-size: 75px;
-      color: var(--blue-main);
-      line-height: 1;
-    }
-
-    .card-11 .time-text {
-      font-size: 42px;
-    }
-
-    .date-day {
-      font-family: var(--font-title);
-      font-size: 30px;
-      color: var(--blue-bright);
-      line-height: 1;
-    }
-
-    .card-11 .date-day {
-      font-size: 18px;
-    }
-
-    .date-num {
-      font-family: var(--font-title);
-      font-size: 65px;
-      color: var(--blue-main);
-      line-height: 0.9;
-    }
-
-    .card-11 .date-num {
-      font-size: 38px;
-    }
-
-    .info-pipe {
-      width: 2px;
-      height: 60px;
-      background: var(--grey-border);
-    }
-
-    .card-11 .info-pipe {
-      height: 38px;
-    }
-
-    /* ===== ACCESOS ===== */
-    .access-box {
-      border: 2px solid var(--blue-bright);
-      border-radius: 18px;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 15px;
-      background: #FFFFFF;
-    }
-
-    .card-11 .access-box {
-      padding: 8px 14px;
-      border-radius: 12px;
-      margin-bottom: 8px;
-      gap: 12px;
-    }
-
-    .access-title {
-      font-family: var(--font-title);
-      font-size: 26px;
-      color: var(--blue-bright);
-      line-height: 1;
-    }
-
-    .card-11 .access-title {
-      font-size: 16px;
-    }
-
-    .access-detail {
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--blue-main);
-      text-transform: uppercase;
-    }
-
-    .card-11 .access-detail {
-      font-size: 12px;
-    }
-
-    /* ===== MODO RESULTADO ===== */
-    .score-box {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      font-family: var(--font-title);
-    }
-
-    .score-num {
-      font-size: 110px;
-      color: var(--blue-main);
-      line-height: 1;
-    }
-
-    .card-11 .score-num {
-      font-size: 64px;
-    }
-
-    .score-sep {
-      font-size: 70px;
-      color: var(--blue-bright);
-    }
-
-    .card-11 .score-sep {
-      font-size: 40px;
-    }
-
-    .goleadores-box {
-      width: 100%;
-      border: 2px solid var(--blue-bright);
-      border-radius: 20px;
-      padding: 20px 25px;
-      margin-bottom: 25px;
-      background: #FFFFFF;
-    }
-
-    .card-11 .goleadores-box {
-      padding: 12px 16px;
-      border-radius: 14px;
-      margin-bottom: 14px;
-    }
-
-    .goleadores-title {
-      font-family: var(--font-title);
-      font-size: 26px;
-      color: var(--blue-bright);
-      letter-spacing: 0.05em;
+    /* ===== SLOGAN ===== */
+    .flyer-slogan {
       text-align: center;
-      margin-bottom: 14px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 30px;
+      color: #fff;
+      letter-spacing: 0.06em;
+      margin-top: 8px;
+      position: relative;
+      z-index: 5;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
 
-    .card-11 .goleadores-title {
-      font-size: 16px;
-      margin-bottom: 8px;
+    /* ===== SPONSOR ===== */
+    .flyer-sponsor {
+      text-align: center;
+      margin-top: 12px;
+      position: relative;
+      z-index: 5;
+    }
+    .flyer-sponsor img {
+      max-height: 80px;
+      max-width: 200px;
+      object-fit: contain;
+      filter: brightness(0.85) contrast(1.1) drop-shadow(0 4px 12px rgba(0,0,0,0.3));
     }
 
-    .goleadores-list {
+    /* ================================================================
+       AJUSTES PARA FORMATO 1:1
+       ================================================================ */
+    .card-11 .flyer-header .club-crest { width: 50px; height: 50px; }
+    .card-11 .flyer-header .club-name .line1 { font-size: 16px; }
+    .card-11 .flyer-header .club-name .line2 { font-size: 20px; }
+
+    .card-11 .flyer-category { font-size: 24px; margin: 4px 0 8px 0; }
+
+    .card-11 .flyer-title .dyn-t1 { font-size: 70px; }
+    .card-11 .flyer-title .dyn-t2 { font-size: 100px; }
+
+    .card-11 .team .team-crest { width: 130px; height: 130px; }
+    .card-11 .team .team-name { font-size: 22px; }
+    .card-11 .team-vs { font-size: 40px; }
+
+    .card-11 .flyer-info .info-date,
+    .card-11 .flyer-info .info-time { font-size: 32px; }
+    .card-11 .flyer-info .info-stadium { font-size: 18px; }
+    .card-11 .flyer-info .info-day { font-size: 13px; }
+    .card-11 .flyer-info .info-label { font-size: 12px; }
+
+    .card-11 .flyer-competition { font-size: 14px; }
+    .card-11 .flyer-slogan { font-size: 20px; }
+    .card-11 .flyer-sponsor img { max-height: 60px; max-width: 150px; }
+
+    /* ================================================================
+       MODO LIBRE (CRONOGRAMA) – se integra en .flyer-teams
+       ================================================================ */
+    .flyer-schedule {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 20px 0;
+      position: relative;
+      z-index: 5;
+    }
+    .flyer-schedule .sched-row {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px;
+      padding: 8px 16px;
+      backdrop-filter: blur(4px);
+    }
+    .flyer-schedule .sched-time {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--blue-electric);
+      width: 120px;
+      flex-shrink: 0;
+    }
+    .flyer-schedule .sched-cat {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: #fff;
+      flex: 1;
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
+    .card-11 .flyer-schedule .sched-time { font-size: 20px; width: 80px; }
+    .card-11 .flyer-schedule .sched-cat { font-size: 20px; }
+
+    /* ================================================================
+       MODO RESULTADO (marcador) – se integra en .flyer-teams
+       ================================================================ */
+    .flyer-resultado {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      margin: 20px 0;
+      position: relative;
+      z-index: 5;
+    }
+    .flyer-resultado .team { flex: 1; }
+    .flyer-resultado .score {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .flyer-resultado .score .score-sep { color: var(--blue-electric); font-size: 60px; }
+    .card-11 .flyer-resultado .score { font-size: 50px; }
+    .card-11 .flyer-resultado .score .score-sep { font-size: 40px; }
+
+    .flyer-goleadores {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
-    }
-
-    .goleador-chip {
-      background: var(--blue-light);
-      color: var(--blue-main);
-      font-weight: 800;
-      font-size: 22px;
-      padding: 8px 18px;
-      border-radius: 999px;
-    }
-
-    .card-11 .goleador-chip {
-      font-size: 13px;
-      padding: 5px 12px;
-    }
-
-    /* ===== MODO GENÉRICO ===== */
-    .generico-container {
-      width: 100%;
-      margin: 20px 0 35px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .card-11 .generico-container {
-      margin: 10px 0 20px 0;
-      gap: 12px;
-    }
-
-    .generico-img-canvas {
+      gap: 8px 16px;
+      margin: 10px 0 10px 0;
       position: relative;
-      width: 100%;
-      border-radius: 22px;
-      overflow: hidden;
-      background: var(--blue-light);
+      z-index: 5;
     }
-
-    .card-11 .generico-img-canvas {
-      /* Feed = Instagram: sin esquinas redondeadas propias (ver .card-11) */
-      border-radius: 0;
-    }
-
-    .generico-img-frame {
-      position: absolute;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 3px solid var(--blue-bright);
-      background: #fff;
-    }
-
-    .card-11 .generico-img-frame {
-      border-radius: 0;
-    }
-
-    .generico-img-frame img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .generico-texto {
-      font-family: var(--font-body);
+    .flyer-goleadores .gol-chip {
+      font-family: 'Montserrat', sans-serif;
       font-weight: 700;
-      font-size: 32px;
-      color: var(--text-dark);
-      text-align: center;
-      line-height: 1.35;
-      white-space: pre-wrap;
+      font-size: 18px;
+      color: rgba(255,255,255,0.9);
+      background: rgba(46,134,171,0.25);
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(46,134,171,0.3);
     }
-
-    .card-11 .generico-texto {
-      font-size: 19px;
-    }
+    .card-11 .flyer-goleadores .gol-chip { font-size: 14px; padding: 3px 10px; }
 
     /* ================================================================
-       MODO GENÉRICO · ESTILO MINIMALISTA (VIDRIO)
-       Foto a pantalla completa (se extiende hasta los bordes de la
-       tarjeta, invadiendo el padding) con encabezado y pie flotando
-       encima como barras "glass" semi-transparentes con blur.
+       MODO GENÉRICO – se adapta al nuevo estilo
        ================================================================ */
-    .card-content.generico-minimal {
-      justify-content: space-between;
-    }
-
-    .generico-minimal-bg {
-      position: absolute;
-      background-size: cover;
-      background-position: center;
-      background-color: var(--blue-light);
-      z-index: 1;
-    }
-
-    .card-916 .generico-minimal-bg {
-      top: -70px;
-      left: -65px;
-      right: -65px;
-      bottom: -70px;
-    }
-
-    .card-11 .generico-minimal-bg {
-      top: -45px;
-      left: -55px;
-      right: -55px;
-      bottom: -45px;
-    }
-
-    .generico-glass {
-      position: relative;
-      z-index: 2;
-      background-repeat: no-repeat;
-      border: 1px solid rgba(255, 255, 255, 0.65);
-      box-shadow: 0 10px 30px rgba(10, 34, 122, 0.18);
-    }
-
-    .generico-minimal-header {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      padding: 20px 28px;
-      border-radius: 26px;
-    }
-
-    .card-11 .generico-minimal-header {
-      padding: 12px 18px;
-      gap: 12px;
-      border-radius: 18px;
-    }
-
-    .generico-minimal-mid {
-      position: relative;
-      z-index: 2;
-      flex: 1;
+    .flyer-generico {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 18px;
-      text-align: center;
-      padding: 24px 10px;
+      flex: 1;
+      gap: 20px;
+      position: relative;
+      z-index: 5;
+      padding: 20px 0;
     }
-
-    .generico-minimal-category {
-      display: inline-block;
-      font-family: var(--font-title);
-      font-size: 40px;
-      color: var(--blue-main);
-      padding: 8px 36px;
-      border-radius: 999px;
-      letter-spacing: 0.04em;
-      line-height: 1;
-    }
-
-    .card-11 .generico-minimal-category {
-      font-size: 22px;
-      padding: 5px 24px;
-    }
-
-    .generico-minimal-title {
-      font-family: var(--font-title);
-      color: var(--blue-main);
-      text-transform: uppercase;
-      line-height: 0.9;
-      padding: 14px 34px;
-      border-radius: 24px;
-    }
-
-    .generico-minimal-title .t1 {
-      font-size: 74px;
-      display: block;
-      letter-spacing: 0.02em;
-    }
-
-    .generico-minimal-title .t2 {
-      font-size: 108px;
-      display: block;
-      letter-spacing: 0.01em;
-    }
-
-    .card-11 .generico-minimal-title {
-      padding: 8px 20px;
-      border-radius: 16px;
-    }
-
-    .card-11 .generico-minimal-title .t1 {
-      font-size: 40px;
-    }
-
-    .card-11 .generico-minimal-title .t2 {
-      font-size: 58px;
-    }
-
-    .generico-minimal-texto {
-      font-family: var(--font-body);
-      font-weight: 700;
-      font-size: 26px;
-      color: var(--text-dark);
-      line-height: 1.35;
-      white-space: pre-wrap;
-      max-width: 82%;
-      padding: 16px 26px;
-      border-radius: 20px;
-    }
-
-    .card-11 .generico-minimal-texto {
-      font-size: 15px;
-      padding: 10px 16px;
-      border-radius: 14px;
-    }
-
-    .generico-minimal-footer {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      padding: 18px 26px;
-      border-radius: 26px;
-    }
-
-    .card-11 .generico-minimal-footer {
-      padding: 12px 18px;
-      gap: 8px;
-      border-radius: 18px;
-    }
-
-    .generico-minimal-footer .footer-section {
-      padding-top: 0;
-      border-top: none;
-      margin-top: 0;
-    }
-
-    .generico-minimal-footer .sponsor-strip {
-      border: none;
-      padding: 0 0 12px 0;
-      margin-bottom: 0;
-    }
-
-    .card-11 .generico-minimal-footer .sponsor-strip {
-      padding-bottom: 8px;
-    }
-
-    /* ===== PUBLICIDAD ===== */
-    .sponsor-strip {
+    .flyer-generico .gen-img-frame {
       width: 100%;
-      border: 2px solid var(--grey-border);
-      border-radius: 18px;
-      padding: 14px 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
-      background: #FFFFFF;
-    }
-
-    .card-11 .sponsor-strip {
-      padding: 8px 12px;
+      max-width: 800px;
       border-radius: 12px;
-      margin-bottom: 10px;
-      gap: 5px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
-
-    .sponsor-label {
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--grey-sub);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    .flyer-generico .gen-img-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
     }
-
-    .card-11 .sponsor-label {
-      font-size: 9px;
-    }
-
-    .sponsor-strip img {
-      max-width: 100%;
-      max-height: 110px;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-
-    .card-11 .sponsor-strip img {
-      max-height: 60px;
-    }
-
-    /* ================================================================
-       PIE DE PÁGINA
-       ================================================================ */
-    .footer-section {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 20px;
-      border-top: 3px solid var(--blue-main);
-      margin-top: auto;
-      gap: 16px;
-    }
-
-    .card-11 .footer-section {
-      padding-top: 18px;
-      margin-top: 18px;
-      border-top-width: 2px;
-    }
-
-    .footer-left {
-      display: flex;
-      align-items: center;
-    }
-
-    .footer-slogan {
-      font-family: var(--font-title);
-      font-size: 42px;
-      color: var(--blue-bright);
-      letter-spacing: 0.02em;
-    }
-
-    .card-11 .footer-slogan {
-      font-size: 28px;
-    }
-
-    .footer-right {
-      text-align: right;
-    }
-
-    .footer-r1 {
-      font-size: 14px;
+    .flyer-generico .gen-texto {
+      font-family: 'Montserrat', sans-serif;
       font-weight: 700;
-      color: var(--grey-sub);
-      text-transform: uppercase;
-      margin-bottom: 2px;
+      font-size: 28px;
+      color: #fff;
+      text-align: center;
+      max-width: 80%;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
     }
+    .card-11 .flyer-generico .gen-texto { font-size: 20px; }
+    .card-11 .flyer-generico .gen-img-frame { max-width: 500px; }
 
-    .footer-r2 {
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--blue-main);
-      text-transform: uppercase;
+    /* ===== FONDO PERSONALIZADO ===== */
+    .card.has-custom-bg .flyer-background {
+      background-size: cover !important;
+      background-position: center !important;
     }
-
-    .card-11 .footer-r1 {
-      font-size: 11px;
-      margin-bottom: 3px;
-    }
-
-    .card-11 .footer-r2 {
-      font-size: 13px;
+    .card.has-custom-bg .flyer-overlay {
+      background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.7) 100%) !important;
     }
 
     /* ================================================================
        ELEMENTO OCULTO PARA EXPORTACIÓN
-       Se posiciona dentro del viewport (con opacidad 0) en lugar de
-       muy lejos a la izquierda: algunos navegadores móviles recortan
-       o fallan al capturar contenido fuera del área visible, lo que
-       provocaba que la descarga de imágenes no funcionara en celulares.
        ================================================================ */
     #offscreen {
       position: fixed;
@@ -1530,53 +685,18 @@
     }
 
     /* ================================================================
-       RESPONSIVIDAD
+       RESPONSIVE
        ================================================================ */
     @media (max-width: 850px) {
-      body {
-        flex-direction: column;
-      }
-
-      .mobile-tabs {
-        display: flex;
-      }
-
-      #panel {
-        width: 100%;
-        min-width: 100%;
-        height: auto;
-        position: relative;
-        padding: 16px;
-        box-shadow: none;
-      }
-
-      #stage {
-        padding: 20px 10px;
-      }
-
-      #wrap916 {
-        width: clamp(200px, 62vw, 340px);
-        aspect-ratio: 9 / 16;
-      }
-
-      #wrap11 {
-        width: clamp(220px, 78vw, 380px);
-        aspect-ratio: 1 / 1;
-      }
-
-      .view-tab-content {
-        display: none;
-      }
-
-      .view-tab-content.active {
-        display: block;
-      }
-
-      #exportbar {
-        position: relative;
-        bottom: 0;
-        margin-top: 20px;
-      }
+      body { flex-direction: column; }
+      .mobile-tabs { display: flex; }
+      #panel { width: 100%; min-width: 100%; height: auto; position: relative; padding: 16px; box-shadow: none; }
+      #stage { padding: 20px 10px; }
+      #wrap916 { width: clamp(200px, 62vw, 340px); aspect-ratio: 9 / 16; }
+      #wrap11 { width: clamp(220px, 78vw, 380px); aspect-ratio: 1 / 1; }
+      .view-tab-content { display: none; }
+      .view-tab-content.active { display: block; }
+      #exportbar { position: relative; bottom: 0; margin-top: 20px; }
     }
   </style>
 </head>
@@ -1600,13 +720,12 @@
       <p class="sub">Club Social y Deportivo Cerámica Argentina</p>
     </div>
 
-    <!-- MEJORA 5/9: acciones rápidas para contraer/expandir todas las secciones -->
     <div class="panel-quick-actions">
       <button type="button" id="btn-expand-all">Expandir Todo</button>
       <button type="button" id="btn-collapse-all">Contraer Todo</button>
     </div>
 
-    <!-- PASO 1: ESCUDO DEL CLUB (abierto por defecto) -->
+    <!-- PASO 1: ESCUDO DEL CLUB -->
     <details class="fs fs-highlight" open>
       <summary>1. Escudo del Club</summary>
       <div class="fs-body">
@@ -1618,7 +737,7 @@
       </div>
     </details>
 
-    <!-- PASO 2: CATEGORÍA (abierto por defecto) -->
+    <!-- PASO 2: CATEGORÍA -->
     <details class="fs" open>
       <summary>2. Categoría</summary>
       <div class="fs-body">
@@ -1631,7 +750,7 @@
       </div>
     </details>
 
-    <!-- PASO 3: TIPO DE FLYER (abierto por defecto) -->
+    <!-- PASO 3: TIPO DE FLYER -->
     <details class="fs" open>
       <summary>3. Formato de Flyer</summary>
       <div class="fs-body">
@@ -1645,7 +764,7 @@
       </div>
     </details>
 
-    <!-- ENCABEZADO (contraído por defecto para ahorrar espacio) -->
+    <!-- ENCABEZADO -->
     <details class="fs">
       <summary>Encabezado</summary>
       <div class="fs-body">
@@ -1659,8 +778,8 @@
         <input type="text" class="in-t2" value="PARTIDO">
         <label>Subtítulo (se muestra en la pill)</label>
         <input type="text" class="in-cat" value="AMISTOSO">
-        <p style="font-size:9px; color:var(--grey-sub); margin-top:-2px; font-weight:600;">
-          La categoría (Primera/Seniors/Inferiores) se muestra como una insignia de color debajo del encabezado.
+        <p style="font-size:9px; color:#656E85; margin-top:-2px; font-weight:600;">
+          La categoría (Primera/Seniors/Inferiores) se muestra como texto destacado.
         </p>
       </div>
     </details>
@@ -1743,7 +862,7 @@
             <input type="file" accept="image/*" id="file-generico">
           </div>
           <div id="generico-img-actions" style="display:none; flex-direction:column; gap:6px; margin-bottom:8px;">
-            <p style="font-size:9px; color:var(--grey-sub); font-weight:600; margin:0;">
+            <p style="font-size:9px; color:#656E85; font-weight:600; margin:0;">
               Historia y Feed tienen formas distintas: ajustá el recorte para cada uno.
             </p>
             <div style="display:flex; gap:6px; align-items:center;">
@@ -1767,13 +886,13 @@
                 <input type="range" id="in-gen-posy" min="0" max="100" value="50" step="1">
               </div>
             </div>
-            <p style="font-size:9px; color:var(--grey-sub); font-weight:600; margin:0 0 6px 0;">
-              Solo tiene efecto cuando el formato de la imagen no llena todo el espacio disponible (por ejemplo, una foto cuadrada dentro de un espacio horizontal).
+            <p style="font-size:9px; color:#656E85; font-weight:600; margin:0 0 6px 0;">
+              Solo tiene efecto cuando el formato de la imagen no llena todo el espacio disponible.
             </p>
           </div>
           <label>Texto Libre</label>
           <textarea id="in-gen-texto" rows="5"
-            style="width:100%; padding:8px; font-size:12px; border:1px solid var(--grey-border); border-radius:6px; font-family:inherit; font-weight:600; resize:vertical;"
+            style="width:100%; padding:8px; font-size:12px; border:1px solid #D1D9ED; border-radius:6px; font-family:inherit; font-weight:600; resize:vertical;"
             placeholder="Escribí acá lo que necesites: festejo, aviso, agradecimiento, promoción, lo que se te ocurra...">¡Gracias por acompañarnos siempre!</textarea>
         </div>
       </details>
@@ -1786,29 +905,29 @@
             <div class="style-opt active" data-style="tradicional">Tradicional</div>
             <div class="style-opt" data-style="minimal">Minimalista (vidrio)</div>
           </div>
-          <p style="font-size:9px; color:var(--grey-sub); font-weight:600; margin:6px 0 10px 0;">
+          <p style="font-size:9px; color:#656E85; font-weight:600; margin:6px 0 10px 0;">
             "Minimalista" pone la foto a pantalla completa y deja el encabezado y el pie como
             barras finas semi-transparentes (efecto vidrio) flotando sobre la imagen.
           </p>
 
           <label>Elementos a mostrar</label>
           <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
               <input type="checkbox" id="in-gen-show-header" checked style="width:auto; margin:0;"> Encabezado (escudo + marca)
             </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
               <input type="checkbox" id="in-gen-show-categoria" checked style="width:auto; margin:0;"> Categoría
             </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
               <input type="checkbox" id="in-gen-show-titulo" checked style="width:auto; margin:0;"> Título grande
             </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
               <input type="checkbox" id="in-gen-show-texto" checked style="width:auto; margin:0;"> Texto libre
             </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
               <input type="checkbox" id="in-gen-show-sponsors" checked style="width:auto; margin:0;"> Sponsors
             </label>
-            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:var(--text-dark);">
+            <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
               <input type="checkbox" id="in-gen-show-footer" checked style="width:auto; margin:0;"> Pie de página
             </label>
           </div>
@@ -1892,8 +1011,7 @@
           <img class="mini mini-sponsor" src="" alt="" style="display:none;">
           <input type="file" accept="image/*" id="file-sponsor">
         </div>
-        <button class="btn btn-outline btn-small" id="btn-remove-sponsor" style="display:none;">✕ Quitar
-          Publicidad</button>
+        <button class="btn btn-outline btn-small" id="btn-remove-sponsor" style="display:none;">✕ Quitar Publicidad</button>
       </div>
     </details>
 
@@ -1906,10 +1024,8 @@
           <img class="mini mini-background" src="" alt="" style="display:none;">
           <input type="file" accept="image/*" id="file-background">
         </div>
-        <button class="btn btn-outline btn-small" id="btn-remove-background" style="display:none;">✕ Quitar
-          Fondo</button>
-        <p style="font-size:9px; color:var(--grey-sub); margin-top:6px;">Si no cargás nada, se usará el fondo
-          degradado original.</p>
+        <button class="btn btn-outline btn-small" id="btn-remove-background" style="display:none;">✕ Quitar Fondo</button>
+        <p style="font-size:9px; color:#656E85; margin-top:6px;">Si no cargás nada, se usará el fondo de estadio nocturno.</p>
       </div>
     </details>
 
@@ -1930,8 +1046,7 @@
     <div id="exportbar">
       <button class="btn btn-primary" id="btn-916">Descargar JPG (Historia 9:16)</button>
       <button class="btn btn-outline" id="btn-11">Descargar JPG (Feed 1:1)</button>
-      <p class="export-hint">En el celular la imagen se abre en una pestaña nueva: mantené el dedo presionado sobre
-        ella para guardarla.</p>
+      <p class="export-hint">En el celular la imagen se abre en una pestaña nueva: mantené el dedo presionado sobre ella para guardarla.</p>
     </div>
   </div>
 
@@ -1944,7 +1059,7 @@
       <div class="img-container">
         <img id="cropImage" src="" alt="Ajustar Imagen">
       </div>
-      <p id="cropModalHint" style="display:none; font-size:11px; color:var(--grey-sub); text-align:center; margin:-4px 0 12px 0; font-weight:600;">
+      <p id="cropModalHint" style="display:none; font-size:11px; color:#656E85; text-align:center; margin:-4px 0 12px 0; font-weight:600;">
         El recuadro ya tiene el tamaño y la forma exactos que va a ocupar en el flyer. Arrastrá la foto para moverla y usá los dedos (o la ruedita) para hacer zoom hasta que quede como querés.
       </p>
       <div class="modal-actions">
@@ -1994,17 +1109,17 @@
     let localShieldSrc = null;
     let rivalShieldSrc = null;
     let sponsorSrc = null;
-    let genericoImgSrcStory = null;  // recorte para el formato Historia 9:16
-    let genericoImgSrcFeed = null;   // recorte para el formato Feed 1:1
-    let genericoImgBlurStory = null; // versión desenfocada (para el "vidrio") de Historia
-    let genericoImgBlurFeed = null;  // versión desenfocada (para el "vidrio") de Feed
-    let genericoImgRatioStory = null; // relación de aspecto (ancho/alto) del recorte de Historia
-    let genericoImgRatioFeed = null;  // relación de aspecto (ancho/alto) del recorte de Feed
-    let genericoOriginalSrc = null;  // imagen original sin recortar (para poder re-ajustar sin perder calidad)
-    let genericoPendingChain = false; // true mientras se está guiando el recorte de los 2 formatos seguidos
-    let genericoStyle = 'tradicional'; // 'tradicional' | 'minimal'
-    let genericoImgPosX = 50; // posición horizontal de la imagen dentro de su espacio (0-100%)
-    let genericoImgPosY = 50; // posición vertical de la imagen dentro de su espacio (0-100%)
+    let genericoImgSrcStory = null;
+    let genericoImgSrcFeed = null;
+    let genericoImgBlurStory = null;
+    let genericoImgBlurFeed = null;
+    let genericoImgRatioStory = null;
+    let genericoImgRatioFeed = null;
+    let genericoOriginalSrc = null;
+    let genericoPendingChain = false;
+    let genericoStyle = 'tradicional';
+    let genericoImgPosX = 50;
+    let genericoImgPosY = 50;
     let backgroundImgSrc = null;
     let currentCategory = 'PRIMERA';
     let cropper = null;
@@ -2040,7 +1155,6 @@
       return { dayName: days[dateObj.getDay()], formattedDate: `${dateObj.getDate()}/${dateObj.getMonth() + 1}` };
     }
 
-    // MEJORA 8: formatea el input type="time" (HH:MM) al estilo "15HS" / "15:30HS"
     function getFormattedHora() {
       const horaInput = document.querySelector('.in-hora');
       if (!horaInput || !horaInput.value) return '15HS';
@@ -2048,64 +1162,200 @@
       return mm === '00' ? `${hh}HS` : `${hh}:${mm}HS`;
     }
 
-    function getRivalShieldHTML() {
-      if (rivalShieldSrc) return `<img src="${rivalShieldSrc}">`;
-      const rivalName = document.getElementById('in-nombre-rival').value.trim() || 'RIVAL';
-      return `<div class="generated-shield"><div class="gen-text">${rivalName}</div></div>`;
-    }
-
     function getCeramicaShieldHTML() {
-      if (localShieldSrc) return `<img src="${localShieldSrc}">`;
-      return `<div class="generated-shield"><div class="gen-text">CERÁMICA</div></div>`;
+      if (localShieldSrc) return `<img src="${localShieldSrc}" alt="Escudo Cerámica">`;
+      return `<div class="generated-shield">CERÁMICA</div>`;
     }
 
-    function parseImgRatio(str) {
-      if (!str || str === 'libre') return null;
-      const [w, h] = str.split('/').map(Number);
-      if (!w || !h) return null;
-      return w / h;
+    function getRivalShieldHTML() {
+      if (rivalShieldSrc) return `<img src="${rivalShieldSrc}" alt="Escudo Rival">`;
+      const rivalName = document.getElementById('in-nombre-rival').value.trim() || 'RIVAL';
+      return `<div class="generated-shield">${rivalName}</div>`;
     }
 
-    // Tamaño (en px, a resolución real del export) del espacio reservado para
-    // la foto en cada formato: ancho de contenido y una altura fija, igual
-    // que antes. Es el "lienzo" dentro del cual el usuario puede mover la foto.
-    const GENERICO_CANVAS = {
-      '916': { w: 950, h: 620 },
-      '11': { w: 970, h: 340 }
-    };
+    // ================================================================
+    //  CONSTRUCCIÓN DEL FLYER – NUEVO DISEÑO
+    // ================================================================
 
-    // Calcula el tamaño de la foto (ajustada por proporción, sin recortar
-    // más de lo que el usuario ya recortó) y su posición dentro del lienzo,
-    // en base a los sliders de posición horizontal/vertical (0-100%).
-    function computeGenericoPlacement(format, ratio) {
-      const canvas = GENERICO_CANVAS[format];
-      let w = canvas.w, h = canvas.h;
-      if (ratio) {
-        w = canvas.h * ratio;
-        h = canvas.h;
-        if (w > canvas.w) { w = canvas.w; h = canvas.w / ratio; }
+    function buildCardHTML(format) {
+      const mode = document.getElementById('in-mode').value;
+      if (mode === 'VS') return buildVSHTML(format);
+      if (mode === 'LIBRE') return buildLibreHTML(format);
+      if (mode === 'RESULTADO') return buildResultadoHTML(format);
+      if (mode === 'GENERICO') return buildGenericoHTML(format);
+      return '';
+    }
+
+    function buildBaseContent(innerContent, format) {
+      const is916 = format === '916';
+      const brand1 = document.querySelector('.in-brand1').value;
+      const brand2 = document.querySelector('.in-brand2').value;
+      const t1 = document.querySelector('.in-t1').value;
+      const t2 = document.querySelector('.in-t2').value;
+      const footR1 = document.querySelector('.in-foot-r1').value;
+      const footR2 = document.querySelector('.in-foot-r2').value;
+      const slogan = document.querySelector('.in-foot-slogan').value;
+      const sponsor = sponsorSrc ? `<div class="flyer-sponsor"><img src="${sponsorSrc}" alt="Sponsor"></div>` : '';
+      const ceramicaShield = getCeramicaShieldHTML();
+
+      let html = `
+        <div class="card-content">
+          <div class="flyer-background"></div>
+          <div class="flyer-overlay"></div>
+          <div class="flyer-texture"></div>
+
+          <!-- Header -->
+          <div class="flyer-header">
+            <div class="club-crest">${ceramicaShield}</div>
+            <div class="club-name">
+              <span class="line1 dyn-brand1">${brand1}</span>
+              <span class="line2 dyn-brand2">${brand2}</span>
+            </div>
+          </div>
+
+          <!-- Categoría -->
+          <div class="flyer-category">${currentCategory}</div>
+
+          <!-- Título -->
+          <div class="flyer-title">
+            <span class="dyn-t1">${t1}</span>
+            <span class="dyn-t2">${t2}</span>
+          </div>
+
+          ${innerContent}
+
+          <!-- Competencia -->
+          <div class="flyer-competition">
+            <span class="dyn-foot-r1">${footR1}</span>
+            <span class="dyn-foot-r2">${footR2}</span>
+          </div>
+
+          <!-- Slogan -->
+          <div class="flyer-slogan dyn-foot-slogan">${slogan}</div>
+
+          ${sponsor}
+        </div>
+      `;
+      return html;
+    }
+
+    // ---- MODO VS ----
+    function buildVSHTML(format) {
+      const isLocal = document.getElementById('in-condicion').value === 'LOCAL';
+      const rivalName = document.getElementById('in-nombre-rival').value.toUpperCase() || 'RIVAL';
+      const { dayName, formattedDate } = getCalculatedDateInfo();
+      const hora = getFormattedHora();
+      const estadio = document.querySelector('.in-estadio').value;
+
+      const teamHomeShield = isLocal ? getCeramicaShieldHTML() : getRivalShieldHTML();
+      const teamHomeName = isLocal ? 'CERÁMICA ARGENTINA' : rivalName;
+      const teamAwayShield = isLocal ? getRivalShieldHTML() : getCeramicaShieldHTML();
+      const teamAwayName = isLocal ? rivalName : 'CERÁMICA ARGENTINA';
+
+      const inner = `
+        <div class="flyer-teams">
+          <div class="team home">
+            <div class="team-crest">${teamHomeShield}</div>
+            <div class="team-name">${teamHomeName}</div>
+          </div>
+          <div class="team-vs">VS</div>
+          <div class="team away">
+            <div class="team-crest">${teamAwayShield}</div>
+            <div class="team-name">${teamAwayName}</div>
+          </div>
+        </div>
+
+        <div class="flyer-info">
+          <div class="info-item">
+            <span class="info-day">${dayName}</span>
+            <span class="info-date">${formattedDate}</span>
+          </div>
+          <div class="info-divider"></div>
+          <div class="info-item">
+            <span class="info-time">${hora}</span>
+          </div>
+          <div class="info-divider"></div>
+          <div class="info-item">
+            <span class="info-label">ESTADIO</span>
+            <span class="info-stadium">${estadio}</span>
+          </div>
+        </div>
+      `;
+
+      return buildBaseContent(inner, format);
+    }
+
+    // ---- MODO LIBRE (cronograma) ----
+    function buildLibreHTML(format) {
+      const times = document.querySelectorAll('.sched-in-time');
+      const cats = document.querySelectorAll('.sched-in-cat');
+      let scheduleRows = '';
+      times.forEach((t, i) => {
+        const timeVal = t.value.trim() || '--:--';
+        const catVal = cats[i].value.trim() || 'CATEGORÍA';
+        scheduleRows += `
+          <div class="sched-row">
+            <div class="sched-time">${timeVal}</div>
+            <div class="sched-cat">${catVal}</div>
+          </div>
+        `;
+      });
+
+      const inner = `
+        <div class="flyer-schedule">${scheduleRows}</div>
+      `;
+
+      return buildBaseContent(inner, format);
+    }
+
+    // ---- MODO RESULTADO ----
+    function buildResultadoHTML(format) {
+      const isLocal = document.getElementById('in-condicion').value === 'LOCAL';
+      const rivalName = document.getElementById('in-nombre-rival').value.toUpperCase() || 'RIVAL';
+      const golesCeramica = parseInt(document.getElementById('in-goles-local').value, 10) || 0;
+      const golesRival = parseInt(document.getElementById('in-goles-rival').value, 10) || 0;
+      const golesTeam1 = isLocal ? golesCeramica : golesRival;
+      const golesTeam2 = isLocal ? golesRival : golesCeramica;
+
+      const teamHomeShield = isLocal ? getCeramicaShieldHTML() : getRivalShieldHTML();
+      const teamHomeName = isLocal ? 'CERÁMICA ARGENTINA' : rivalName;
+      const teamAwayShield = isLocal ? getRivalShieldHTML() : getCeramicaShieldHTML();
+      const teamAwayName = isLocal ? rivalName : 'CERÁMICA ARGENTINA';
+
+      const goles = Array.from(document.querySelectorAll('.goal-in-text'))
+        .map(i => i.value.trim())
+        .filter(Boolean);
+
+      let goleadoresHTML = '';
+      if (goles.length) {
+        goleadoresHTML = `<div class="flyer-goleadores">${goles.map(g => `<span class="gol-chip">${g.replace(/</g, '&lt;')}</span>`).join('')}</div>`;
       }
-      const left = (canvas.w - w) * (genericoImgPosX / 100);
-      const top = (canvas.h - h) * (genericoImgPosY / 100);
-      return { canvasW: canvas.w, canvasH: canvas.h, w, h, left, top };
+
+      const inner = `
+        <div class="flyer-resultado">
+          <div class="team home">
+            <div class="team-crest">${teamHomeShield}</div>
+            <div class="team-name">${teamHomeName}</div>
+          </div>
+          <div class="score">
+            <span>${golesTeam1}</span>
+            <span class="score-sep">-</span>
+            <span>${golesTeam2}</span>
+          </div>
+          <div class="team away">
+            <div class="team-crest">${teamAwayShield}</div>
+            <div class="team-name">${teamAwayName}</div>
+          </div>
+        </div>
+        ${goleadoresHTML}
+      `;
+
+      return buildBaseContent(inner, format);
     }
 
-    // Fondo de cada panel "vidrio": degradado blanco translúcido por encima
-    // de la versión desenfocada de la foto (si ya está lista) — sin
-    // backdrop-filter, para que se exporte igual que se ve en pantalla.
-    function glassBgStyle(blurSrc) {
-      const gradient = 'linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.46) 100%)';
-      if (blurSrc) {
-        return `background-image:${gradient}, url('${blurSrc}'); background-size: cover; background-position: center; background-repeat:no-repeat;`;
-      }
-      return `background-image:${gradient};`;
-    }
-
-    // Arma la tarjeta ENTERA del modo Genérico (header, título, imagen, texto,
-    // sponsors y pie), respetando qué elementos eligió mostrar el usuario y el
-    // estilo elegido (Tradicional en flujo normal, o Minimalista con la foto a
-    // pantalla completa y encabezado/pie como barras de vidrio flotando encima).
-    function buildGenericoCardContent(format) {
+    // ---- MODO GENÉRICO ----
+    function buildGenericoHTML(format) {
+      const is916 = format === '916';
       const showHeader = document.getElementById('in-gen-show-header').checked;
       const showCategoria = document.getElementById('in-gen-show-categoria').checked;
       const showTitulo = document.getElementById('in-gen-show-titulo').checked;
@@ -2113,337 +1363,194 @@
       const showSponsors = document.getElementById('in-gen-show-sponsors').checked && !!sponsorSrc;
       const showFooter = document.getElementById('in-gen-show-footer').checked;
 
-      const ceramicaHTML = getCeramicaShieldHTML();
+      const src = is916 ? genericoImgSrcStory : genericoImgSrcFeed;
+      const ratio = is916 ? genericoImgRatioStory : genericoImgRatioFeed;
       const texto = document.getElementById('in-gen-texto').value.trim();
-      const src = format === '11' ? genericoImgSrcFeed : genericoImgSrcStory;
-      const ratio = format === '11' ? genericoImgRatioFeed : genericoImgRatioStory;
+      const ceramicaShield = getCeramicaShieldHTML();
 
-      const headerInnerHTML = `
-        <div class="header-logo-box">${ceramicaHTML}</div>
-        <div class="header-text">
-          <span class="t-sub dyn-brand1"></span>
-          <span class="t-main dyn-brand2"></span>
-        </div>
-      `;
-
-      const footerInnerHTML = `
-        <div class="footer-left">
-          <span class="footer-slogan dyn-foot-slogan"></span>
-        </div>
-        <div class="footer-right">
-          <div class="footer-r1 dyn-foot-r1"></div>
-          <div class="footer-r2 dyn-foot-r2"></div>
-        </div>
-      `;
-
+      // Para el estilo minimalista, reutilizamos la lógica anterior pero adaptada
       if (genericoStyle === 'minimal') {
-        const blurSrc = format === '11' ? genericoImgBlurFeed : genericoImgBlurStory;
-        // En minimalista la foto es fondo completo: los sliders de posición
-        // controlan el encuadre (background-position) de esa foto de fondo.
-        const bgStyle = src ? ` style="background-image:url(${src}); background-position:${genericoImgPosX}% ${genericoImgPosY}%;"` : '';
-        // "Vidrio" sin backdrop-filter (no se puede usar: rompe la exportación
-        // a JPG). En su lugar, cada panel muestra su propia versión desenfocada
-        // de la foto de fondo, cubierta por un degradado blanco translúcido —
-        // se ve y se exporta igual, porque ya es una imagen "horneada", no un
-        // filtro CSS en vivo.
-        const glassBg = glassBgStyle(blurSrc);
-        return `
-        <div class="card-content generico-minimal">
-          <div class="generico-minimal-bg"${bgStyle}></div>
-          ${showHeader ? `<div class="generico-glass generico-minimal-header" style="${glassBg}">${headerInnerHTML}</div>` : '<div></div>'}
-          <div class="generico-minimal-mid">
-            ${showCategoria ? `<span class="generico-minimal-category generico-glass dyn-cat" style="${glassBg}"></span>` : ''}
-            ${showTitulo ? `<div class="generico-minimal-title generico-glass" style="${glassBg}"><span class="t1 dyn-t1"></span><span class="t2 dyn-t2"></span></div>` : ''}
-            ${(showTexto && texto) ? `<div class="generico-minimal-texto generico-glass" style="${glassBg}">${texto.replace(/</g, '&lt;')}</div>` : ''}
+        // Construir versión minimalista con vidrio
+        const blurSrc = is916 ? genericoImgBlurStory : genericoImgBlurFeed;
+        const bgStyle = src ? ` background-image:url(${src}); background-position:${genericoImgPosX}% ${genericoImgPosY}%; background-size:cover;` : '';
+        const glassBg = blurSrc ?
+          `background-image: linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.46) 100%), url(${blurSrc}); background-size: cover; background-position: center;` :
+          `background: rgba(255,255,255,0.2); backdrop-filter: blur(12px);`;
+
+        let headerHTML = showHeader ? `
+          <div class="flyer-header" style="${glassBg}; padding: 12px 24px; border-radius: 16px; backdrop-filter: blur(8px);">
+            <div class="club-crest">${ceramicaShield}</div>
+            <div class="club-name">
+              <span class="line1 dyn-brand1"></span>
+              <span class="line2 dyn-brand2"></span>
+            </div>
           </div>
-          ${(showFooter || showSponsors) ? `
-          <div class="generico-glass generico-minimal-footer" style="${glassBg}">
-            ${showSponsors ? buildSponsorHTML() : ''}
-            ${showFooter ? `<div class="footer-section">${footerInnerHTML}</div>` : ''}
-          </div>` : '<div></div>'}
-        </div>
-      `;
+        ` : '';
+
+        let categoryHTML = showCategoria ? `<div class="flyer-category" style="${glassBg}; padding: 4px 20px; border-radius: 40px; display:inline-block; backdrop-filter: blur(8px);">${currentCategory}</div>` : '';
+
+        let titleHTML = showTitulo ? `
+          <div class="flyer-title" style="${glassBg}; padding: 8px 24px; border-radius: 16px; backdrop-filter: blur(8px);">
+            <span class="dyn-t1"></span>
+            <span class="dyn-t2"></span>
+          </div>
+        ` : '';
+
+        let textoHTML = (showTexto && texto) ? `
+          <div class="flyer-generico-texto" style="${glassBg}; padding: 12px 24px; border-radius: 16px; backdrop-filter: blur(8px); font-size: ${is916 ? '28px' : '20px'}; font-weight:700; color:#fff; text-align:center;">
+            ${texto.replace(/</g, '&lt;')}
+          </div>
+        ` : '';
+
+        let footerHTML = '';
+        if (showFooter || showSponsors) {
+          let sponsorHTML = showSponsors ? `<div class="flyer-sponsor" style="${glassBg}; padding: 8px 16px; border-radius: 12px; backdrop-filter: blur(8px);"><img src="${sponsorSrc}" style="max-height:60px;"></div>` : '';
+          let sloganHTML = showFooter ? `<div class="flyer-slogan" style="${glassBg}; padding: 4px 16px; border-radius: 12px; backdrop-filter: blur(8px);">${document.querySelector('.in-foot-slogan').value}</div>` : '';
+          let compHTML = showFooter ? `
+            <div class="flyer-competition" style="${glassBg}; padding: 4px 16px; border-radius: 12px; backdrop-filter: blur(8px);">
+              <span class="dyn-foot-r1"></span>
+              <span class="dyn-foot-r2"></span>
+            </div>
+          ` : '';
+          footerHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+              ${sponsorHTML}
+              ${sloganHTML}
+              ${compHTML}
+            </div>
+          `;
+        }
+
+        // Fondo de la tarjeta
+        const bgDiv = `<div class="flyer-background" style="${bgStyle}"></div><div class="flyer-overlay"></div><div class="flyer-texture"></div>`;
+
+        let inner = `
+          ${bgDiv}
+          <div class="card-content" style="justify-content: space-between; padding: 30px 40px; position:relative; z-index:4; display:flex; flex-direction:column; height:100%;">
+            ${headerHTML}
+            <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; justify-content:center;">
+              ${categoryHTML}
+              ${titleHTML}
+              ${textoHTML}
+            </div>
+            ${footerHTML}
+          </div>
+        `;
+        return inner;
       }
 
-      // ===== ESTILO TRADICIONAL =====
-      // La foto vive dentro de un "lienzo" de tamaño fijo; el usuario la
-      // mueve con los sliders de posición dentro de ese espacio (en px reales,
-      // nada de transform/aspect-ratio, para que la exportación sea 1 a 1
-      // idéntica a la vista previa).
+      // ---- Estilo tradicional ----
       let imgHTML = '';
       if (src) {
-        const p = computeGenericoPlacement(format, ratio);
+        // Usar la misma lógica de posicionamiento que antes
+        const canvas = is916 ? { w: 950, h: 620 } : { w: 970, h: 340 };
+        let w = canvas.w, h = canvas.h;
+        if (ratio) {
+          w = canvas.h * ratio;
+          h = canvas.h;
+          if (w > canvas.w) { w = canvas.w; h = canvas.w / ratio; }
+        }
+        const left = (canvas.w - w) * (genericoImgPosX / 100);
+        const top = (canvas.h - h) * (genericoImgPosY / 100);
         imgHTML = `
-          <div class="generico-img-canvas" style="height:${p.canvasH}px;">
-            <div class="generico-img-frame" style="width:${p.w}px; height:${p.h}px; left:${p.left}px; top:${p.top}px;">
-              <img src="${src}">
+          <div style="width:100%; height:${canvas.h}px; position:relative; margin:10px 0;">
+            <div style="position:absolute; left:${left}px; top:${top}px; width:${w}px; height:${h}px; overflow:hidden; border-radius:12px; border:1px solid rgba(255,255,255,0.15); box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+              <img src="${src}" style="width:100%; height:100%; object-fit:cover;">
             </div>
           </div>
         `;
       }
-      const textoHTML = (showTexto && texto) ? `<div class="generico-texto">${texto.replace(/</g, '&lt;')}</div>` : '';
 
-      return `
-      <div class="card-content">
-        ${showHeader ? `<div class="header-row">${headerInnerHTML}</div>` : ''}
-        ${showCategoria ? buildCategoryLineHTML() : ''}
-        ${showTitulo ? `
-        <div class="title-box">
-          <span class="t1 dyn-t1"></span>
-          <span class="t2 dyn-t2"></span>
+      let textoHTML = (showTexto && texto) ? `
+        <div class="flyer-generico-texto" style="font-size:${is916 ? '28px' : '20px'}; font-weight:700; color:#fff; text-align:center; text-shadow:0 2px 12px rgba(0,0,0,0.5); margin:8px 0;">
+          ${texto.replace(/</g, '&lt;')}
         </div>
-        <hr class="divider-thick">
-        ` : ''}
-        ${showCategoria ? `
-        <div class="pill-container">
-          <span class="pill-cat dyn-cat"></span>
-        </div>
-        ` : ''}
+      ` : '';
 
-        <div class="generico-container">${imgHTML}${textoHTML}</div>
+      // Construir el contenido interior para el modo genérico tradicional
+      // Usamos el mismo sistema de base pero con el contenido personalizado
+      const brand1 = document.querySelector('.in-brand1').value;
+      const brand2 = document.querySelector('.in-brand2').value;
+      const t1 = document.querySelector('.in-t1').value;
+      const t2 = document.querySelector('.in-t2').value;
+      const footR1 = document.querySelector('.in-foot-r1').value;
+      const footR2 = document.querySelector('.in-foot-r2').value;
+      const slogan = document.querySelector('.in-foot-slogan').value;
+      const sponsorHTML = showSponsors && sponsorSrc ? `<div class="flyer-sponsor"><img src="${sponsorSrc}" alt="Sponsor"></div>` : '';
 
-        <hr class="divider-thin">
-
-        ${showSponsors ? buildSponsorHTML() : ''}
-
-        ${showFooter ? `<div class="footer-section">${footerInnerHTML}</div>` : ''}
-      </div>
-    `;
-    }
-
-    function buildSponsorHTML() {
-      if (!sponsorSrc) return '';
-      return `
-      <div class="sponsor-strip">
-        <span class="sponsor-label">Auspicia</span>
-        <img src="${sponsorSrc}">
-      </div>
-    `;
-    }
-
-    function buildScheduleHTML() {
-      const times = document.querySelectorAll('.sched-in-time');
-      const cats = document.querySelectorAll('.sched-in-cat');
-      let html = '<div class="schedule-container">';
-      times.forEach((t, i) => {
-        const timeVal = t.value.trim() || '00:00 HS';
-        const catVal = cats[i].value.trim() || 'CATEGORIA';
-        html += `
-        <div class="schedule-row">
-          <div class="sched-time">${timeVal}</div>
-          <div class="sched-div">DIV</div>
-          <div class="sched-cat">${catVal}</div>
-        </div>
-      `;
-      });
-      html += '</div>';
-      return html;
-    }
-
-    function buildResultadoHTML(isLocal, team1Shield, team1Name, team2Shield, team2Name) {
-      const golesCeramica = parseInt(document.getElementById('in-goles-local').value, 10) || 0;
-      const golesRival = parseInt(document.getElementById('in-goles-rival').value, 10) || 0;
-      const golesTeam1 = isLocal ? golesCeramica : golesRival;
-      const golesTeam2 = isLocal ? golesRival : golesCeramica;
-
-      const goles = Array.from(document.querySelectorAll('.goal-in-text'))
-        .map(i => i.value.trim())
-        .filter(Boolean);
-      const goleadoresHTML = goles.length ? `
-      <div class="goleadores-box">
-        <div class="goleadores-title">GOLEADORES</div>
-        <div class="goleadores-list">
-          ${goles.map(g => `<span class="goleador-chip">${g.replace(/</g, '&lt;')}</span>`).join('')}
-        </div>
-      </div>
-    ` : '';
-
-      return `
-      <div class="vs-container">
-        <div class="team-card">
-          <div class="shield-frame">${team1Shield}</div>
-          <div class="team-name">${team1Name}</div>
-        </div>
-        <div class="score-box">
-          <span class="score-num">${golesTeam1}</span>
-          <span class="score-sep">-</span>
-          <span class="score-num">${golesTeam2}</span>
-        </div>
-        <div class="team-card">
-          <div class="shield-frame">${team2Shield}</div>
-          <div class="team-name">${team2Name}</div>
-        </div>
-      </div>
-      ${goleadoresHTML}
-    `;
-    }
-
-    // MEJORA 7: insignia de categoría destacada (pill de color según categoría)
-    function buildCategoryLineHTML() {
-      const labels = { PRIMERA: 'PRIMERA DIVISIÓN', SENIOR: 'SENIORS', INFERIORES: 'INFERIORES' };
-      const label = labels[currentCategory] || 'CATEGORÍA';
-      return `
-      <div class="category-line">
-        <span class="dot"></span>
-        <span class="label">${label}</span>
-      </div>
-    `;
-    }
-
-    function buildCardHTML(format) {
-      const mode = document.getElementById('in-mode').value;
-
-      // El modo Genérico arma su propia tarjeta de punta a punta (elementos
-      // opcionales + estilo tradicional/vidrio), por eso se resuelve aparte.
-      if (mode === 'GENERICO') {
-        return buildGenericoCardContent(format);
-      }
-
-      const isLocal = document.getElementById('in-condicion').value === 'LOCAL';
-      const ceramicaHTML = getCeramicaShieldHTML();
-      const rivalHTML = getRivalShieldHTML();
-      const rivalName = document.getElementById('in-nombre-rival').value.toUpperCase();
-
-      const team1Shield = isLocal ? ceramicaHTML : rivalHTML;
-      const team1Name = isLocal ? 'CERÁMICA ARGENTINA' : rivalName;
-      const team2Shield = isLocal ? rivalHTML : ceramicaHTML;
-      const team2Name = isLocal ? rivalName : 'CERÁMICA ARGENTINA';
-
-      const { dayName, formattedDate } = getCalculatedDateInfo();
-
-      let centralContentHTML = '';
-      let timeDisplayHTML = '';
-
-      if (mode === 'VS') {
-        centralContentHTML = `
-        <div class="vs-container">
-          <div class="team-card">
-            <div class="shield-frame">${team1Shield}</div>
-            <div class="team-name">${team1Name}</div>
-          </div>
-          <span class="vs-label">VS.</span>
-          <div class="team-card">
-            <div class="shield-frame">${team2Shield}</div>
-            <div class="team-name">${team2Name}</div>
-          </div>
-        </div>
-      `;
-        timeDisplayHTML = `
-        <div class="info-element">
-          <div><span class="time-text dyn-hora"></span></div>
-        </div>
-        <div class="info-pipe"></div>
-      `;
-      } else if (mode === 'LIBRE') {
-        centralContentHTML = buildScheduleHTML();
-        timeDisplayHTML = '';
-      } else if (mode === 'RESULTADO') {
-        centralContentHTML = buildResultadoHTML(isLocal, team1Shield, team1Name, team2Shield, team2Name);
-        timeDisplayHTML = '';
-      }
-
-      const showStadiumAccess = mode === 'VS' || mode === 'LIBRE';
-
-      // MEJORA 3: el pie de página ya no incluye el escudo, solo el slogan
-      return `
-      <div class="card-content">
-        <div class="header-row">
-          <div class="header-logo-box">${ceramicaHTML}</div>
-          <div class="header-text">
-            <span class="t-sub dyn-brand1"></span>
-            <span class="t-main dyn-brand2"></span>
-          </div>
-        </div>
-
-        ${buildCategoryLineHTML()}
-
-        <div class="title-box">
-          <span class="t1 dyn-t1"></span>
-          <span class="t2 dyn-t2"></span>
-        </div>
-
-        <hr class="divider-thick">
-
-        <div class="pill-container">
-          <span class="pill-cat dyn-cat"></span>
-        </div>
-
-        ${centralContentHTML}
-
-        ${showStadiumAccess ? `
-        <div class="stadium-container">
-          <div class="stadium-main dyn-estadio"></div>
-          <div class="stadium-sub dyn-estadio-sub"></div>
-        </div>
-
-        <hr class="divider-thin">
-
-        <div class="info-box" style="${mode === 'LIBRE' ? 'justify-content: center;' : ''}">
-          ${timeDisplayHTML}
-          <div class="info-element">
-            <div>
-              <div class="date-day">${dayName}</div>
-              <div class="date-num">${formattedDate}</div>
+      let inner = `
+        <div class="card-content" style="padding: 30px 40px; display:flex; flex-direction:column; height:100%; position:relative; z-index:4;">
+          ${showHeader ? `
+          <div class="flyer-header">
+            <div class="club-crest">${ceramicaShield}</div>
+            <div class="club-name">
+              <span class="line1 dyn-brand1">${brand1}</span>
+              <span class="line2 dyn-brand2">${brand2}</span>
             </div>
           </div>
-        </div>
+          ` : ''}
 
-        <div class="access-box">
-          <div>
-            <div class="access-title">ACCESO LOCAL</div>
-            <div class="access-detail dyn-acc-local"></div>
-          </div>
-        </div>
+          ${showCategoria ? `<div class="flyer-category">${currentCategory}</div>` : ''}
 
-        <div class="access-box">
-          <div>
-            <div class="access-title">ACCESO VISITANTE</div>
-            <div class="access-detail dyn-acc-visit"></div>
+          ${showTitulo ? `
+          <div class="flyer-title">
+            <span class="dyn-t1">${t1}</span>
+            <span class="dyn-t2">${t2}</span>
           </div>
-        </div>
-        ` : '<hr class="divider-thin">'}
+          ` : ''}
 
-        ${buildSponsorHTML()}
+          <div class="flyer-generico" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
+            ${imgHTML}
+            ${textoHTML}
+          </div>
 
-        <div class="footer-section">
-          <div class="footer-left">
-            <span class="footer-slogan dyn-foot-slogan"></span>
+          ${sponsorHTML}
+
+          ${showFooter ? `
+          <div class="flyer-competition">
+            <span class="dyn-foot-r1">${footR1}</span>
+            <span class="dyn-foot-r2">${footR2}</span>
           </div>
-          <div class="footer-right">
-            <div class="footer-r1 dyn-foot-r1"></div>
-            <div class="footer-r2 dyn-foot-r2"></div>
-          </div>
+          <div class="flyer-slogan dyn-foot-slogan">${slogan}</div>
+          ` : ''}
         </div>
-      </div>
-    `;
+      `;
+
+      // Añadir fondo
+      inner = `
+        <div class="flyer-background"></div>
+        <div class="flyer-overlay"></div>
+        <div class="flyer-texture"></div>
+        ${inner}
+      `;
+
+      return inner;
     }
+
+    // ================================================================
+    //  RENDER Y ACTUALIZACIÓN
+    // ================================================================
 
     function renderCards() {
       document.querySelectorAll('.card').forEach(el => {
-        el.classList.remove('cat-primera', 'cat-senior', 'cat-inferiores');
-        el.classList.add('cat-' + currentCategory.toLowerCase());
         const format = el.classList.contains('card-11') ? '11' : '916';
         el.innerHTML = buildCardHTML(format);
 
+        // Aplicar fondo personalizado si existe
         if (backgroundImgSrc) {
-          el.style.backgroundImage = `url(${backgroundImgSrc})`;
-          el.style.backgroundSize = 'cover';
-          el.style.backgroundPosition = 'center';
-          const content = el.querySelector('.card-content');
-          if (content) {
-            content.style.backgroundColor = 'rgba(255,255,255,0.88)';
-            content.style.padding = 'inherit';
-            content.style.borderRadius = '0';
+          const bg = el.querySelector('.flyer-background');
+          if (bg) {
+            bg.style.backgroundImage = `url(${backgroundImgSrc})`;
+            bg.style.backgroundSize = 'cover';
+            bg.style.backgroundPosition = 'center';
           }
+          el.classList.add('has-custom-bg');
         } else {
-          el.style.backgroundImage = 'linear-gradient(145deg, #FFFFFF 45%, #EBF1FD 100%)';
-          el.style.backgroundSize = 'auto';
-          el.style.backgroundPosition = 'initial';
-          const content = el.querySelector('.card-content');
-          if (content) {
-            content.style.backgroundColor = 'transparent';
-            content.style.padding = '0';
+          const bg = el.querySelector('.flyer-background');
+          if (bg) {
+            bg.style.backgroundImage = ''; // reset a CSS
           }
+          el.classList.remove('has-custom-bg');
         }
       });
       updateAllText();
@@ -2458,30 +1565,16 @@
       setText('dyn-brand2', document.querySelector('.in-brand2').value);
       setText('dyn-t1', document.querySelector('.in-t1').value);
       setText('dyn-t2', document.querySelector('.in-t2').value);
-      setText('dyn-cat', document.querySelector('.in-cat').value);
-      setText('dyn-estadio', document.querySelector('.in-estadio').value);
-      setText('dyn-estadio-sub', document.querySelector('.in-estadio-sub').value);
-      if (document.querySelector('.in-hora')) setText('dyn-hora', getFormattedHora());
-      setText('dyn-acc-local', document.querySelector('.in-acc-local').value);
-      setText('dyn-acc-visit', document.querySelector('.in-acc-visit').value);
-      setText('dyn-foot-slogan', document.querySelector('.in-foot-slogan').value);
       setText('dyn-foot-r1', document.querySelector('.in-foot-r1').value);
       setText('dyn-foot-r2', document.querySelector('.in-foot-r2').value);
+      setText('dyn-foot-slogan', document.querySelector('.in-foot-slogan').value);
+      // Los demás campos (estadio, hora, fecha) se actualizan al regenerar el HTML
     }
-
-    // ================================================================
-    //  MEJORA 5/9: expandir / contraer todas las secciones
-    // ================================================================
-    document.getElementById('btn-expand-all').addEventListener('click', () => {
-      document.querySelectorAll('details.fs').forEach(d => d.open = true);
-    });
-    document.getElementById('btn-collapse-all').addEventListener('click', () => {
-      document.querySelectorAll('details.fs').forEach(d => d.open = false);
-    });
 
     // ================================================================
     //  EVENTOS DEL PANEL
     // ================================================================
+
     document.getElementById('in-mode').addEventListener('change', (e) => {
       const mode = e.target.value;
       const isVs = mode === 'VS';
@@ -2511,113 +1604,69 @@
       });
     });
 
+    document.querySelectorAll('#panel input[type="text"]').forEach(inp => {
+      inp.addEventListener('input', () => {
+        if (inp.classList.contains('in-nombre-rival')) renderCards();
+        else updateAllText();
+      });
+    });
+
+    document.querySelector('.in-hora').addEventListener('input', renderCards);
+    document.getElementById('in-condicion').addEventListener('change', renderCards);
+    datePicker.addEventListener('change', renderCards);
+    document.getElementById('in-goles-local').addEventListener('input', renderCards);
+    document.getElementById('in-goles-rival').addEventListener('input', renderCards);
+
+    // Texto genérico
     document.getElementById('in-gen-texto').addEventListener('input', renderCards);
 
-    // ================================================================
-    //  PUBLICIDAD / SPONSOR
-    // ================================================================
-    document.getElementById('file-sponsor').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        sponsorSrc = ev.target.result;
-        const mini = document.querySelector('.mini-sponsor');
-        mini.src = sponsorSrc; mini.style.display = 'block';
-        document.getElementById('btn-remove-sponsor').style.display = 'block';
+    // Checkboxes genéricos
+    ['in-gen-show-header', 'in-gen-show-categoria', 'in-gen-show-titulo', 'in-gen-show-texto', 'in-gen-show-sponsors', 'in-gen-show-footer'].forEach(id => {
+      document.getElementById(id).addEventListener('change', renderCards);
+    });
+
+    // Estilo genérico
+    document.querySelectorAll('#generico-style-selector .style-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('#generico-style-selector .style-opt').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        genericoStyle = opt.dataset.style;
         renderCards();
-      };
-      reader.readAsDataURL(file);
+      });
     });
 
-    document.getElementById('btn-remove-sponsor').addEventListener('click', () => {
-      sponsorSrc = null;
-      document.getElementById('file-sponsor').value = '';
-      const mini = document.querySelector('.mini-sponsor');
-      mini.src = ''; mini.style.display = 'none';
-      document.getElementById('btn-remove-sponsor').style.display = 'none';
+    // Posición imagen genérica
+    document.getElementById('in-gen-posx').addEventListener('input', (e) => {
+      genericoImgPosX = Number(e.target.value);
+      renderCards();
+    });
+    document.getElementById('in-gen-posy').addEventListener('input', (e) => {
+      genericoImgPosY = Number(e.target.value);
       renderCards();
     });
 
     // ================================================================
-    //  IMAGEN OPCIONAL MODO GENÉRICO
+    //  EXPANDIR / CONTRAER
     // ================================================================
-    document.getElementById('file-generico').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      // Flujo guiado: primero se recorta para Historia y, al confirmar, se
-      // abre automáticamente el recorte para Feed usando la misma foto original.
-      genericoPendingChain = true;
-      openCropperModal(file, 'generico-916');
-      e.target.value = ''; // permite volver a elegir el mismo archivo más adelante
+    document.getElementById('btn-expand-all').addEventListener('click', () => {
+      document.querySelectorAll('details.fs').forEach(d => d.open = true);
     });
-
-    document.getElementById('btn-edit-generico-916').addEventListener('click', () => {
-      if (!genericoOriginalSrc) return;
-      fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => openCropperModal(blob, 'generico-916'));
-    });
-
-    document.getElementById('btn-edit-generico-11').addEventListener('click', () => {
-      if (!genericoOriginalSrc) return;
-      fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => openCropperModal(blob, 'generico-11'));
-    });
-
-    document.getElementById('btn-remove-generico').addEventListener('click', () => {
-      genericoImgSrcStory = null;
-      genericoImgSrcFeed = null;
-      genericoImgBlurStory = null;
-      genericoImgBlurFeed = null;
-      genericoImgRatioStory = null;
-      genericoImgRatioFeed = null;
-      genericoOriginalSrc = null;
-      genericoPendingChain = false;
-      document.getElementById('file-generico').value = '';
-      const mini = document.querySelector('.mini-generico');
-      mini.src = ''; mini.style.display = 'none';
-      document.querySelector('.mini-generico-916').style.display = 'none';
-      document.querySelector('.mini-generico-11').style.display = 'none';
-      document.getElementById('generico-img-actions').style.display = 'none';
-      renderCards();
+    document.getElementById('btn-collapse-all').addEventListener('click', () => {
+      document.querySelectorAll('details.fs').forEach(d => d.open = false);
     });
 
     // ================================================================
-    //  IMAGEN DE FONDO
-    // ================================================================
-    document.getElementById('file-background').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        backgroundImgSrc = ev.target.result;
-        const mini = document.querySelector('.mini-background');
-        mini.src = backgroundImgSrc; mini.style.display = 'block';
-        document.getElementById('btn-remove-background').style.display = 'block';
-        renderCards();
-      };
-      reader.readAsDataURL(file);
-    });
-
-    document.getElementById('btn-remove-background').addEventListener('click', () => {
-      backgroundImgSrc = null;
-      document.getElementById('file-background').value = '';
-      const mini = document.querySelector('.mini-background');
-      mini.src = ''; mini.style.display = 'none';
-      document.getElementById('btn-remove-background').style.display = 'none';
-      renderCards();
-    });
-
-    // ================================================================
-    //  GESTIÓN DE FILAS DE CRONOGRAMA
+    //  CRONOGRAMA – FILAS
     // ================================================================
     document.getElementById('btn-add-sched').addEventListener('click', () => {
       const container = document.getElementById('schedule-inputs');
       const div = document.createElement('div');
       div.className = 'schedule-input-row';
       div.innerHTML = `
-      <input type="text" value="16:00 HS" class="sched-in-time" placeholder="Hora">
-      <input type="text" value="NUEVA CAT" class="sched-in-cat" placeholder="Categoría">
-      <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
-    `;
+        <input type="text" value="16:00 HS" class="sched-in-time" placeholder="Hora">
+        <input type="text" value="NUEVA CAT" class="sched-in-cat" placeholder="Categoría">
+        <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+      `;
       container.appendChild(div);
       attachScheduleEvents();
       renderCards();
@@ -2637,16 +1686,16 @@
     attachScheduleEvents();
 
     // ================================================================
-    //  GESTIÓN DE FILAS DE GOLEADORES
+    //  GOLEADORES – FILAS
     // ================================================================
     document.getElementById('btn-add-goal').addEventListener('click', () => {
       const container = document.getElementById('goal-inputs');
       const div = document.createElement('div');
       div.className = 'schedule-input-row';
       div.innerHTML = `
-      <input type="text" value="" class="goal-in-text" placeholder="Ej: 45' Fernández">
-      <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
-    `;
+        <input type="text" value="" class="goal-in-text" placeholder="Ej: 45' Fernández">
+        <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
+      `;
       container.appendChild(div);
       attachGoalEvents();
       renderCards();
@@ -2665,34 +1714,26 @@
     }
     attachGoalEvents();
 
-    document.getElementById('in-goles-local').addEventListener('input', renderCards);
-    document.getElementById('in-goles-rival').addEventListener('input', renderCards);
+    // ================================================================
+    //  CARGA DE ESCUDOS – CROPPER
+    // ================================================================
 
-    // ================================================================
-    //  CROPPER (recorte de escudos)
-    // ================================================================
     function isGenericoTarget(target) {
       return target === 'generico-916' || target === 'generico-11';
     }
 
-    // Genera una versión REALMENTE desenfocada de una imagen usando <canvas>
-    // (ctx.filter = blur). A diferencia de backdrop-filter en CSS, esto se
-    // "hornea" en píxeles reales, así que se ve idéntico en la vista previa
-    // y en el JPG exportado — no depende de que html2canvas soporte el filtro.
     function makeBlurredDataUrl(srcDataUrl, blurPx = 18) {
       return new Promise((resolve) => {
         const img = new Image();
         img.onload = () => {
-          const maxDim = 480; // resolución de trabajo: alcanza y de sobra para un fondo desenfocado
+          const maxDim = 480;
           const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
           const w = Math.max(1, Math.round(img.width * scale));
           const h = Math.max(1, Math.round(img.height * scale));
           const c = document.createElement('canvas');
           c.width = w; c.height = h;
           const ctx = c.getContext('2d');
-          try {
-            ctx.filter = `blur(${blurPx}px)`;
-          } catch (e) { /* si el navegador no soporta ctx.filter, se dibuja sin blur */ }
+          try { ctx.filter = `blur(${blurPx}px)`; } catch (e) { /* ignore */ }
           ctx.drawImage(img, 0, 0, w, h);
           resolve(c.toDataURL('image/jpeg', 0.82));
         };
@@ -2718,10 +1759,6 @@
         cropModal.classList.add('active');
         if (cropper) cropper.destroy();
 
-        // Escudos: recorte cuadrado fijo. Imagen genérica: recorte con el
-        // FORMATO que el usuario eligió en el selector (cuadrada, vertical,
-        // horizontal, panorámica o libre) — el propio recuadro ya tiene esa
-        // forma como referencia. El usuario solo arrastra y hace zoom.
         let options;
         if (isGenericoTarget(target)) {
           const chosenRatio = parseImgRatio(document.getElementById('in-gen-imgformat').value);
@@ -2742,8 +1779,6 @@
       if (!cropper) return;
 
       if (isGenericoTarget(currentTargetTeam)) {
-        // Limitamos la resolución máxima por performance; la proporción queda
-        // definida por el formato elegido (o libre, según lo que estiró el usuario).
         const canvas = cropper.getCroppedCanvas({ maxWidth: 1600, maxHeight: 1600, imageSmoothingQuality: 'high' });
         const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
         const resultRatio = canvas.width / canvas.height;
@@ -2768,18 +1803,12 @@
         cropper.destroy(); cropper = null;
         renderCards();
 
-        // El estilo "vidrio" necesita una versión REALMENTE desenfocada de la
-        // foto (backdrop-filter no se puede usar: rompe la exportación a JPG).
-        // Se genera con <canvas> — funciona igual en pantalla y en el archivo
-        // final porque ya no depende de ningún filtro CSS al exportar.
         makeBlurredDataUrl(dataUrl).then(blurUrl => {
           if (targetNow === 'generico-916') genericoImgBlurStory = blurUrl;
           else genericoImgBlurFeed = blurUrl;
           renderCards();
         });
 
-        // Encadenado: recién subida la foto, después de ajustar Historia
-        // pasamos directo a pedir el ajuste de Feed con la misma imagen.
         if (targetNow === 'generico-916' && genericoPendingChain) {
           genericoPendingChain = false;
           fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => {
@@ -2812,51 +1841,99 @@
       genericoPendingChain = false;
     });
 
-    // Cambiar el estilo del diseño genérico (Tradicional / Minimalista vidrio)
-    document.querySelectorAll('#generico-style-selector .style-opt').forEach(opt => {
-      opt.addEventListener('click', () => {
-        document.querySelectorAll('#generico-style-selector .style-opt').forEach(o => o.classList.remove('active'));
-        opt.classList.add('active');
-        genericoStyle = opt.dataset.style;
+    // ================================================================
+    //  PUBLICIDAD / SPONSOR
+    // ================================================================
+    document.getElementById('file-sponsor').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        sponsorSrc = ev.target.result;
+        const mini = document.querySelector('.mini-sponsor');
+        mini.src = sponsorSrc; mini.style.display = 'block';
+        document.getElementById('btn-remove-sponsor').style.display = 'block';
         renderCards();
-      });
+      };
+      reader.readAsDataURL(file);
     });
 
-    // Checkboxes de elementos a mostrar / ocultar en el modo Genérico
-    ['in-gen-show-header', 'in-gen-show-categoria', 'in-gen-show-titulo', 'in-gen-show-texto', 'in-gen-show-sponsors', 'in-gen-show-footer'].forEach(id => {
-      document.getElementById(id).addEventListener('change', renderCards);
-    });
-
-    // Posición de la imagen dentro de su espacio (arrastre vía sliders X/Y)
-    document.getElementById('in-gen-posx').addEventListener('input', (e) => {
-      genericoImgPosX = Number(e.target.value);
-      renderCards();
-    });
-    document.getElementById('in-gen-posy').addEventListener('input', (e) => {
-      genericoImgPosY = Number(e.target.value);
+    document.getElementById('btn-remove-sponsor').addEventListener('click', () => {
+      sponsorSrc = null;
+      document.getElementById('file-sponsor').value = '';
+      const mini = document.querySelector('.mini-sponsor');
+      mini.src = ''; mini.style.display = 'none';
+      document.getElementById('btn-remove-sponsor').style.display = 'none';
       renderCards();
     });
 
     // ================================================================
-    //  EVENTOS DE TEXTO EN EL PANEL
+    //  IMAGEN GENÉRICA
     // ================================================================
-    document.querySelectorAll('#panel input[type="text"]').forEach(inp => {
-      inp.addEventListener('input', () => {
-        if (inp.classList.contains('in-nombre-rival')) renderCards();
-        else updateAllText();
-      });
+    document.getElementById('file-generico').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      genericoPendingChain = true;
+      openCropperModal(file, 'generico-916');
+      e.target.value = '';
     });
 
-    // MEJORA 8: el nuevo input de hora es type="time"
-    document.querySelector('.in-hora').addEventListener('input', updateAllText);
-    document.getElementById('in-condicion').addEventListener('change', renderCards);
-    datePicker.addEventListener('change', renderCards);
+    document.getElementById('btn-edit-generico-916').addEventListener('click', () => {
+      if (!genericoOriginalSrc) return;
+      fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => openCropperModal(blob, 'generico-916'));
+    });
+
+    document.getElementById('btn-edit-generico-11').addEventListener('click', () => {
+      if (!genericoOriginalSrc) return;
+      fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => openCropperModal(blob, 'generico-11'));
+    });
+
+    document.getElementById('btn-remove-generico').addEventListener('click', () => {
+      genericoImgSrcStory = null;
+      genericoImgSrcFeed = null;
+      genericoImgBlurStory = null;
+      genericoImgBlurFeed = null;
+      genericoImgRatioStory = null;
+      genericoImgRatioFeed = null;
+      genericoOriginalSrc = null;
+      genericoPendingChain = false;
+      document.getElementById('file-generico').value = '';
+      const mini = document.querySelector('.mini-generico');
+      mini.src = ''; mini.style.display = 'none';
+      document.querySelector('.mini-generico-916').style.display = 'none';
+      document.querySelector('.mini-generico-11').style.display = 'none';
+      document.getElementById('generico-img-actions').style.display = 'none';
+      renderCards();
+    });
+
+    // ================================================================
+    //  FONDO PERSONALIZADO
+    // ================================================================
+    document.getElementById('file-background').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        backgroundImgSrc = ev.target.result;
+        const mini = document.querySelector('.mini-background');
+        mini.src = backgroundImgSrc; mini.style.display = 'block';
+        document.getElementById('btn-remove-background').style.display = 'block';
+        renderCards();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('btn-remove-background').addEventListener('click', () => {
+      backgroundImgSrc = null;
+      document.getElementById('file-background').value = '';
+      const mini = document.querySelector('.mini-background');
+      mini.src = ''; mini.style.display = 'none';
+      document.getElementById('btn-remove-background').style.display = 'none';
+      renderCards();
+    });
 
     // ================================================================
     //  ESCALADO DE LA VISTA PREVIA
-    //  El ancho de #wrap916 / #wrap11 se define en CSS con clamp() para
-    //  usar el espacio disponible; esta función solo recalcula la
-    //  escala del flyer para que encaje justo en ese ancho.
     // ================================================================
     function scalePreview(scalerId, wrapId, fullW, fullH) {
       const wrap = document.getElementById(wrapId);
@@ -2882,27 +1959,12 @@
     });
 
     // ================================================================
-    //  INICIALIZACIÓN
-    // ================================================================
-    renderCards();
-    document.fonts.ready.then(fitAll);
-
-    // ================================================================
-    //  MEJORA 2: EXPORTACIÓN QUE FUNCIONA EN MÓVILES
-    //  Muchos navegadores de celular (especialmente iOS) bloquean una
-    //  descarga o apertura de ventana si no ocurre de forma síncrona
-    //  dentro del clic del usuario. Por eso, en móviles abrimos la
-    //  pestaña ANTES de generar la imagen y recién después le asignamos
-    //  el contenido ya listo.
+    //  EXPORTACIÓN
     // ================================================================
     function isMobileDevice() {
       return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
 
-    // Muestra la imagen en una pestaña nueva usando una data: URL (en vez de
-    // blob:), que es lo que realmente funciona al navegar una pestaña/ventana
-    // distinta en la mayoría de los navegadores móviles. Con blob: la pestaña
-    // suele quedar en blanco y por eso la "descarga" nunca se veía en el celular.
     function showBlobInNewTab(blob, filename, existingWindow) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -2931,9 +1993,6 @@
       const mobile = isMobileDevice();
       const hasShareApi = mobile && !!navigator.share;
 
-      // Si no hay Web Share API, abrimos la pestaña YA (de forma síncrona con
-      // el clic) porque algunos navegadores móviles bloquean la apertura si
-      // ocurre después de una operación asíncrona como html2canvas.
       const mobileWindow = (mobile && !hasShareApi) ? window.open('', '_blank') : null;
 
       html2canvas(el, {
@@ -2952,9 +2011,6 @@
             return;
           }
 
-          // En celular: preferimos el panel nativo de compartir, porque incluye
-          // "Guardar imagen" / "Guardar en Fotos" directamente, sin depender de
-          // que el usuario sepa que tiene que mantener presionada la imagen.
           if (hasShareApi) {
             const file = new File([blob], filename, { type: 'image/jpeg' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -2962,8 +2018,7 @@
                 await navigator.share({ files: [file], title: filename });
                 return;
               } catch (err) {
-                if (err && err.name === 'AbortError') return; // el usuario canceló
-                // si falla por otro motivo, seguimos con el plan B de abajo
+                if (err && err.name === 'AbortError') return;
               }
             }
             showBlobInNewTab(blob, filename, null);
@@ -2997,7 +2052,19 @@
     document.getElementById('btn-11').addEventListener('click', () => {
       exportCard('export11', 'proximo-partido-feed.jpg');
     });
+
+    // ================================================================
+    //  INICIALIZACIÓN
+    // ================================================================
+    renderCards();
+    document.fonts.ready.then(fitAll);
+
+    function parseImgRatio(str) {
+      if (!str || str === 'libre') return null;
+      const [w, h] = str.split('/').map(Number);
+      if (!w || !h) return null;
+      return w / h;
+    }
   </script>
 </body>
-
 </html>
