@@ -225,7 +225,7 @@
 
     /* Para Historia 9:16, bajamos el contenido para evitar el nombre de usuario de Instagram */
     .card-916 .card-content {
-      padding-top: 90px !important;
+      padding-top: 130px !important;
     }
 
     /* ===== FONDOS ===== */
@@ -244,6 +244,7 @@
       background-size: cover;
       background-position: center;
     }
+    /* Cuando hay imagen, la ponemos dentro como <img>, así que el fondo queda solo con gradientes */
     .flyer-background.has-bg-img {
       background: none !important;
     }
@@ -513,38 +514,84 @@
        MODO FOTO – Fondo completo con imagen, encabezado superpuesto
        ================================================================ */
     .flyer-foto .flyer-background {
-      background: none !important;
+      background: none !important; /* la imagen va dentro como <img> */
     }
     .flyer-foto .flyer-overlay {
       background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.6) 100%) !important;
     }
     .flyer-foto .card-content {
-      padding: 20px 25px !important;
-      justify-content: space-between !important;
+      padding: 20px 30px !important;
+      justify-content: flex-start !important;
     }
     .flyer-foto .flyer-header {
       width: 100%;
       margin: 0;
       border-radius: 0 !important;
-      background: rgba(255,255,255,0.12);
+      background: rgba(10,34,122,0.82);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.15);
-      padding: 12px 20px;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 16px 24px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
       gap: 16px;
       box-sizing: border-box;
+      pointer-events: none; /* el encabezado nunca se mueve ni intercepta el arrastre de la foto */
     }
+
+    .flyer-foto .club-name .foto-header-line {
+      display: block;
+      width: 42px;
+      height: 3px;
+      border-radius: 2px;
+      background: var(--blue-electric);
+      margin-top: 6px;
+    }
+
+    /* ===== CANVAS INTERACTIVO DE LA FOTO (MODO FOTO) ===== */
+    .foto-canvas-layer {
+      touch-action: none;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      background: transparent; /* ya no es blanco, se ve el fondo del flyer */
+    }
+    .foto-canvas-layer:active { cursor: grabbing; }
+    .foto-photo-img {
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .foto-canvas-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #8890A6;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      text-align: center;
+      border: 2px dashed #D1D9ED;
+      padding: 20px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(4px);
+    }
+    .foto-canvas-placeholder .icon { font-size: 46px; }
+
+    .foto-fit-selector { margin-top: 8px; }
     .flyer-foto .flyer-header .club-crest {
-      width: 55px;
-      height: 55px;
+      width: 60px;
+      height: 60px;
     }
     .flyer-foto .flyer-header .club-name .line1 {
-      font-size: 16px;
+      font-size: 18px;
       color: rgba(255,255,255,0.8);
     }
     .flyer-foto .flyer-header .club-name .line2 {
-      font-size: 20px;
+      font-size: 22px;
       color: #fff;
     }
     .flyer-foto .flyer-category {
@@ -555,7 +602,7 @@
 
     /* Ajustes para 1:1 en modo foto */
     .card-11.flyer-foto .flyer-header {
-      padding: 10px 16px;
+      padding: 12px 18px;
       gap: 12px;
     }
     .card-11.flyer-foto .flyer-header .club-crest {
@@ -563,16 +610,14 @@
       height: 45px;
     }
     .card-11.flyer-foto .flyer-header .club-name .line1 {
-      font-size: 13px;
+      font-size: 14px;
     }
     .card-11.flyer-foto .flyer-header .club-name .line2 {
-      font-size: 17px;
+      font-size: 18px;
     }
     .card-11.flyer-foto .flyer-category {
-      font-size: 20px;
+      font-size: 22px;
     }
-    .card-11.flyer-foto .flyer-title .dyn-t1 { font-size: 50px; }
-    .card-11.flyer-foto .flyer-title .dyn-t2 { font-size: 70px; }
 
     /* ================================================================
        MODO LIBRE (CRONOGRAMA)
@@ -669,19 +714,18 @@
       align-items: center;
       justify-content: center;
       flex: 1;
-      gap: 10px;
+      gap: 20px;
       position: relative;
       z-index: 5;
-      padding: 10px 0;
-      width: 100%;
+      padding: 20px 0;
     }
     .flyer-generico .gen-img-frame {
       width: 100%;
       max-width: 800px;
-      border-radius: 16px;
+      border-radius: 12px;
       overflow: hidden;
       background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
     .flyer-generico .gen-img-frame img {
@@ -696,40 +740,20 @@
       font-size: 28px;
       color: #fff;
       text-align: center;
-      max-width: 85%;
+      max-width: 80%;
       text-shadow: 0 2px 12px rgba(0,0,0,0.5);
-      background: rgba(0,0,0,0.25);
-      padding: 8px 18px;
-      border-radius: 12px;
-      backdrop-filter: blur(4px);
     }
     .card-11 .flyer-generico .gen-texto { font-size: 20px; }
     .card-11 .flyer-generico .gen-img-frame { max-width: 500px; }
-
-    .flyer-generico-texto {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      color: #fff;
-      text-align: center;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
-      background: rgba(0,0,0,0.2);
-      padding: 8px 18px;
-      border-radius: 12px;
-      backdrop-filter: blur(4px);
-      width: 100%;
-      box-sizing: border-box;
-    }
 
     /* ================================================================
        ELEMENTO OCULTO PARA EXPORTACIÓN
        ================================================================ */
     #offscreen {
       position: fixed;
-      left: 0;
+      left: -99999px;
       top: 0;
-      opacity: 0;
       pointer-events: none;
-      z-index: -1;
     }
 
     /* ================================================================
@@ -792,7 +816,7 @@
         <label>Seleccioná la categoría del flyer:</label>
         <div class="cat-selector" id="cat-selector">
           <div class="cat-opt sel-primera active" data-cat="PRIMERA">Primera</div>
-          <div class="cat-opt sel-senior" data-cat="SENIOR">Seniors</div>
+          <div class="cat-opt sel-senior" data-cat="SENIORS">Seniors</div>
           <div class="cat-opt sel-inferiores" data-cat="INFERIORES">Inferiores</div>
         </div>
       </div>
@@ -891,7 +915,42 @@
       </details>
     </div>
 
-    <!-- SECCIÓN MODO GENÉRICO (también usado por FOTO) -->
+    <!-- SECCIÓN MODO FOTO (canvas interactivo, sin sliders) -->
+    <div id="field-group-foto" style="display: none;">
+      <details class="fs fs-highlight" open>
+        <summary>Fotografía</summary>
+        <div class="fs-body">
+          <label>Cargar fotografía</label>
+          <div class="file-input-group">
+            <img class="mini mini-foto" src="" alt="" style="display:none;">
+            <input type="file" accept="image/*" id="file-foto">
+          </div>
+          <button class="btn btn-outline btn-small" id="btn-remove-foto" style="display:none;">✕ Quitar fotografía</button>
+
+          <div id="foto-fit-controls" style="display:none; margin-top:10px;">
+            <label>Ajuste · Historia 9:16</label>
+            <div class="style-selector foto-fit-selector" data-format="916">
+              <div class="style-opt active" data-fit="cover">Cubrir Lienzo</div>
+              <div class="style-opt" data-fit="contain">Foto Completa</div>
+            </div>
+            <label style="margin-top:8px;">Ajuste · Feed 1:1</label>
+            <div class="style-selector foto-fit-selector" data-format="11">
+              <div class="style-opt active" data-fit="cover">Cubrir Lienzo</div>
+              <div class="style-opt" data-fit="contain">Foto Completa</div>
+            </div>
+            <p style="font-size:9px; color:#656E85; font-weight:600; margin-top:6px;">
+              "Cubrir Lienzo": la foto llena todo el formato (puede recortar bordes). "Foto Completa": se ve la imagen entera, sin recortar, rellenando el resto con el fondo del flyer.
+            </p>
+          </div>
+
+          <p style="font-size:9px; color:#656E85; font-weight:600; margin-top:8px; line-height:1.5;">
+            Arrastrá la foto directamente sobre la vista previa para moverla. Pellizcá con dos dedos (o usá la rueda del mouse) para hacer zoom. Cada formato (Historia y Feed) se ajusta por separado.
+          </p>
+        </div>
+      </details>
+    </div>
+
+    <!-- SECCIÓN MODO GENÉRICO -->
     <div id="field-group-generico" style="display: none;">
       <details class="fs" open>
         <summary>Contenido Libre</summary>
@@ -1194,6 +1253,12 @@
     let cropper = null;
     let currentTargetTeam = null;
 
+    // ---- MOTOR DE CANVAS INTERACTIVO PARA MODO FOTO ----
+    let fotoImgSrc = null;                 // data URL de la foto original (sin recortar)
+    let fotoNatural = { w: 0, h: 0 };       // dimensiones naturales de la foto
+    let fotoState = { '916': null, '11': null }; // transform independiente por formato
+    const FOTO_CANVAS = { '916': { w: 1080, h: 1920 }, '11': { w: 1080, h: 1080 } };
+
     const cropModal = document.getElementById('cropModal');
     const cropImage = document.getElementById('cropImage');
     const datePicker = document.getElementById('in-fecha-picker');
@@ -1260,11 +1325,177 @@
       if (!imgSrc) {
         return `<div class="flyer-background"></div>`;
       }
+      // Si hay imagen, la ponemos como <img> dentro de un contenedor
       return `
         <div class="flyer-background has-bg-img" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; overflow:hidden;">
           <img src="${imgSrc}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1; ${extraStyles}">
         </div>
       `;
+    }
+
+    // ---- Calcula el transform inicial de la foto para un formato dado, según el modo de ajuste ----
+    function setFotoFitMode(format, fitMode) {
+      const canvas = FOTO_CANVAS[format];
+      const minScale = fitMode === 'contain'
+        ? Math.min(canvas.w / fotoNatural.w, canvas.h / fotoNatural.h)  // entra la foto entera
+        : Math.max(canvas.w / fotoNatural.w, canvas.h / fotoNatural.h); // cubre todo el lienzo
+      const scale = minScale;
+      const w = fotoNatural.w * scale;
+      const h = fotoNatural.h * scale;
+      fotoState[format] = {
+        fitMode,
+        scale, minScale, maxScale: minScale * 4,
+        w, h,
+        left: (canvas.w - w) / 2,
+        top: (canvas.h - h) / 2
+      };
+    }
+
+    // ---- Inicializa el transform de la foto (una vez cargada) para ambos formatos ----
+    function initFotoState() {
+      ['916', '11'].forEach(format => setFotoFitMode(format, 'cover'));
+    }
+
+    // ---- Asegura que la foto se mantenga dentro de rango: sin huecos en modo "cubrir",
+    //      centrada con fondo visible en modo "completa" ----
+    function clampFotoState(format) {
+      const st = fotoState[format];
+      if (!st) return;
+      const canvas = FOTO_CANVAS[format];
+      st.scale = Math.max(st.minScale, Math.min(st.maxScale, st.scale));
+      st.w = fotoNatural.w * st.scale;
+      st.h = fotoNatural.h * st.scale;
+
+      // Eje X
+      if (st.w <= canvas.w) {
+        st.left = (canvas.w - st.w) / 2; // más chica que el lienzo: se centra, queda fondo visible
+      } else {
+        if (st.left > 0) st.left = 0;
+        if (st.left + st.w < canvas.w) st.left = canvas.w - st.w;
+      }
+      // Eje Y
+      if (st.h <= canvas.h) {
+        st.top = (canvas.h - st.h) / 2;
+      } else {
+        if (st.top > 0) st.top = 0;
+        if (st.top + st.h < canvas.h) st.top = canvas.h - st.h;
+      }
+    }
+
+    // ---- Aplica el transform actual directamente al DOM (preview + export), sin re-render completo ----
+    function applyFotoTransform(format) {
+      const st = fotoState[format];
+      if (!st) return;
+      document.querySelectorAll(`.foto-photo-img[data-format="${format}"]`).forEach(img => {
+        img.style.left = st.left + 'px';
+        img.style.top = st.top + 'px';
+        img.style.width = st.w + 'px';
+        img.style.height = st.h + 'px';
+      });
+    }
+
+    // ---- Hace zoom manteniendo fijo el punto bajo el cursor / centro del pellizco ----
+    function zoomFotoAt(format, ratio, clientPoint, origin, scaleFactor) {
+      const st = fotoState[format];
+      if (!st) return;
+      const canvasPoint = {
+        x: (clientPoint.x - origin.x) / scaleFactor,
+        y: (clientPoint.y - origin.y) / scaleFactor
+      };
+      const localX = (canvasPoint.x - st.left) / st.scale;
+      const localY = (canvasPoint.y - st.top) / st.scale;
+      let newScale = st.scale * ratio;
+      newScale = Math.max(st.minScale, Math.min(st.maxScale, newScale));
+      st.scale = newScale;
+      st.w = fotoNatural.w * newScale;
+      st.h = fotoNatural.h * newScale;
+      st.left = canvasPoint.x - localX * newScale;
+      st.top = canvasPoint.y - localY * newScale;
+      clampFotoState(format);
+      applyFotoTransform(format);
+    }
+
+    // ---- Conecta arrastre (mouse/touch), pellizco (2 dedos) y rueda del mouse al canvas visible ----
+    function attachFotoCanvasEvents() {
+      ['916', '11'].forEach(format => {
+        const layer = document.querySelector(`#wrap${format} .foto-canvas-layer`);
+        if (!layer) return;
+
+        const pointers = new Map();
+        let dragLast = null;
+        let lastDist = null;
+
+        function getScaleFactor() {
+          const rect = layer.getBoundingClientRect();
+          return rect.width / FOTO_CANVAS[format].w;
+        }
+        function getOrigin() {
+          const rect = layer.getBoundingClientRect();
+          return { x: rect.left, y: rect.top };
+        }
+
+        layer.addEventListener('pointerdown', (e) => {
+          if (!fotoImgSrc) return;
+          layer.setPointerCapture(e.pointerId);
+          pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+          if (pointers.size === 1) {
+            dragLast = { x: e.clientX, y: e.clientY };
+          } else if (pointers.size === 2) {
+            const pts = Array.from(pointers.values());
+            lastDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+          }
+        });
+
+        layer.addEventListener('pointermove', (e) => {
+          if (!pointers.has(e.pointerId)) return;
+          pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+          const scaleFactor = getScaleFactor();
+          const origin = getOrigin();
+
+          if (pointers.size === 1 && dragLast) {
+            const st = fotoState[format];
+            if (st) {
+              const dx = (e.clientX - dragLast.x) / scaleFactor;
+              const dy = (e.clientY - dragLast.y) / scaleFactor;
+              st.left += dx;
+              st.top += dy;
+              clampFotoState(format);
+              applyFotoTransform(format);
+            }
+            dragLast = { x: e.clientX, y: e.clientY };
+          } else if (pointers.size === 2) {
+            const pts = Array.from(pointers.values());
+            const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+            const mid = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 };
+            if (lastDist) {
+              const ratio = dist / lastDist;
+              zoomFotoAt(format, ratio, mid, origin, scaleFactor);
+            }
+            lastDist = dist;
+          }
+        });
+
+        function endPointer(e) {
+          if (pointers.has(e.pointerId)) pointers.delete(e.pointerId);
+          lastDist = null;
+          if (pointers.size === 1) {
+            const remaining = Array.from(pointers.values())[0];
+            dragLast = { x: remaining.x, y: remaining.y };
+          } else {
+            dragLast = null;
+          }
+        }
+        layer.addEventListener('pointerup', endPointer);
+        layer.addEventListener('pointercancel', endPointer);
+        layer.addEventListener('pointerleave', (e) => { if (pointers.size <= 1) endPointer(e); });
+
+        layer.addEventListener('wheel', (e) => {
+          if (!fotoImgSrc) return;
+          e.preventDefault();
+          const ratio = e.deltaY < 0 ? 1.08 : 0.92;
+          zoomFotoAt(format, ratio, { x: e.clientX, y: e.clientY }, getOrigin(), getScaleFactor());
+        }, { passive: false });
+      });
     }
 
     // ================================================================
@@ -1281,315 +1512,59 @@
       return '';
     }
 
-    // ---- MODO FOTO (MEJORADO - SIN IMAGEN EN EL HEADER) ----
+    // ---- MODO FOTO (canvas interactivo tipo Canva) ----
     function buildFotoHTML(format) {
-      const is916 = format === '916';
       const ceramicaShield = getCeramicaShieldHTML();
       const brand1 = document.querySelector('.in-brand1').value;
       const brand2 = document.querySelector('.in-brand2').value;
-      const t1 = document.querySelector('.in-t1').value;
-      const t2 = document.querySelector('.in-t2').value;
-      const { dayName, formattedDate } = getCalculatedDateInfo();
-      const hora = getFormattedHora();
-      const estadio = document.querySelector('.in-estadio').value;
-      const slogan = document.querySelector('.in-foot-slogan').value;
-      const footR1 = document.querySelector('.in-foot-r1').value;
-      const footR2 = document.querySelector('.in-foot-r2').value;
 
-      // Usamos la imagen que el usuario subió para generico (fondo completo)
-      const src = is916 ? genericoImgSrcStory : genericoImgSrcFeed;
-      const blurSrc = is916 ? genericoImgBlurStory : genericoImgBlurFeed;
-
-      // Fondo con imagen (si existe) - ocupa toda la pantalla
-      let bgHTML = '';
-      if (src) {
-        const zoomPercent = genericoZoom / 100;
-        const posX = genericoImgPosX;
-        const posY = genericoImgPosY;
+      // Usar el mismo fondo que los otros modos (gradiente o imagen personalizada)
+      let bgHTML;
+      if (backgroundImgSrc) {
         bgHTML = `
           <div class="flyer-background has-bg-img" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; overflow:hidden;">
-            <img src="${src}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position: ${posX}% ${posY}%; transform: scale(${zoomPercent}); z-index:1;">
+            <img src="${backgroundImgSrc}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;">
           </div>
         `;
       } else {
-        // Si no hay imagen, usamos el fondo por defecto (estadio)
         bgHTML = `<div class="flyer-background"></div>`;
       }
 
-      // Estilo vidrio para el header - sin imagen, solo efecto blur
-      const glassStyle = `background: rgba(255,255,255,0.12); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);`;
-
-      const headerStyle = `${glassStyle}; padding: 12px 20px; border-radius: 0; width:100%; box-sizing:border-box; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 8px 32px rgba(0,0,0,0.2);`;
-
-      // Ajustes de tamaño según formato
-      const catSize = is916 ? '36px' : '28px';
-      const t1Size = is916 ? '90px' : '60px';
-      const t2Size = is916 ? '130px' : '80px';
-      const infoFont = is916 ? '18px' : '14px';
-      const infoLabelSize = is916 ? '12px' : '10px';
-      const infoValueSize = is916 ? '28px' : '22px';
-      const estadioSize = is916 ? '24px' : '18px';
-      const sloganSize = is916 ? '26px' : '20px';
-      const footSize = is916 ? '14px' : '11px';
+      let photoLayerInner;
+      let isContain = false;
+      if (fotoImgSrc && fotoState[format]) {
+        const st = fotoState[format];
+        isContain = st.fitMode === 'contain';
+        photoLayerInner = `<img class="foto-photo-img" data-format="${format}" src="${fotoImgSrc}" draggable="false" alt="" style="position:absolute; left:${st.left}px; top:${st.top}px; width:${st.w}px; height:${st.h}px;">`;
+      } else {
+        photoLayerInner = `
+          <div class="foto-canvas-placeholder">
+            <span class="icon">📷</span>
+            <span>Subí una fotografía<br>para empezar a editar</span>
+          </div>
+        `;
+      }
 
       const html = `
-        <div class="card-content flyer-foto" style="justify-content: space-between; padding: 20px 25px;">
+        <div class="card-content flyer-foto">
           ${bgHTML}
-          <div class="flyer-overlay" style="background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.5) 100%);"></div>
+          <div class="flyer-overlay"></div>
           <div class="flyer-texture"></div>
+          <div class="flyer-background has-bg-img foto-canvas-layer" data-format="${format}" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:3; overflow:hidden; background:transparent !important;">
+            ${photoLayerInner}
+          </div>
 
-          <!-- HEADER (solo escudo y nombre, sin imagen extra) -->
-          <div class="flyer-header" style="${headerStyle}">
-            <div class="club-crest" style="width:55px; height:55px;">${ceramicaShield}</div>
+          <div class="flyer-header" style="position:relative; z-index:10;">
+            <div class="club-crest">${ceramicaShield}</div>
             <div class="club-name">
-              <span class="line1 dyn-brand1" style="font-size:16px;">${brand1}</span>
-              <span class="line2 dyn-brand2" style="font-size:20px;">${brand2}</span>
-            </div>
-          </div>
-
-          <!-- CENTRO: TÍTULO + CATEGORÍA -->
-          <div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px; flex:1; justify-content:center;">
-            <div style="${glassStyle}; padding: 8px 20px; border-radius: 40px; backdrop-filter: blur(8px); display:inline-block; border:1px solid rgba(255,255,255,0.15);">
-              <span style="font-family:'Bebas Neue',sans-serif; font-size:${catSize}; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,0.4);">${currentCategory}</span>
-            </div>
-            <div class="flyer-title" style="text-align:center; margin:0; ${glassStyle}; padding:6px 20px; border-radius:12px; backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.15);">
-              <span class="dyn-t1" style="font-size:${t1Size}; color:#fff; display:block; text-shadow:0 4px 12px rgba(0,0,0,0.5);">${t1}</span>
-              <span class="dyn-t2" style="font-size:${t2Size}; color:var(--blue-electric); display:block; text-shadow:0 4px 12px rgba(0,0,0,0.3);">${t2}</span>
-            </div>
-          </div>
-
-          <!-- FOOTER: INFO + SLOGAN -->
-          <div style="display:flex; flex-direction:column; align-items:center; gap:8px; width:100%;">
-            <div style="display:flex; justify-content:center; gap:20px; ${glassStyle}; padding:10px 16px; border-radius:12px; backdrop-filter:blur(8px); width:100%; box-sizing:border-box; flex-wrap:wrap; border:1px solid rgba(255,255,255,0.15);">
-              <div style="text-align:center; color:#fff; font-weight:600; font-size:${infoFont};">
-                <div style="font-size:${infoLabelSize}; opacity:0.7; text-transform:uppercase;">${dayName}</div>
-                <div style="font-family:'Bebas Neue',sans-serif; font-size:${infoValueSize};">${formattedDate}</div>
-              </div>
-              <div style="text-align:center; color:#fff; font-weight:600; font-size:${infoFont};">
-                <div style="font-size:${infoLabelSize}; opacity:0.7; text-transform:uppercase;">Hora</div>
-                <div style="font-family:'Bebas Neue',sans-serif; font-size:${infoValueSize};">${hora}</div>
-              </div>
-              <div style="text-align:center; color:#fff; font-weight:600; font-size:${infoFont};">
-                <div style="font-size:${infoLabelSize}; opacity:0.7; text-transform:uppercase;">Estadio</div>
-                <div style="font-family:'Bebas Neue',sans-serif; font-size:${estadioSize};">${estadio}</div>
-              </div>
-            </div>
-            <div style="${glassStyle}; padding:6px 20px; border-radius:30px; backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.15);">
-              <span style="font-family:'Bebas Neue',sans-serif; font-size:${sloganSize}; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,0.3);">${slogan}</span>
-            </div>
-            <div style="${glassStyle}; padding:4px 16px; border-radius:20px; backdrop-filter:blur(8px); text-align:center; border:1px solid rgba(255,255,255,0.15);">
-              <span style="font-size:${footSize}; color:rgba(255,255,255,0.8); font-weight:600; letter-spacing:0.04em;">${footR1} · ${footR2}</span>
+              <span class="line1 dyn-brand1">${brand1}</span>
+              <span class="line2 dyn-brand2">${brand2}</span>
+              <span class="foto-header-line"></span>
             </div>
           </div>
         </div>
       `;
       return html;
-    }
-
-    // ---- MODO GENÉRICO (MEJORADO) ----
-    function buildGenericoHTML(format) {
-      const is916 = format === '916';
-      const showHeader = document.getElementById('in-gen-show-header').checked;
-      const showCategoria = document.getElementById('in-gen-show-categoria').checked;
-      const showTitulo = document.getElementById('in-gen-show-titulo').checked;
-      const showTexto = document.getElementById('in-gen-show-texto').checked;
-      const showSponsors = document.getElementById('in-gen-show-sponsors').checked && !!sponsorSrc;
-      const showFooter = document.getElementById('in-gen-show-footer').checked;
-
-      const src = is916 ? genericoImgSrcStory : genericoImgSrcFeed;
-      const texto = document.getElementById('in-gen-texto').value.trim();
-      const ceramicaShield = getCeramicaShieldHTML();
-      const brand1 = document.querySelector('.in-brand1').value;
-      const brand2 = document.querySelector('.in-brand2').value;
-      const t1 = document.querySelector('.in-t1').value;
-      const t2 = document.querySelector('.in-t2').value;
-      const footR1 = document.querySelector('.in-foot-r1').value;
-      const footR2 = document.querySelector('.in-foot-r2').value;
-      const slogan = document.querySelector('.in-foot-slogan').value;
-
-      // Construir fondo con imagen si existe
-      let bgHTML = '';
-      if (src) {
-        const zoomPercent = genericoZoom / 100;
-        const posX = genericoImgPosX;
-        const posY = genericoImgPosY;
-        bgHTML = `
-          <div class="flyer-background has-bg-img" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; overflow:hidden;">
-            <img src="${src}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position: ${posX}% ${posY}%; transform: scale(${zoomPercent}); z-index:1;">
-          </div>
-        `;
-      } else {
-        bgHTML = `<div class="flyer-background"></div>`;
-      }
-
-      // Estilo vidrio para minimalista
-      const blurSrc = is916 ? genericoImgBlurStory : genericoImgBlurFeed;
-      const glassBg = blurSrc
-        ? `background-image: linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.46) 100%), url(${blurSrc}); background-size: cover; background-position: center;`
-        : `background: rgba(255,255,255,0.2); backdrop-filter: blur(12px);`;
-
-      // ---- ESTILO MINIMALISTA ----
-      if (genericoStyle === 'minimal') {
-        let headerHTML = showHeader ? `
-          <div class="flyer-header" style="${glassBg}; padding: 12px 24px; backdrop-filter: blur(8px); width:100%; box-sizing:border-box; border-radius:0 !important; border:1px solid rgba(255,255,255,0.15);">
-            <div class="club-crest" style="width:55px; height:55px;">${ceramicaShield}</div>
-            <div class="club-name">
-              <span class="line1 dyn-brand1" style="font-size:16px;">${brand1}</span>
-              <span class="line2 dyn-brand2" style="font-size:20px;">${brand2}</span>
-            </div>
-          </div>
-        ` : '';
-
-        let categoryHTML = showCategoria ? `
-          <div style="${glassBg}; padding: 4px 20px; border-radius: 40px; display:inline-block; backdrop-filter: blur(8px); border:1px solid rgba(255,255,255,0.15);">
-            <span style="font-family:'Bebas Neue',sans-serif; font-size:${is916?'36px':'28px'}; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,0.3);">${currentCategory}</span>
-          </div>
-        ` : '';
-
-        let titleHTML = showTitulo ? `
-          <div class="flyer-title" style="${glassBg}; padding: 6px 20px; backdrop-filter: blur(8px); width:100%; box-sizing:border-box; border-radius:12px; text-align:center; margin:0; border:1px solid rgba(255,255,255,0.15);">
-            <span class="dyn-t1" style="font-size:${is916?'80px':'55px'}; color:#fff; display:block; text-shadow:0 4px 12px rgba(0,0,0,0.5);">${t1}</span>
-            <span class="dyn-t2" style="font-size:${is916?'110px':'75px'}; color:var(--blue-electric); display:block; text-shadow:0 4px 12px rgba(0,0,0,0.3);">${t2}</span>
-          </div>
-        ` : '';
-
-        let textoHTML = (showTexto && texto) ? `
-          <div style="${glassBg}; padding: 10px 24px; backdrop-filter: blur(8px); font-size:${is916?'26px':'18px'}; font-weight:700; color:#fff; text-align:center; width:100%; box-sizing:border-box; border-radius:12px; text-shadow:0 2px 8px rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15);">
-            ${texto.replace(/</g, '&lt;')}
-          </div>
-        ` : '';
-
-        let footerHTML = '';
-        if (showFooter || showSponsors) {
-          let sponsorHTML = showSponsors ? `
-            <div style="${glassBg}; padding: 6px 16px; border-radius:12px; backdrop-filter: blur(8px); border:1px solid rgba(255,255,255,0.15);">
-              <img src="${sponsorSrc}" style="max-height:60px; max-width:160px; object-fit:contain;">
-            </div>
-          ` : '';
-          let sloganHTML = showFooter ? `
-            <div style="${glassBg}; padding: 4px 16px; border-radius:20px; backdrop-filter: blur(8px); border:1px solid rgba(255,255,255,0.15);">
-              <span style="font-family:'Bebas Neue',sans-serif; font-size:${is916?'26px':'20px'}; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,0.3);">${slogan}</span>
-            </div>
-          ` : '';
-          let compHTML = showFooter ? `
-            <div style="${glassBg}; padding: 4px 16px; border-radius:20px; backdrop-filter: blur(8px); text-align:center; border:1px solid rgba(255,255,255,0.15);">
-              <span style="font-size:${is916?'14px':'11px'}; color:rgba(255,255,255,0.8); font-weight:600; letter-spacing:0.04em;">${footR1} · ${footR2}</span>
-            </div>
-          ` : '';
-          footerHTML = `
-            <div style="display:flex; flex-direction:column; align-items:center; gap:6px; width:100%; margin-top:8px;">
-              ${sponsorHTML}
-              ${sloganHTML}
-              ${compHTML}
-            </div>
-          `;
-        }
-
-        let inner = `
-          ${bgHTML}
-          <div class="flyer-overlay" style="background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.5) 100%);"></div>
-          <div class="flyer-texture"></div>
-          <div class="card-content" style="justify-content: space-between; padding: 20px 25px; position:relative; z-index:4; display:flex; flex-direction:column; height:100%;">
-            ${headerHTML}
-            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; flex:1; justify-content:center; width:100%;">
-              ${categoryHTML}
-              ${titleHTML}
-              ${textoHTML}
-            </div>
-            ${footerHTML}
-          </div>
-        `;
-        return inner;
-      }
-
-      // ---- ESTILO TRADICIONAL (MEJORADO) ----
-      const titleSize1 = is916 ? '80px' : '55px';
-      const titleSize2 = is916 ? '110px' : '75px';
-      const catSize = is916 ? '32px' : '24px';
-      const textSize = is916 ? '28px' : '20px';
-      const sloganSize = is916 ? '26px' : '20px';
-      const footSize = is916 ? '14px' : '11px';
-
-      // Contenedor de imagen con bordes redondeados y sombra
-      let imgHTML = '';
-      if (src) {
-        const canvas = is916 ? { w: 950, h: 650 } : { w: 970, h: 380 };
-        let w = canvas.w, h = canvas.h;
-        const ratio = is916 ? genericoImgRatioStory : genericoImgRatioFeed;
-        if (ratio) {
-          w = canvas.h * ratio;
-          h = canvas.h;
-          if (w > canvas.w) { w = canvas.w; h = canvas.w / ratio; }
-        }
-        const left = (canvas.w - w) * (genericoImgPosX / 100);
-        const top = (canvas.h - h) * (genericoImgPosY / 100);
-        imgHTML = `
-          <div style="width:100%; height:${canvas.h}px; position:relative; margin:8px 0;">
-            <div style="position:absolute; left:${left}px; top:${top}px; width:${w}px; height:${h}px; overflow:hidden; border-radius:16px; border:1px solid rgba(255,255,255,0.15); box-shadow:0 10px 30px rgba(0,0,0,0.4);">
-              <img src="${src}" style="width:100%; height:100%; object-fit:cover;">
-            </div>
-          </div>
-        `;
-      }
-
-      let textoHTML = (showTexto && texto) ? `
-        <div class="flyer-generico-texto" style="font-size:${textSize}; font-weight:700; color:#fff; text-align:center; text-shadow:0 2px 12px rgba(0,0,0,0.5); background:rgba(0,0,0,0.25); padding:8px 18px; border-radius:12px; backdrop-filter:blur(4px); width:100%; box-sizing:border-box;">
-          ${texto.replace(/</g, '&lt;')}
-        </div>
-      ` : '';
-
-      const sponsorHTML = showSponsors && sponsorSrc ? `
-        <div class="flyer-sponsor" style="margin-top:6px;">
-          <img src="${sponsorSrc}" alt="Sponsor" style="max-height:70px; max-width:180px; object-fit:contain; filter:brightness(0.85) contrast(1.1) drop-shadow(0 4px 12px rgba(0,0,0,0.3));">
-        </div>
-      ` : '';
-
-      let headerHTML = showHeader ? `
-        <div class="flyer-header">
-          <div class="club-crest" style="width:60px; height:60px;">${ceramicaShield}</div>
-          <div class="club-name">
-            <span class="line1 dyn-brand1" style="font-size:18px;">${brand1}</span>
-            <span class="line2 dyn-brand2" style="font-size:22px;">${brand2}</span>
-          </div>
-        </div>
-      ` : '';
-
-      let categoryHTML = showCategoria ? `
-        <div class="flyer-category" style="font-size:${catSize}; margin:2px 0 6px 0;">${currentCategory}</div>
-      ` : '';
-
-      let titleHTML = showTitulo ? `
-        <div class="flyer-title" style="margin-bottom:6px;">
-          <span class="dyn-t1" style="font-size:${titleSize1};">${t1}</span>
-          <span class="dyn-t2" style="font-size:${titleSize2};">${t2}</span>
-        </div>
-      ` : '';
-
-      let footerHTML = showFooter ? `
-        <div class="flyer-competition" style="margin-top:4px;">
-          <span class="dyn-foot-r1" style="font-size:${footSize};">${footR1}</span>
-          <span class="dyn-foot-r2" style="font-size:${footSize};">${footR2}</span>
-        </div>
-        <div class="flyer-slogan" style="font-size:${sloganSize}; margin-top:2px;">${slogan}</div>
-      ` : '';
-
-      let inner = `
-        ${bgHTML}
-        <div class="flyer-overlay"></div>
-        <div class="flyer-texture"></div>
-        <div class="card-content" style="padding: 25px 30px; display:flex; flex-direction:column; height:100%; position:relative; z-index:4;">
-          ${headerHTML}
-          ${categoryHTML}
-          ${titleHTML}
-          <div class="flyer-generico" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; width:100%;">
-            ${imgHTML}
-            ${textoHTML}
-          </div>
-          ${sponsorHTML}
-          ${footerHTML}
-        </div>
-      `;
-      return inner;
     }
 
     // ---- MODO VS ----
@@ -1640,12 +1615,15 @@
 
     // ---- MODO LIBRE ----
     function buildLibreHTML(format) {
+      const { dayName, formattedDate } = getCalculatedDateInfo();
+      const estadio = document.querySelector('.in-estadio').value;
+
       const times = document.querySelectorAll('.sched-in-time');
       const cats = document.querySelectorAll('.sched-in-cat');
       let scheduleRows = '';
       times.forEach((t, i) => {
-        const timeVal = t.value.trim() || '--:--';
-        const catVal = cats[i].value.trim() || 'CATEGORÍA';
+        const timeVal = (t.value || '').trim() || '--:--';
+        const catVal = ((cats[i] && cats[i].value) || '').trim() || 'CATEGORÍA';
         scheduleRows += `
           <div class="sched-row">
             <div class="sched-time">${timeVal}</div>
@@ -1654,7 +1632,29 @@
         `;
       });
 
-      const inner = `<div class="flyer-schedule">${scheduleRows}</div>`;
+      if (!scheduleRows) {
+        scheduleRows = `
+          <div class="sched-row">
+            <div class="sched-cat" style="flex:1; text-align:center; opacity:0.6;">Agregá horarios en el panel</div>
+          </div>
+        `;
+      }
+
+      const infoHTML = `
+        <div class="flyer-info">
+          <div class="info-item">
+            <span class="info-day">${dayName}</span>
+            <span class="info-date">${formattedDate}</span>
+          </div>
+          <div class="info-divider"></div>
+          <div class="info-item">
+            <span class="info-label">CANCHA</span>
+            <span class="info-stadium">${estadio}</span>
+          </div>
+        </div>
+      `;
+
+      const inner = `${infoHTML}<div class="flyer-schedule">${scheduleRows}</div>`;
       return buildBaseContent(inner, format);
     }
 
@@ -1703,6 +1703,183 @@
       return buildBaseContent(inner, format);
     }
 
+    // ---- MODO GENÉRICO (con todos los controles) ----
+    function buildGenericoHTML(format) {
+      const is916 = format === '916';
+      const showHeader = document.getElementById('in-gen-show-header').checked;
+      const showCategoria = document.getElementById('in-gen-show-categoria').checked;
+      const showTitulo = document.getElementById('in-gen-show-titulo').checked;
+      const showTexto = document.getElementById('in-gen-show-texto').checked;
+      const showSponsors = document.getElementById('in-gen-show-sponsors').checked && !!sponsorSrc;
+      const showFooter = document.getElementById('in-gen-show-footer').checked;
+
+      const src = is916 ? genericoImgSrcStory : genericoImgSrcFeed;
+      const ratio = is916 ? genericoImgRatioStory : genericoImgRatioFeed;
+      const texto = document.getElementById('in-gen-texto').value.trim();
+      const ceramicaShield = getCeramicaShieldHTML();
+
+      // Construir fondo con imagen si existe
+      let bgHTML = '';
+      if (src) {
+        const zoomPercent = genericoZoom / 100;
+        const posX = genericoImgPosX;
+        const posY = genericoImgPosY;
+        bgHTML = `
+          <div class="flyer-background has-bg-img" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; overflow:hidden;">
+            <img src="${src}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position: ${posX}% ${posY}%; transform: scale(${zoomPercent}); z-index:1;">
+          </div>
+        `;
+      } else {
+        bgHTML = `<div class="flyer-background"></div>`;
+      }
+
+      // Minimalista
+      if (genericoStyle === 'minimal') {
+        const blurSrc = is916 ? genericoImgBlurStory : genericoImgBlurFeed;
+        const glassBg = blurSrc ?
+          `background-image: linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.46) 100%), url(${blurSrc}); background-size: cover; background-position: center;` :
+          `background: rgba(255,255,255,0.2); backdrop-filter: blur(12px);`;
+
+        let headerHTML = showHeader ? `
+          <div class="flyer-header" style="${glassBg}; padding: 12px 24px; backdrop-filter: blur(8px); width:100%; box-sizing:border-box; border-radius:0 !important;">
+            <div class="club-crest">${ceramicaShield}</div>
+            <div class="club-name">
+              <span class="line1 dyn-brand1"></span>
+              <span class="line2 dyn-brand2"></span>
+            </div>
+          </div>
+        ` : '';
+
+        let categoryHTML = showCategoria ? `<div class="flyer-category" style="${glassBg}; padding: 4px 20px; border-radius: 40px; display:inline-block; backdrop-filter: blur(8px);">${currentCategory}</div>` : '';
+
+        let titleHTML = showTitulo ? `
+          <div class="flyer-title" style="${glassBg}; padding: 8px 24px; backdrop-filter: blur(8px); width:100%; box-sizing:border-box; border-radius:0 !important;">
+            <span class="dyn-t1"></span>
+            <span class="dyn-t2"></span>
+          </div>
+        ` : '';
+
+        let textoHTML = (showTexto && texto) ? `
+          <div class="flyer-generico-texto" style="${glassBg}; padding: 12px 24px; backdrop-filter: blur(8px); font-size: ${is916 ? '28px' : '20px'}; font-weight:700; color:#fff; text-align:center; width:100%; box-sizing:border-box; border-radius:0 !important;">
+            ${texto.replace(/</g, '&lt;')}
+          </div>
+        ` : '';
+
+        let footerHTML = '';
+        if (showFooter || showSponsors) {
+          let sponsorHTML = showSponsors ? `<div class="flyer-sponsor" style="${glassBg}; padding: 8px 16px; border-radius: 0; backdrop-filter: blur(8px);"><img src="${sponsorSrc}" style="max-height:60px;"></div>` : '';
+          let sloganHTML = showFooter ? `<div class="flyer-slogan" style="${glassBg}; padding: 4px 16px; border-radius: 0; backdrop-filter: blur(8px);">${document.querySelector('.in-foot-slogan').value}</div>` : '';
+          let compHTML = showFooter ? `
+            <div class="flyer-competition" style="${glassBg}; padding: 4px 16px; border-radius: 0; backdrop-filter: blur(8px);">
+              <span class="dyn-foot-r1"></span>
+              <span class="dyn-foot-r2"></span>
+            </div>
+          ` : '';
+          footerHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; width:100%;">
+              ${sponsorHTML}
+              ${sloganHTML}
+              ${compHTML}
+            </div>
+          `;
+        }
+
+        let inner = `
+          ${bgHTML}
+          <div class="flyer-overlay"></div>
+          <div class="flyer-texture"></div>
+          <div class="card-content" style="justify-content: space-between; padding: 30px 40px; position:relative; z-index:4; display:flex; flex-direction:column; height:100%;">
+            ${headerHTML}
+            <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; justify-content:center; width:100%;">
+              ${categoryHTML}
+              ${titleHTML}
+              ${textoHTML}
+            </div>
+            ${footerHTML}
+          </div>
+        `;
+        return inner;
+      }
+
+      // ---- Estilo tradicional ----
+      let imgHTML = '';
+      if (src) {
+        const canvas = is916 ? { w: 950, h: 620 } : { w: 970, h: 340 };
+        let w = canvas.w, h = canvas.h;
+        if (ratio) {
+          w = canvas.h * ratio;
+          h = canvas.h;
+          if (w > canvas.w) { w = canvas.w; h = canvas.w / ratio; }
+        }
+        const left = (canvas.w - w) * (genericoImgPosX / 100);
+        const top = (canvas.h - h) * (genericoImgPosY / 100);
+        imgHTML = `
+          <div style="width:100%; height:${canvas.h}px; position:relative; margin:10px 0;">
+            <div style="position:absolute; left:${left}px; top:${top}px; width:${w}px; height:${h}px; overflow:hidden; border-radius:12px; border:1px solid rgba(255,255,255,0.15); box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+              <img src="${src}" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+          </div>
+        `;
+      }
+
+      let textoHTML = (showTexto && texto) ? `
+        <div class="flyer-generico-texto" style="font-size:${is916 ? '28px' : '20px'}; font-weight:700; color:#fff; text-align:center; text-shadow:0 2px 12px rgba(0,0,0,0.5); margin:8px 0;">
+          ${texto.replace(/</g, '&lt;')}
+        </div>
+      ` : '';
+
+      const brand1 = document.querySelector('.in-brand1').value;
+      const brand2 = document.querySelector('.in-brand2').value;
+      const t1 = document.querySelector('.in-t1').value;
+      const t2 = document.querySelector('.in-t2').value;
+      const footR1 = document.querySelector('.in-foot-r1').value;
+      const footR2 = document.querySelector('.in-foot-r2').value;
+      const slogan = document.querySelector('.in-foot-slogan').value;
+      const sponsorHTML = showSponsors && sponsorSrc ? `<div class="flyer-sponsor"><img src="${sponsorSrc}" alt="Sponsor"></div>` : '';
+
+      let inner = `
+        ${bgHTML}
+        <div class="flyer-overlay"></div>
+        <div class="flyer-texture"></div>
+        <div class="card-content" style="padding: 30px 40px; display:flex; flex-direction:column; height:100%; position:relative; z-index:4;">
+          ${showHeader ? `
+          <div class="flyer-header">
+            <div class="club-crest">${ceramicaShield}</div>
+            <div class="club-name">
+              <span class="line1 dyn-brand1">${brand1}</span>
+              <span class="line2 dyn-brand2">${brand2}</span>
+            </div>
+          </div>
+          ` : ''}
+
+          ${showCategoria ? `<div class="flyer-category">${currentCategory}</div>` : ''}
+
+          ${showTitulo ? `
+          <div class="flyer-title">
+            <span class="dyn-t1">${t1}</span>
+            <span class="dyn-t2">${t2}</span>
+          </div>
+          ` : ''}
+
+          <div class="flyer-generico" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; width:100%;">
+            ${imgHTML}
+            ${textoHTML}
+          </div>
+
+          ${sponsorHTML}
+
+          ${showFooter ? `
+          <div class="flyer-competition">
+            <span class="dyn-foot-r1">${footR1}</span>
+            <span class="dyn-foot-r2">${footR2}</span>
+          </div>
+          <div class="flyer-slogan dyn-foot-slogan">${slogan}</div>
+          ` : ''}
+        </div>
+      `;
+      return inner;
+    }
+
     // ===== BASE COMÚN PARA VS, LIBRE, RESULTADO =====
     function buildBaseContent(innerContent, format) {
       const brand1 = document.querySelector('.in-brand1').value;
@@ -1715,6 +1892,7 @@
       const sponsor = sponsorSrc ? `<div class="flyer-sponsor"><img src="${sponsorSrc}" alt="Sponsor"></div>` : '';
       const ceramicaShield = getCeramicaShieldHTML();
 
+      // Fondo: si hay backgroundImgSrc, usar <img>, sino el fondo por defecto
       let bgHTML;
       if (backgroundImgSrc) {
         bgHTML = `
@@ -1770,28 +1948,11 @@
       const mode = document.getElementById('in-mode').value;
       const isFoto = mode === 'FOTO';
 
-      // Ajustar visibilidad de opciones en el panel
-      document.getElementById('generico-options').style.display = isFoto ? 'none' : 'block';
-      document.getElementById('generico-style-block').style.display = isFoto ? 'none' : 'block';
-
-      // Si es foto, forzar checkboxes y estilo minimalista
-      if (isFoto) {
-        document.getElementById('in-gen-show-header').checked = true;
-        document.getElementById('in-gen-show-categoria').checked = false;
-        document.getElementById('in-gen-show-titulo').checked = false;
-        document.getElementById('in-gen-show-texto').checked = false;
-        document.getElementById('in-gen-show-sponsors').checked = false;
-        document.getElementById('in-gen-show-footer').checked = false;
-        // Forzar minimalista
-        document.querySelectorAll('#generico-style-selector .style-opt').forEach(o => o.classList.remove('active'));
-        document.querySelector('#generico-style-selector .style-opt[data-style="minimal"]').classList.add('active');
-        genericoStyle = 'minimal';
-      }
-
       document.querySelectorAll('.card').forEach(el => {
         const format = el.classList.contains('card-11') ? '11' : '916';
         el.innerHTML = buildCardHTML(format);
 
+        // Si es modo foto, agregar clase para estilos específicos
         if (isFoto) {
           el.classList.add('flyer-foto');
         } else {
@@ -1799,6 +1960,9 @@
         }
       });
       updateAllText();
+
+      // Reconectar el canvas interactivo (arrastre / pellizco / rueda) sobre los nodos recién creados
+      if (isFoto) attachFotoCanvasEvents();
     }
 
     function setText(cls, val) {
@@ -1830,12 +1994,14 @@
       document.getElementById('field-group-vs').style.display = (isVs || isResultado) ? 'block' : 'none';
       document.getElementById('field-group-libre').style.display = isLibre ? 'block' : 'none';
       document.getElementById('field-group-resultado').style.display = isResultado ? 'block' : 'none';
-      document.getElementById('field-group-generico').style.display = (isGenerico || isFoto) ? 'block' : 'none';
+      document.getElementById('field-group-generico').style.display = isGenerico ? 'block' : 'none';
+      document.getElementById('field-group-foto').style.display = isFoto ? 'block' : 'none';
       document.getElementById('field-hora-vs').style.display = isVs ? 'block' : 'none';
 
-      const hideCanchaAccesos = isGenerico || isResultado || isFoto;
-      document.getElementById('fieldset-cancha').style.display = hideCanchaAccesos ? 'none' : 'block';
-      document.getElementById('fieldset-accesos').style.display = hideCanchaAccesos ? 'none' : 'block';
+      const hideCancha = isGenerico || isResultado || isFoto;
+      const hideAccesos = isGenerico || isResultado || isFoto || isLibre;
+      document.getElementById('fieldset-cancha').style.display = hideCancha ? 'none' : 'block';
+      document.getElementById('fieldset-accesos').style.display = hideAccesos ? 'none' : 'block';
 
       renderCards();
     });
@@ -1851,7 +2017,7 @@
 
     document.querySelectorAll('#panel input[type="text"]').forEach(inp => {
       inp.addEventListener('input', () => {
-        if (inp.classList.contains('in-nombre-rival')) renderCards();
+        if (inp.classList.contains('in-nombre-rival') || inp.classList.contains('in-estadio')) renderCards();
         else updateAllText();
       });
     });
@@ -2105,6 +2271,61 @@
       mini.src = ''; mini.style.display = 'none';
       document.getElementById('btn-remove-sponsor').style.display = 'none';
       renderCards();
+    });
+
+    // ================================================================
+    //  FOTOGRAFÍA – MODO FOTO (carga directa al canvas interactivo)
+    // ================================================================
+    document.getElementById('file-foto').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const dataUrl = ev.target.result;
+        const img = new Image();
+        img.onload = () => {
+          fotoImgSrc = dataUrl;
+          fotoNatural = { w: img.naturalWidth, h: img.naturalHeight };
+          initFotoState();
+          const mini = document.querySelector('.mini-foto');
+          mini.src = dataUrl; mini.style.display = 'block';
+          document.getElementById('btn-remove-foto').style.display = 'block';
+          document.getElementById('foto-fit-controls').style.display = 'block';
+          document.querySelectorAll('.foto-fit-selector').forEach(sel => {
+            sel.querySelectorAll('.style-opt').forEach(o => o.classList.remove('active'));
+            sel.querySelector('.style-opt[data-fit="cover"]').classList.add('active');
+          });
+          renderCards();
+        };
+        img.src = dataUrl;
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    });
+
+    document.getElementById('btn-remove-foto').addEventListener('click', () => {
+      fotoImgSrc = null;
+      fotoNatural = { w: 0, h: 0 };
+      fotoState = { '916': null, '11': null };
+      document.getElementById('file-foto').value = '';
+      const mini = document.querySelector('.mini-foto');
+      mini.src = ''; mini.style.display = 'none';
+      document.getElementById('btn-remove-foto').style.display = 'none';
+      document.getElementById('foto-fit-controls').style.display = 'none';
+      renderCards();
+    });
+
+    document.querySelectorAll('.foto-fit-selector').forEach(sel => {
+      sel.addEventListener('click', (e) => {
+        const opt = e.target.closest('.style-opt');
+        if (!opt || !fotoImgSrc) return;
+        const format = sel.dataset.format;
+        const fit = opt.dataset.fit;
+        sel.querySelectorAll('.style-opt').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        setFotoFitMode(format, fit);
+        renderCards();
+      });
     });
 
     // ================================================================
