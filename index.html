@@ -517,34 +517,45 @@
       background: none !important; /* la imagen va dentro como <img> */
     }
     .flyer-foto .flyer-overlay {
-      background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.6) 100%) !important;
+      background: transparent !important;
     }
     .flyer-foto .card-content {
-      padding: 20px 30px !important;
+      padding: 0 !important;
       justify-content: flex-start !important;
+    }
+    .flyer-foto .flyer-texture {
+      opacity: 0.4;
+      z-index: 4;
     }
     .flyer-foto .flyer-header {
       width: 100%;
       margin: 0;
       border-radius: 0 !important;
-      background: rgba(10,34,122,0.82);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.12);
-      padding: 16px 24px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-      gap: 16px;
+      background: linear-gradient(to bottom, rgba(5,12,30,0.72) 0%, rgba(5,12,30,0.42) 35%, rgba(5,12,30,0.08) 75%, transparent 100%);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border: none;
+      padding: 28px 30px 40px 30px;
+      box-shadow: none;
+      gap: 14px;
       box-sizing: border-box;
       pointer-events: none; /* el encabezado nunca se mueve ni intercepta el arrastre de la foto */
+      display: flex;
+      align-items: flex-start;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
     }
 
     .flyer-foto .club-name .foto-header-line {
       display: block;
-      width: 42px;
-      height: 3px;
-      border-radius: 2px;
+      width: 30px;
+      height: 2px;
+      border-radius: 1px;
       background: var(--blue-electric);
-      margin-top: 6px;
+      margin-top: 8px;
+      opacity: 0.9;
     }
 
     /* ===== CANVAS INTERACTIVO DE LA FOTO (MODO FOTO) ===== */
@@ -583,16 +594,29 @@
 
     .foto-fit-selector { margin-top: 8px; }
     .flyer-foto .flyer-header .club-crest {
-      width: 60px;
-      height: 60px;
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
+    }
+    .flyer-foto .flyer-header .club-name {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .flyer-foto .flyer-header .club-name .line1 {
-      font-size: 18px;
-      color: rgba(255,255,255,0.8);
+      font-size: 16px;
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
     }
     .flyer-foto .flyer-header .club-name .line2 {
-      font-size: 22px;
+      font-size: 24px;
       color: #fff;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      line-height: 1.2;
     }
     .flyer-foto .flyer-category {
       font-size: 28px;
@@ -602,18 +626,18 @@
 
     /* Ajustes para 1:1 en modo foto */
     .card-11.flyer-foto .flyer-header {
-      padding: 12px 18px;
+      padding: 24px 26px 36px 26px;
       gap: 12px;
     }
     .card-11.flyer-foto .flyer-header .club-crest {
-      width: 45px;
-      height: 45px;
+      width: 48px;
+      height: 48px;
     }
     .card-11.flyer-foto .flyer-header .club-name .line1 {
       font-size: 14px;
     }
     .card-11.flyer-foto .flyer-header .club-name .line2 {
-      font-size: 18px;
+      font-size: 20px;
     }
     .card-11.flyer-foto .flyer-category {
       font-size: 22px;
@@ -1554,7 +1578,7 @@
             ${photoLayerInner}
           </div>
 
-          <div class="flyer-header" style="position:relative; z-index:10;">
+          <div class="flyer-header">
             <div class="club-crest">${ceramicaShield}</div>
             <div class="club-name">
               <span class="line1 dyn-brand1">${brand1}</span>
