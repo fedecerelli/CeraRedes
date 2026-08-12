@@ -516,44 +516,55 @@
     .flyer-foto .flyer-background {
       background: none !important; /* la imagen va dentro como <img> */
     }
-    .flyer-foto .flyer-overlay {
-      display: none !important;      /* eliminamos cualquier posible velo */
-      background: transparent !important;
-    }
+    .flyer-foto .flyer-overlay,
     .flyer-foto .flyer-texture {
-      display: none !important;      /* la textura lavaba la foto en la exportación */
+      display: none !important;
     }
     .flyer-foto .card-content {
       padding: 0 !important;
       justify-content: flex-start !important;
     }
     .flyer-foto .flyer-header {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      margin: 0 !important;
-      border-radius: 0 !important;
+      z-index: 10;
+      padding: 28px 30px 40px 30px;
+      background: transparent !important;
       border: none !important;
       border-bottom: none !important;
       outline: none !important;
       box-shadow: none !important;
-      background: linear-gradient(to bottom,
-        rgba(5, 12, 30, 0.70) 0%,
-        rgba(5, 12, 30, 0.45) 30%,
-        rgba(5, 12, 30, 0.18) 60%,
-        rgba(5, 12, 30, 0) 100%) !important;
-      background-color: transparent !important;
-      background-clip: border-box !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
-      padding: 28px 30px 40px 30px;
       gap: 14px;
       box-sizing: border-box;
       pointer-events: none;
       display: flex;
       align-items: flex-start;
+      margin: 0 !important;
+      border-radius: 0 !important;
+    }
+    .flyer-foto .flyer-header::before {
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 10;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom,
+        rgba(5, 12, 30, 0.70) 0%,
+        rgba(5, 12, 30, 0.45) 30%,
+        rgba(5, 12, 30, 0.18) 60%,
+        rgba(5, 12, 30, 0) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .flyer-foto .flyer-header .club-crest,
+    .flyer-foto .flyer-header .club-name {
+      position: relative;
+      z-index: 1;
     }
 
     .flyer-foto .club-name .foto-header-line {
@@ -801,6 +812,47 @@
       .view-tab-content { display: none; }
       .view-tab-content.active { display: block; }
       #exportbar { position: relative; bottom: 0; margin-top: 20px; }
+
+      /* En móvil, mostrar solo una vista previa según selector */
+      .preview-block { display: none; }
+      .preview-block.active { display: flex; }
+      .format-selector-mobile { display: flex !important; }
+    }
+
+    /* Selector de formato (visible solo en móvil) */
+    .format-selector-mobile {
+      display: none;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .format-selector-mobile button {
+      padding: 8px 16px;
+      border: 2px solid #D1D9ED;
+      border-radius: 20px;
+      background: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      color: #656E85;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .format-selector-mobile button.active {
+      border-color: #1545D8;
+      color: #0A227A;
+      background: #F0F4FF;
+    }
+
+    /* Ajustes para el panel en móvil */
+    @media (max-width: 500px) {
+      .panel-header h1 { font-size: 16px; }
+      .panel-header p.sub { font-size: 10px; }
+      .cat-opt, .style-opt { font-size: 9px; padding: 8px 4px; }
+      .fs-body { padding: 8px; }
+      .btn { font-size: 10px; padding: 10px; }
+      .file-input-group { padding: 4px; }
+      input, select, textarea { font-size: 11px; padding: 8px; }
     }
   </style>
 </head>
@@ -811,8 +863,11 @@
      PESTAÑAS MÓVILES
      ================================================================ -->
   <div class="mobile-tabs">
-    <button class="tab-btn active" onclick="switchTab('editor')">Editor</button>
-    <button class="tab-btn" onclick="switchTab('preview')">Vista Previa</button>
+    <div style="padding: 8px 12px; font-weight: 800; color: #0A227A; font-size: 14px; border-bottom: 1px solid #D1D9ED;">Generador de Flyers</div>
+    <div style="display:flex;">
+      <button class="tab-btn active" onclick="switchTab('editor')">Editor</button>
+      <button class="tab-btn" onclick="switchTab('preview')">Vista Previa</button>
+    </div>
   </div>
 
   <!-- ================================================================
@@ -924,22 +979,22 @@
             <div class="schedule-input-row">
               <input type="text" value="10:30 HS" class="sched-in-time" placeholder="Hora">
               <input type="text" value="SUB 11" class="sched-in-cat" placeholder="Categoría">
-              <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+              <button class="btn-remove-row" onclick="removeScheduleRow(this)">X</button>
             </div>
             <div class="schedule-input-row">
               <input type="text" value="11:30 HS" class="sched-in-time" placeholder="Hora">
               <input type="text" value="SUB 13" class="sched-in-cat" placeholder="Categoría">
-              <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+              <button class="btn-remove-row" onclick="removeScheduleRow(this)">X</button>
             </div>
             <div class="schedule-input-row">
               <input type="text" value="13:00 HS" class="sched-in-time" placeholder="Hora">
               <input type="text" value="SUB 17" class="sched-in-cat" placeholder="Categoría">
-              <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+              <button class="btn-remove-row" onclick="removeScheduleRow(this)">X</button>
             </div>
             <div class="schedule-input-row">
               <input type="text" value="15:15 HS" class="sched-in-time" placeholder="Hora">
               <input type="text" value="SUB 23" class="sched-in-cat" placeholder="Categoría">
-              <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+              <button class="btn-remove-row" onclick="removeScheduleRow(this)">X</button>
             </div>
           </div>
           <button class="btn btn-outline btn-small" id="btn-add-sched">+ Agregar Horario</button>
@@ -957,7 +1012,7 @@
             <img class="mini mini-foto" src="" alt="" style="display:none;">
             <input type="file" accept="image/*" id="file-foto">
           </div>
-          <button class="btn btn-outline btn-small" id="btn-remove-foto" style="display:none;">✕ Quitar fotografía</button>
+          <button class="btn btn-outline btn-small" id="btn-remove-foto" style="display:none;">Quitar fotografía</button>
 
           <div id="foto-fit-controls" style="display:none; margin-top:10px;">
             <label>Ajuste · Historia 9:16</label>
@@ -975,8 +1030,13 @@
             </p>
           </div>
 
+          <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+            <button class="btn btn-outline btn-small" id="btn-center-foto" style="flex:1;">Centrar</button>
+            <button class="btn btn-outline btn-small" id="btn-reset-foto" style="flex:1;">Restablecer</button>
+          </div>
+
           <p style="font-size:9px; color:#656E85; font-weight:600; margin-top:8px; line-height:1.5;">
-            Arrastrá la foto directamente sobre la vista previa para moverla. Pellizcá con dos dedos (o usá la rueda del mouse) para hacer zoom. Cada formato (Historia y Feed) se ajusta por separado.
+            Mové la foto con un dedo. Usá dos dedos para hacer zoom.
           </p>
         </div>
       </details>
@@ -999,14 +1059,14 @@
                 Historia y Feed tienen formas distintas: ajustá el recorte para cada uno.
               </p>
               <div style="display:flex; gap:6px; align-items:center;">
-                <button class="btn btn-outline btn-small" id="btn-edit-generico-916" style="flex:1; margin-bottom:0;">📱 Historia 9:16</button>
+                <button class="btn btn-outline btn-small" id="btn-edit-generico-916" style="flex:1; margin-bottom:0;">Editar Historia 9:16</button>
                 <img class="mini mini-generico-916" src="" alt="" style="display:none; width:26px; height:26px; object-fit:cover; border-radius:6px; border:1px solid #ccc; flex-shrink:0;">
               </div>
               <div style="display:flex; gap:6px; align-items:center;">
-                <button class="btn btn-outline btn-small" id="btn-edit-generico-11" style="flex:1; margin-bottom:0;">◻️ Feed 1:1</button>
+                <button class="btn btn-outline btn-small" id="btn-edit-generico-11" style="flex:1; margin-bottom:0;">Editar Feed 1:1</button>
                 <img class="mini mini-generico-11" src="" alt="" style="display:none; width:26px; height:26px; object-fit:cover; border-radius:6px; border:1px solid #ccc; flex-shrink:0;">
               </div>
-              <button class="btn btn-outline btn-small" id="btn-remove-generico" style="margin-bottom:0;">✕ Quitar imagen</button>
+              <button class="btn btn-outline btn-small" id="btn-remove-generico" style="margin-bottom:0;">Quitar imagen</button>
 
               <label style="margin-top:8px;">Posición de la imagen</label>
               <div class="row2">
@@ -1020,7 +1080,6 @@
                 </div>
               </div>
 
-              <!-- Nuevo control de zoom -->
               <label style="margin-top:8px;">Zoom</label>
               <div style="display:flex; align-items:center; gap:8px;">
                 <input type="range" id="in-gen-zoom" min="50" max="200" value="100" step="5" style="flex:1;">
@@ -1117,11 +1176,11 @@
           <div id="goal-inputs">
             <div class="schedule-input-row">
               <input type="text" value="15' Pérez" class="goal-in-text" placeholder="Ej: 15' Pérez">
-              <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
+              <button class="btn-remove-row" onclick="removeGoalRow(this)">X</button>
             </div>
             <div class="schedule-input-row">
               <input type="text" value="70' Gómez" class="goal-in-text" placeholder="Ej: 70' Gómez">
-              <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
+              <button class="btn-remove-row" onclick="removeGoalRow(this)">X</button>
             </div>
           </div>
           <button class="btn btn-outline btn-small" id="btn-add-goal">+ Agregar Goleador</button>
@@ -1170,7 +1229,7 @@
           <img class="mini mini-sponsor" src="" alt="" style="display:none;">
           <input type="file" accept="image/*" id="file-sponsor">
         </div>
-        <button class="btn btn-outline btn-small" id="btn-remove-sponsor" style="display:none;">✕ Quitar Publicidad</button>
+        <button class="btn btn-outline btn-small" id="btn-remove-sponsor" style="display:none;">Quitar Publicidad</button>
       </div>
     </details>
 
@@ -1183,7 +1242,7 @@
           <img class="mini mini-background" src="" alt="" style="display:none;">
           <input type="file" accept="image/*" id="file-background">
         </div>
-        <button class="btn btn-outline btn-small" id="btn-remove-background" style="display:none;">✕ Quitar Fondo</button>
+        <button class="btn btn-outline btn-small" id="btn-remove-background" style="display:none;">Quitar Fondo</button>
         <p style="font-size:9px; color:#656E85; margin-top:6px;">Si no cargás nada, se usará el fondo de estadio nocturno.</p>
       </div>
     </details>
@@ -1201,11 +1260,12 @@
       </div>
     </details>
 
-    <!-- BOTONES DE EXPORTACIÓN -->
+    <!-- BOTONES DE EXPORTACIÓN Y RESTABLECER -->
     <div id="exportbar">
-      <button class="btn btn-primary" id="btn-916">Descargar JPG (Historia 9:16)</button>
-      <button class="btn btn-outline" id="btn-11">Descargar JPG (Feed 1:1)</button>
+      <button class="btn btn-primary" id="btn-916">Exportar Historia 9:16</button>
+      <button class="btn btn-outline" id="btn-11">Exportar Feed 1:1</button>
       <p class="export-hint">En el celular la imagen se abre en una pestaña nueva: mantené el dedo presionado sobre ella para guardarla.</p>
+      <button class="btn btn-outline" id="btn-reset-all" style="margin-top:10px; border-color:#e74c3c; color:#e74c3c;">Restablecer Todo</button>
     </div>
   </div>
 
@@ -1232,7 +1292,13 @@
      VISTA PREVIA (STAGE)
      ================================================================ -->
   <div id="stage" class="view-tab-content">
-    <div class="preview-block">
+    <!-- Selector de formato (solo móvil) -->
+    <div class="format-selector-mobile">
+      <button class="active" data-format="916">Historia 9:16</button>
+      <button data-format="11">Feed 1:1</button>
+    </div>
+
+    <div class="preview-block active" id="preview-916">
       <h3>Formato 9:16 · Historia</h3>
       <div class="preview-frame" id="wrap916">
         <div class="scaler" id="scaler916">
@@ -1240,7 +1306,7 @@
         </div>
       </div>
     </div>
-    <div class="preview-block">
+    <div class="preview-block" id="preview-11">
       <h3>Formato 1:1 · Feed</h3>
       <div class="preview-frame" id="wrap11">
         <div class="scaler" id="scaler11">
@@ -1290,6 +1356,7 @@
     let fotoNatural = { w: 0, h: 0 };       // dimensiones naturales de la foto
     let fotoState = { '916': null, '11': null }; // transform independiente por formato
     const FOTO_CANVAS = { '916': { w: 1080, h: 1920 }, '11': { w: 1080, h: 1080 } };
+    let fotoInitialState = { '916': null, '11': null }; // para restablecer
 
     const cropModal = document.getElementById('cropModal');
     const cropImage = document.getElementById('cropImage');
@@ -1306,8 +1373,26 @@
         genericoZoom = Number(zoomInput.value);
         zoomLabel.textContent = genericoZoom + '%';
         renderCards();
+        saveState();
       });
     }
+
+    // ---- Selector de formato en móvil ----
+    document.querySelectorAll('.format-selector-mobile button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.format-selector-mobile button').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const format = this.dataset.format;
+        document.querySelectorAll('.preview-block').forEach(block => block.classList.remove('active'));
+        document.getElementById('preview-' + format).classList.add('active');
+        // Re-escalar después de cambio
+        setTimeout(fitAll, 50);
+      });
+    });
+
+    // ================================================================
+    //  FUNCIONES DE NAVEGACIÓN Y UTILIDADES
+    // ================================================================
 
     function switchTab(tab) {
       if (window.innerWidth > 850) return;
@@ -1381,6 +1466,8 @@
         left: (canvas.w - w) / 2,
         top: (canvas.h - h) / 2
       };
+      // Guardar estado inicial para restablecer
+      fotoInitialState[format] = JSON.parse(JSON.stringify(fotoState[format]));
     }
 
     // ---- Inicializa el transform de la foto (una vez cargada) para ambos formatos ----
@@ -1531,6 +1618,28 @@
     }
 
     // ================================================================
+    //  FUNCIONES PARA CENTRAR Y RESTABLECER FOTO
+    // ================================================================
+
+    function centrarFoto(format) {
+      const st = fotoState[format];
+      if (!st) return;
+      const canvas = FOTO_CANVAS[format];
+      // Centrar manteniendo el zoom actual
+      st.left = (canvas.w - st.w) / 2;
+      st.top = (canvas.h - st.h) / 2;
+      clampFotoState(format);
+      applyFotoTransform(format);
+    }
+
+    function resetearFoto(format) {
+      if (fotoInitialState[format]) {
+        fotoState[format] = JSON.parse(JSON.stringify(fotoInitialState[format]));
+        applyFotoTransform(format);
+      }
+    }
+
+    // ================================================================
     //  CONSTRUCCIÓN DEL FLYER
     // ================================================================
 
@@ -1550,23 +1659,19 @@
       const brand1 = document.querySelector('.in-brand1').value;
       const brand2 = document.querySelector('.in-brand2').value;
 
-      // Usar el mismo fondo que los otros modos (gradiente o imagen personalizada)
-      let bgHTML;
+      // Fondo: solo si hay imagen de fondo personalizada
+      let bgHTML = '';
       if (backgroundImgSrc) {
         bgHTML = `
           <div class="flyer-background has-bg-img" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; overflow:hidden;">
             <img src="${backgroundImgSrc}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;">
           </div>
         `;
-      } else {
-        bgHTML = `<div class="flyer-background"></div>`;
       }
 
       let photoLayerInner;
-      let isContain = false;
       if (fotoImgSrc && fotoState[format]) {
         const st = fotoState[format];
-        isContain = st.fitMode === 'contain';
         photoLayerInner = `<img class="foto-photo-img" data-format="${format}" src="${fotoImgSrc}" draggable="false" alt="" style="position:absolute; left:${st.left}px; top:${st.top}px; width:${st.w}px; height:${st.h}px;">`;
       } else {
         photoLayerInner = `
@@ -1580,8 +1685,6 @@
       const html = `
         <div class="card-content flyer-foto">
           ${bgHTML}
-          <div class="flyer-overlay"></div>
-          <div class="flyer-texture"></div>
           <div class="flyer-background has-bg-img foto-canvas-layer" data-format="${format}" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:3; overflow:hidden; background:transparent !important;">
             ${photoLayerInner}
           </div>
@@ -2036,6 +2139,7 @@
       document.getElementById('fieldset-accesos').style.display = hideAccesos ? 'none' : 'block';
 
       renderCards();
+      saveState();
     });
 
     document.querySelectorAll('.cat-opt').forEach(opt => {
@@ -2044,6 +2148,7 @@
         opt.classList.add('active');
         currentCategory = opt.dataset.cat;
         renderCards();
+        saveState();
       });
     });
 
@@ -2051,18 +2156,19 @@
       inp.addEventListener('input', () => {
         if (inp.classList.contains('in-nombre-rival') || inp.classList.contains('in-estadio')) renderCards();
         else updateAllText();
+        saveState();
       });
     });
 
-    document.querySelector('.in-hora').addEventListener('input', renderCards);
-    document.getElementById('in-condicion').addEventListener('change', renderCards);
-    datePicker.addEventListener('change', renderCards);
-    document.getElementById('in-goles-local').addEventListener('input', renderCards);
-    document.getElementById('in-goles-rival').addEventListener('input', renderCards);
-    document.getElementById('in-gen-texto').addEventListener('input', renderCards);
+    document.querySelector('.in-hora').addEventListener('input', () => { renderCards(); saveState(); });
+    document.getElementById('in-condicion').addEventListener('change', () => { renderCards(); saveState(); });
+    datePicker.addEventListener('change', () => { renderCards(); saveState(); });
+    document.getElementById('in-goles-local').addEventListener('input', () => { renderCards(); saveState(); });
+    document.getElementById('in-goles-rival').addEventListener('input', () => { renderCards(); saveState(); });
+    document.getElementById('in-gen-texto').addEventListener('input', () => { renderCards(); saveState(); });
 
     ['in-gen-show-header', 'in-gen-show-categoria', 'in-gen-show-titulo', 'in-gen-show-texto', 'in-gen-show-sponsors', 'in-gen-show-footer'].forEach(id => {
-      document.getElementById(id).addEventListener('change', renderCards);
+      document.getElementById(id).addEventListener('change', () => { renderCards(); saveState(); });
     });
 
     document.querySelectorAll('#generico-style-selector .style-opt').forEach(opt => {
@@ -2071,16 +2177,19 @@
         opt.classList.add('active');
         genericoStyle = opt.dataset.style;
         renderCards();
+        saveState();
       });
     });
 
     document.getElementById('in-gen-posx').addEventListener('input', (e) => {
       genericoImgPosX = Number(e.target.value);
       renderCards();
+      saveState();
     });
     document.getElementById('in-gen-posy').addEventListener('input', (e) => {
       genericoImgPosY = Number(e.target.value);
       renderCards();
+      saveState();
     });
 
     // ================================================================
@@ -2103,22 +2212,24 @@
       div.innerHTML = `
         <input type="text" value="16:00 HS" class="sched-in-time" placeholder="Hora">
         <input type="text" value="NUEVA CAT" class="sched-in-cat" placeholder="Categoría">
-        <button class="btn-remove-row" onclick="removeScheduleRow(this)">✕</button>
+        <button class="btn-remove-row" onclick="removeScheduleRow(this)">X</button>
       `;
       container.appendChild(div);
       attachScheduleEvents();
       renderCards();
+      saveState();
     });
 
     function removeScheduleRow(btn) {
       btn.parentElement.remove();
       renderCards();
+      saveState();
     }
 
     function attachScheduleEvents() {
       document.querySelectorAll('.sched-in-time, .sched-in-cat').forEach(inp => {
         inp.removeEventListener('input', renderCards);
-        inp.addEventListener('input', renderCards);
+        inp.addEventListener('input', () => { renderCards(); saveState(); });
       });
     }
     attachScheduleEvents();
@@ -2132,22 +2243,24 @@
       div.className = 'schedule-input-row';
       div.innerHTML = `
         <input type="text" value="" class="goal-in-text" placeholder="Ej: 45' Fernández">
-        <button class="btn-remove-row" onclick="removeGoalRow(this)">✕</button>
+        <button class="btn-remove-row" onclick="removeGoalRow(this)">X</button>
       `;
       container.appendChild(div);
       attachGoalEvents();
       renderCards();
+      saveState();
     });
 
     function removeGoalRow(btn) {
       btn.parentElement.remove();
       renderCards();
+      saveState();
     }
 
     function attachGoalEvents() {
       document.querySelectorAll('.goal-in-text').forEach(inp => {
         inp.removeEventListener('input', renderCards);
-        inp.addEventListener('input', renderCards);
+        inp.addEventListener('input', () => { renderCards(); saveState(); });
       });
     }
     attachGoalEvents();
@@ -2240,6 +2353,7 @@
         cropModal.classList.remove('active');
         cropper.destroy(); cropper = null;
         renderCards();
+        saveState();
 
         makeBlurredDataUrl(dataUrl).then(blurUrl => {
           if (targetNow === 'generico-916') genericoImgBlurStory = blurUrl;
@@ -2271,6 +2385,7 @@
       cropModal.classList.remove('active');
       cropper.destroy(); cropper = null;
       renderCards();
+      saveState();
     });
 
     document.getElementById('btnCropCancel').addEventListener('click', () => {
@@ -2292,6 +2407,7 @@
         mini.src = sponsorSrc; mini.style.display = 'block';
         document.getElementById('btn-remove-sponsor').style.display = 'block';
         renderCards();
+        saveState();
       };
       reader.readAsDataURL(file);
     });
@@ -2303,6 +2419,7 @@
       mini.src = ''; mini.style.display = 'none';
       document.getElementById('btn-remove-sponsor').style.display = 'none';
       renderCards();
+      saveState();
     });
 
     // ================================================================
@@ -2328,6 +2445,7 @@
             sel.querySelector('.style-opt[data-fit="cover"]').classList.add('active');
           });
           renderCards();
+          saveState();
         };
         img.src = dataUrl;
       };
@@ -2339,12 +2457,14 @@
       fotoImgSrc = null;
       fotoNatural = { w: 0, h: 0 };
       fotoState = { '916': null, '11': null };
+      fotoInitialState = { '916': null, '11': null };
       document.getElementById('file-foto').value = '';
       const mini = document.querySelector('.mini-foto');
       mini.src = ''; mini.style.display = 'none';
       document.getElementById('btn-remove-foto').style.display = 'none';
       document.getElementById('foto-fit-controls').style.display = 'none';
       renderCards();
+      saveState();
     });
 
     document.querySelectorAll('.foto-fit-selector').forEach(sel => {
@@ -2357,7 +2477,19 @@
         opt.classList.add('active');
         setFotoFitMode(format, fit);
         renderCards();
+        saveState();
       });
+    });
+
+    // Botones centrar y restablecer foto
+    document.getElementById('btn-center-foto').addEventListener('click', () => {
+      if (!fotoImgSrc) return;
+      ['916', '11'].forEach(format => centrarFoto(format));
+    });
+
+    document.getElementById('btn-reset-foto').addEventListener('click', () => {
+      if (!fotoImgSrc) return;
+      ['916', '11'].forEach(format => resetearFoto(format));
     });
 
     // ================================================================
@@ -2397,6 +2529,7 @@
       document.querySelector('.mini-generico-11').style.display = 'none';
       document.getElementById('generico-img-actions').style.display = 'none';
       renderCards();
+      saveState();
     });
 
     // ================================================================
@@ -2412,6 +2545,7 @@
         mini.src = backgroundImgSrc; mini.style.display = 'block';
         document.getElementById('btn-remove-background').style.display = 'block';
         renderCards();
+        saveState();
       };
       reader.readAsDataURL(file);
     });
@@ -2423,6 +2557,7 @@
       mini.src = ''; mini.style.display = 'none';
       document.getElementById('btn-remove-background').style.display = 'none';
       renderCards();
+      saveState();
     });
 
     // ================================================================
@@ -2547,8 +2682,162 @@
     });
 
     // ================================================================
+    //  GUARDADO AUTOMÁTICO (localStorage)
+    // ================================================================
+
+    function saveState() {
+      try {
+        const state = {
+          mode: document.getElementById('in-mode').value,
+          category: currentCategory,
+          brand1: document.querySelector('.in-brand1').value,
+          brand2: document.querySelector('.in-brand2').value,
+          t1: document.querySelector('.in-t1').value,
+          t2: document.querySelector('.in-t2').value,
+          cat: document.querySelector('.in-cat').value,
+          estadio: document.querySelector('.in-estadio').value,
+          estadioSub: document.querySelector('.in-estadio-sub').value,
+          hora: document.querySelector('.in-hora').value,
+          fecha: datePicker.value,
+          condicion: document.getElementById('in-condicion').value,
+          rival: document.getElementById('in-nombre-rival').value,
+          golesLocal: document.getElementById('in-goles-local').value,
+          golesRival: document.getElementById('in-goles-rival').value,
+          footSlogan: document.querySelector('.in-foot-slogan').value,
+          footR1: document.querySelector('.in-foot-r1').value,
+          footR2: document.querySelector('.in-foot-r2').value,
+          accLocal: document.querySelector('.in-acc-local').value,
+          accVisit: document.querySelector('.in-acc-visit').value,
+          // generico
+          genTexto: document.getElementById('in-gen-texto').value,
+          genPosX: genericoImgPosX,
+          genPosY: genericoImgPosY,
+          genZoom: genericoZoom,
+          genStyle: genericoStyle,
+          genShowHeader: document.getElementById('in-gen-show-header').checked,
+          genShowCategoria: document.getElementById('in-gen-show-categoria').checked,
+          genShowTitulo: document.getElementById('in-gen-show-titulo').checked,
+          genShowTexto: document.getElementById('in-gen-show-texto').checked,
+          genShowSponsors: document.getElementById('in-gen-show-sponsors').checked,
+          genShowFooter: document.getElementById('in-gen-show-footer').checked,
+          // foto
+          fotoState: fotoState,
+          fotoNatural: fotoNatural,
+          fotoInitialState: fotoInitialState,
+          fotoImgSrc: fotoImgSrc, // podría ser pesado, pero lo guardamos solo si es pequeño
+          // no guardamos imágenes grandes (más de 1MB) para no saturar localStorage
+        };
+        // No guardar fotoImgSrc si es muy grande (más de 500KB)
+        if (fotoImgSrc && fotoImgSrc.length > 500000) {
+          state.fotoImgSrc = null;
+        }
+        localStorage.setItem('flyerData', JSON.stringify(state));
+      } catch (e) {
+        // Ignorar errores de localStorage (cuota excedida, etc.)
+      }
+    }
+
+    function restoreState() {
+      try {
+        const raw = localStorage.getItem('flyerData');
+        if (!raw) return false;
+        const state = JSON.parse(raw);
+        // Aplicar estado
+        document.getElementById('in-mode').value = state.mode || 'VS';
+        currentCategory = state.category || 'PRIMERA';
+        document.querySelector('.in-brand1').value = state.brand1 || 'CLUB SOCIAL Y DEPORTIVO';
+        document.querySelector('.in-brand2').value = state.brand2 || 'CERÁMICA ARGENTINA';
+        document.querySelector('.in-t1').value = state.t1 || 'PRÓXIMO';
+        document.querySelector('.in-t2').value = state.t2 || 'PARTIDO';
+        document.querySelector('.in-cat').value = state.cat || 'AMISTOSO';
+        document.querySelector('.in-estadio').value = state.estadio || 'ESTADIO HECTOR C. CARDOSO';
+        document.querySelector('.in-estadio-sub').value = state.estadioSub || 'CLUB CERAMICA';
+        document.querySelector('.in-hora').value = state.hora || '15:00';
+        datePicker.value = state.fecha || today.toISOString().split('T')[0];
+        document.getElementById('in-condicion').value = state.condicion || 'LOCAL';
+        document.getElementById('in-nombre-rival').value = state.rival || 'MOQUEHUA';
+        document.getElementById('in-goles-local').value = state.golesLocal || '2';
+        document.getElementById('in-goles-rival').value = state.golesRival || '1';
+        document.querySelector('.in-foot-slogan').value = state.footSlogan || '¡VAMOS CERA!';
+        document.querySelector('.in-foot-r1').value = state.footR1 || 'LIGA CHIVILCOYANA DE FUTBOL';
+        document.querySelector('.in-foot-r2').value = state.footR2 || 'TORNEO AÑO 2026';
+        document.querySelector('.in-acc-local').value = state.accLocal || 'SERGIO "PELA" GIROTTI X CALLE ALEM';
+        document.querySelector('.in-acc-visit').value = state.accVisit || 'SOBRE CALLE BROWN';
+        // genérico
+        document.getElementById('in-gen-texto').value = state.genTexto || '¡Gracias por acompañarnos siempre!';
+        genericoImgPosX = state.genPosX || 50;
+        genericoImgPosY = state.genPosY || 50;
+        genericoZoom = state.genZoom || 100;
+        genericoStyle = state.genStyle || 'tradicional';
+        document.getElementById('in-gen-posx').value = genericoImgPosX;
+        document.getElementById('in-gen-posy').value = genericoImgPosY;
+        document.getElementById('in-gen-zoom').value = genericoZoom;
+        document.getElementById('zoom-label').textContent = genericoZoom + '%';
+        document.getElementById('in-gen-show-header').checked = state.genShowHeader !== undefined ? state.genShowHeader : true;
+        document.getElementById('in-gen-show-categoria').checked = state.genShowCategoria !== undefined ? state.genShowCategoria : true;
+        document.getElementById('in-gen-show-titulo').checked = state.genShowTitulo !== undefined ? state.genShowTitulo : true;
+        document.getElementById('in-gen-show-texto').checked = state.genShowTexto !== undefined ? state.genShowTexto : true;
+        document.getElementById('in-gen-show-sponsors').checked = state.genShowSponsors !== undefined ? state.genShowSponsors : true;
+        document.getElementById('in-gen-show-footer').checked = state.genShowFooter !== undefined ? state.genShowFooter : true;
+        // estilo minimalista
+        document.querySelectorAll('#generico-style-selector .style-opt').forEach(o => {
+          o.classList.toggle('active', o.dataset.style === genericoStyle);
+        });
+        // foto
+        if (state.fotoState) {
+          fotoState = state.fotoState;
+          fotoNatural = state.fotoNatural || { w: 0, h: 0 };
+          fotoInitialState = state.fotoInitialState || { '916': null, '11': null };
+          if (state.fotoImgSrc) {
+            fotoImgSrc = state.fotoImgSrc;
+            // Mostrar miniatura
+            const mini = document.querySelector('.mini-foto');
+            mini.src = fotoImgSrc; mini.style.display = 'block';
+            document.getElementById('btn-remove-foto').style.display = 'block';
+            document.getElementById('foto-fit-controls').style.display = 'block';
+          }
+        }
+        // Forzar actualización de categoría
+        document.querySelectorAll('.cat-opt').forEach(opt => {
+          opt.classList.toggle('active', opt.dataset.cat === currentCategory);
+        });
+        // Disparar cambios para actualizar UI
+        document.getElementById('in-mode').dispatchEvent(new Event('change'));
+        renderCards();
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // ================================================================
+    //  RESTABLECER TODO
+    // ================================================================
+
+    function resetAll() {
+      if (!confirm('¿Querés restablecer todo el diseño a los valores iniciales?')) return;
+      // Limpiar localStorage
+      localStorage.removeItem('flyerData');
+      // Recargar la página para resetear todo
+      location.reload();
+    }
+
+    document.getElementById('btn-reset-all').addEventListener('click', resetAll);
+
+    // ================================================================
     //  INICIALIZACIÓN
     // ================================================================
+
+    // Preguntar si restaurar estado guardado
+    const hasSaved = localStorage.getItem('flyerData');
+    if (hasSaved) {
+      if (confirm('¿Deseas recuperar el último diseño guardado?')) {
+        restoreState();
+      } else {
+        localStorage.removeItem('flyerData');
+      }
+    }
+
     renderCards();
     document.fonts.ready.then(fitAll);
 
@@ -2558,6 +2847,9 @@
       if (!w || !h) return null;
       return w / h;
     }
+
+    // Guardar estado automáticamente cada 5 segundos (solo si hay cambios)
+    setInterval(saveState, 5000);
   </script>
 </body>
 </html>
