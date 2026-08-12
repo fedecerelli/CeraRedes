@@ -517,29 +517,37 @@
       background: none !important; /* la imagen va dentro como <img> */
     }
     .flyer-foto .flyer-overlay {
+      display: none !important;      /* eliminamos cualquier posible velo */
       background: transparent !important;
+    }
+    .flyer-foto .flyer-texture {
+      display: none !important;      /* la textura lavaba la foto en la exportación */
     }
     .flyer-foto .card-content {
       padding: 0 !important;
       justify-content: flex-start !important;
     }
-    .flyer-foto .flyer-texture {
-      opacity: 0.4;
-      z-index: 4;
-    }
     .flyer-foto .flyer-header {
       width: 100%;
-      margin: 0;
+      margin: 0 !important;
       border-radius: 0 !important;
-      background: linear-gradient(to bottom, rgba(5,12,30,0.72) 0%, rgba(5,12,30,0.42) 35%, rgba(5,12,30,0.08) 75%, transparent 100%);
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-      border: none;
+      border: none !important;
+      border-bottom: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      background: linear-gradient(to bottom,
+        rgba(5, 12, 30, 0.70) 0%,
+        rgba(5, 12, 30, 0.45) 30%,
+        rgba(5, 12, 30, 0.18) 60%,
+        rgba(5, 12, 30, 0) 100%) !important;
+      background-color: transparent !important;
+      background-clip: border-box !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
       padding: 28px 30px 40px 30px;
-      box-shadow: none;
       gap: 14px;
       box-sizing: border-box;
-      pointer-events: none; /* el encabezado nunca se mueve ni intercepta el arrastre de la foto */
+      pointer-events: none;
       display: flex;
       align-items: flex-start;
       position: absolute;
