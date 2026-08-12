@@ -804,19 +804,49 @@
        ================================================================ */
     @media (max-width: 850px) {
       body { flex-direction: column; }
-      .mobile-tabs { display: flex; }
+      .mobile-tabs { display: flex; flex-direction: column; }
+      .mobile-tabs > div:first-child {
+        padding: 8px 12px;
+        font-weight: 800;
+        color: #0A227A;
+        font-size: 14px;
+        border-bottom: 1px solid #D1D9ED;
+        text-align: center;
+      }
+      .mobile-tabs > div:last-child { display: flex; }
+      .mobile-tabs .tab-btn { font-size: 15px; padding: 14px; }
       #panel { width: 100%; min-width: 100%; height: auto; position: relative; padding: 16px; box-shadow: none; }
       #stage { padding: 20px 10px; }
       #wrap916 { width: clamp(200px, 62vw, 340px); aspect-ratio: 9 / 16; }
       #wrap11 { width: clamp(220px, 78vw, 380px); aspect-ratio: 1 / 1; }
       .view-tab-content { display: none; }
       .view-tab-content.active { display: block; }
-      #exportbar { position: relative; bottom: 0; margin-top: 20px; }
+      #exportbar { position: sticky; bottom: 0; margin-top: 20px; background: #fff; padding: 12px 0 0 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); border-top: 1px solid #D8DCE8; }
+      #exportbar .btn { font-size: 13px; padding: 12px; }
+      #exportbar .export-hint { font-size: 10px; }
+      #exportbar .btn-outline#btn-reset-all { font-size: 11px; padding: 10px; }
 
       /* En móvil, mostrar solo una vista previa según selector */
       .preview-block { display: none; }
       .preview-block.active { display: flex; }
       .format-selector-mobile { display: flex !important; }
+
+      /* Botones y controles más grandes */
+      .btn { font-size: 13px; padding: 12px; }
+      .btn-small { font-size: 11px; padding: 8px 12px; }
+      .cat-opt, .style-opt { font-size: 11px; padding: 10px 6px; }
+      .schedule-input-row input { font-size: 13px; padding: 8px; }
+      .btn-remove-row { font-size: 14px; padding: 8px 12px; }
+      .file-input-group { padding: 6px; }
+      .file-input-group img { width: 32px; height: 32px; }
+      .panel-header h1 { font-size: 18px; }
+      .panel-header p.sub { font-size: 12px; }
+      details.fs summary { font-size: 12px; padding: 12px; }
+      .fs-body { padding: 12px; }
+      label { font-size: 10px; }
+      input, select, textarea { font-size: 14px; padding: 10px; }
+
+      .format-selector-mobile button { font-size: 13px; padding: 10px 20px; }
     }
 
     /* Selector de formato (visible solo en móvil) */
@@ -848,11 +878,18 @@
     @media (max-width: 500px) {
       .panel-header h1 { font-size: 16px; }
       .panel-header p.sub { font-size: 10px; }
-      .cat-opt, .style-opt { font-size: 9px; padding: 8px 4px; }
+      .cat-opt, .style-opt { font-size: 10px; padding: 8px 4px; }
       .fs-body { padding: 8px; }
-      .btn { font-size: 10px; padding: 10px; }
+      .btn { font-size: 12px; padding: 10px; }
       .file-input-group { padding: 4px; }
-      input, select, textarea { font-size: 11px; padding: 8px; }
+      input, select, textarea { font-size: 13px; padding: 8px; }
+    }
+
+    /* Safe area en móvil */
+    @supports (padding: max(0px)) {
+      #exportbar {
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+      }
     }
   </style>
 </head>
@@ -863,8 +900,8 @@
      PESTAÑAS MÓVILES
      ================================================================ -->
   <div class="mobile-tabs">
-    <div style="padding: 8px 12px; font-weight: 800; color: #0A227A; font-size: 14px; border-bottom: 1px solid #D1D9ED;">Generador de Flyers</div>
-    <div style="display:flex;">
+    <div>Generador de Flyers</div>
+    <div>
       <button class="tab-btn active" onclick="switchTab('editor')">Editor</button>
       <button class="tab-btn" onclick="switchTab('preview')">Vista Previa</button>
     </div>
@@ -1362,8 +1399,14 @@
     const cropImage = document.getElementById('cropImage');
     const datePicker = document.getElementById('in-fecha-picker');
 
-    const today = new Date();
-    datePicker.value = today.toISOString().split('T')[0];
+    // Inicializar fecha actual si no está establecida
+    if (!datePicker.value) {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      datePicker.value = `${year}-${month}-${day}`;
+    }
 
     // Actualizar etiqueta del zoom
     const zoomInput = document.getElementById('in-gen-zoom');
@@ -1410,11 +1453,22 @@
     }
 
     function getCalculatedDateInfo() {
-      if (!datePicker.value) return { dayName: 'DOMINGO', formattedDate: '9/8' };
-      const parts = datePicker.value.split('-');
-      const dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+      // Usar siempre la fecha del input, o la actual si no está definida
+      let dateStr = datePicker.value;
+      let dateObj;
+      if (!dateStr) {
+        dateObj = new Date();
+        dateStr = dateObj.toISOString().split('T')[0];
+        datePicker.value = dateStr;
+      } else {
+        const parts = dateStr.split('-');
+        dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+      }
       const days = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
-      return { dayName: days[dateObj.getDay()], formattedDate: `${dateObj.getDate()}/${dateObj.getMonth() + 1}` };
+      return {
+        dayName: days[dateObj.getDay()],
+        formattedDate: `${dateObj.getDate()}/${dateObj.getMonth() + 1}`
+      };
     }
 
     function getFormattedHora() {
@@ -2624,7 +2678,7 @@
       const mobileWindow = (mobile && !hasShareApi) ? window.open('', '_blank') : null;
 
       html2canvas(el, {
-        backgroundColor: '#ffffff',
+        backgroundColor: null, // Fondo transparente para respetar el diseño
         scale: 2,
         useCORS: true,
         allowTaint: true,
@@ -2725,7 +2779,6 @@
           fotoNatural: fotoNatural,
           fotoInitialState: fotoInitialState,
           fotoImgSrc: fotoImgSrc, // podría ser pesado, pero lo guardamos solo si es pequeño
-          // no guardamos imágenes grandes (más de 1MB) para no saturar localStorage
         };
         // No guardar fotoImgSrc si es muy grande (más de 500KB)
         if (fotoImgSrc && fotoImgSrc.length > 500000) {
@@ -2753,7 +2806,7 @@
         document.querySelector('.in-estadio').value = state.estadio || 'ESTADIO HECTOR C. CARDOSO';
         document.querySelector('.in-estadio-sub').value = state.estadioSub || 'CLUB CERAMICA';
         document.querySelector('.in-hora').value = state.hora || '15:00';
-        datePicker.value = state.fecha || today.toISOString().split('T')[0];
+        datePicker.value = state.fecha || new Date().toISOString().split('T')[0];
         document.getElementById('in-condicion').value = state.condicion || 'LOCAL';
         document.getElementById('in-nombre-rival').value = state.rival || 'MOQUEHUA';
         document.getElementById('in-goles-local').value = state.golesLocal || '2';
@@ -2795,6 +2848,13 @@
             mini.src = fotoImgSrc; mini.style.display = 'block';
             document.getElementById('btn-remove-foto').style.display = 'block';
             document.getElementById('foto-fit-controls').style.display = 'block';
+            // Si no se guardó la imagen, mostrar mensaje
+          } else if (fotoImgSrc) {
+            // La imagen se perdió, mostrar aviso
+            alert('Diseño recuperado. Volvé a cargar la fotografía.');
+            fotoImgSrc = null;
+            fotoState = { '916': null, '11': null };
+            fotoInitialState = { '916': null, '11': null };
           }
         }
         // Forzar actualización de categoría
