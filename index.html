@@ -1,203 +1,727 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Generador de Flyers · Cerámica Argentina</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0A227A">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Generador de flyers para redes sociales del Club Social y Deportivo Cerámica Argentina.">
+<title>Generador de Flyers · Cerámica Argentina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
-  <style>
-    /* ================================================================
-       VARIABLES GLOBALES
-       ================================================================ */
-    :root {
-      --blue-deep: #0B132B;
-      --blue-mid: #141E3A;
-      --blue-institutional: #0A227A;
-      --blue-electric: #2E86AB;
-      --blue-bright: #4AA3C2;
-      --white: #FFFFFF;
-      --grey-light: rgba(255,255,255,0.15);
-      --grey-text: rgba(255,255,255,0.7);
-    }
+<style>
+/* ================================================================
+   1. VARIABLES GLOBALES — Sistema de diseño 2026
+   Colores institucionales del club preservados como base de marca.
+   ================================================================ */
+:root {
+  /* Marca del club (no se alteran) */
+  --blue-deep: #0B132B;
+  --blue-mid: #141E3A;
+  --blue-institutional: #0A227A;
+  --blue-electric: #2E86AB;
+  --blue-bright: #4AA3C2;
+  --white: #FFFFFF;
+  --grey-light: rgba(255,255,255,0.15);
+  --grey-text: rgba(255,255,255,0.7);
 
-    /* ================================================================
-       SELECTOR DE CATEGORÍA (panel)
-       ================================================================ */
-    .cat-selector { display: flex; gap: 8px; }
-    .cat-opt {
-      flex: 1;
-      border: 2px solid #D1D9ED;
-      border-radius: 8px;
-      padding: 10px 6px;
-      text-align: center;
-      font-size: 11px;
-      font-weight: 800;
-      cursor: pointer;
-      background: #fff;
-      color: #656E85;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-    }
-    .cat-opt.sel-primera.active { border-color: #1545D8; color: #0A227A; background: #F0F4FF; }
-    .cat-opt.sel-senior.active { border-color: #D89A1E; color: #7A4B0A; background: #FFF6E8; }
-    .cat-opt.sel-inferiores.active { border-color: #1FAE63; color: #0A6B3A; background: #EAFBF2; }
+  /* Escala neutra UI */
+  --ui-bg: #F4F6FB;
+  --ui-surface: #FFFFFF;
+  --ui-surface-2: #F8F9FD;
+  --ui-border: #E4E8F2;
+  --ui-border-strong: #D3D9EA;
+  --ui-text: #10152B;
+  --ui-text-muted: #626A85;
+  --ui-text-soft: #8991AB;
+  --ui-accent: #1545D8;
+  --ui-accent-soft: #EEF2FF;
+  --ui-accent-ink: #0A227A;
+  --ui-danger: #E5484D;
+  --ui-danger-soft: #FDECEC;
+  --ui-success: #17A673;
+  --ui-radius-sm: 10px;
+  --ui-radius-md: 14px;
+  --ui-radius-lg: 20px;
+  --ui-radius-xl: 26px;
+  --ui-shadow-sm: 0 1px 2px rgba(15,23,58,0.06), 0 1px 1px rgba(15,23,58,0.04);
+  --ui-shadow-md: 0 8px 24px -8px rgba(15,23,58,0.16);
+  --ui-shadow-lg: 0 20px 45px -12px rgba(15,23,58,0.28);
+  --ui-font-ui: 'Plus Jakarta Sans', 'Montserrat', sans-serif;
+  --app-bar-h: 60px;
+  --bottom-nav-h: 64px;
+}
 
-    .style-selector { display: flex; gap: 8px; }
-    .style-opt {
-      flex: 1;
-      border: 2px solid #D1D9ED;
-      border-radius: 8px;
-      padding: 10px 6px;
-      text-align: center;
-      font-size: 11px;
-      font-weight: 800;
-      cursor: pointer;
-      background: #fff;
-      color: #656E85;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-    }
-    .style-opt.active { border-color: #1545D8; color: #0A227A; background: #F0F4FF; }
+html[data-theme="dark"] {
+  --ui-bg: #0B0F1F;
+  --ui-surface: #131A31;
+  --ui-surface-2: #0F1526;
+  --ui-border: #232C48;
+  --ui-border-strong: #2C3656;
+  --ui-text: #F1F3FC;
+  --ui-text-muted: #A6ADC9;
+  --ui-text-soft: #7B84A6;
+  --ui-accent: #5B87FF;
+  --ui-accent-soft: #1B2547;
+  --ui-accent-ink: #BFD0FF;
+  --ui-danger: #FF6B6F;
+  --ui-danger-soft: #2B1620;
+  --ui-success: #2BD99A;
+  --ui-shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+  --ui-shadow-md: 0 8px 24px -8px rgba(0,0,0,0.5);
+  --ui-shadow-lg: 0 20px 45px -12px rgba(0,0,0,0.6);
+}
 
-    /* ================================================================
-       RESET Y ESTRUCTURA BASE
-       ================================================================ */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: #E8ECF5;
-      color: #0A122A;
-      display: flex;
-      flex-direction: row;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    --ui-bg: #0B0F1F;
+    --ui-surface: #131A31;
+    --ui-surface-2: #0F1526;
+    --ui-border: #232C48;
+    --ui-border-strong: #2C3656;
+    --ui-text: #F1F3FC;
+    --ui-text-muted: #A6ADC9;
+    --ui-text-soft: #7B84A6;
+    --ui-accent: #5B87FF;
+    --ui-accent-soft: #1B2547;
+    --ui-accent-ink: #BFD0FF;
+    --ui-danger: #FF6B6F;
+    --ui-danger-soft: #2B1620;
+    --ui-success: #2BD99A;
+  }
+}
 
-    #panel {
-      width: 360px;
-      min-width: 300px;
-      background: #FFFFFF;
-      border-right: 1px solid #D8DCE8;
-      padding: 18px 14px 60px 14px;
-      overflow-y: auto;
-      height: 100vh;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      box-shadow: 2px 0 8px rgba(0,0,0,0.04);
-    }
+/* ================================================================
+   2. RESET Y ESTRUCTURA BASE
+   ================================================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--ui-font-ui);
+  background: var(--ui-bg);
+  color: var(--ui-text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+h1, h2, h3 { font-family: var(--ui-font-ui); }
+svg { display: block; }
+button { font-family: inherit; }
 
-    .panel-header h1 { font-size: 18px; font-weight: 800; color: #0A227A; margin-bottom: 2px; letter-spacing: -0.02em; }
-    .panel-header p.sub { font-size: 12px; color: #656E85; margin-bottom: 10px; font-weight: 500; }
+/* ================================================================
+   3. BARRA SUPERIOR (APP BAR)
+   ================================================================ */
+.app-bar {
+  height: var(--app-bar-h);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 18px;
+  background: var(--ui-surface);
+  border-bottom: 1px solid var(--ui-border);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.app-bar-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.app-bar-crest {
+  width: 34px; height: 34px; flex-shrink: 0;
+  border-radius: 10px;
+  background: linear-gradient(155deg, var(--blue-institutional), var(--blue-electric));
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 12px; letter-spacing: 0.02em;
+  box-shadow: var(--ui-shadow-sm);
+}
+.app-bar-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.app-bar-text strong { font-size: 13.5px; font-weight: 800; color: var(--ui-text); letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.app-bar-text small { font-size: 11px; font-weight: 600; color: var(--ui-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.theme-toggle {
+  width: 36px; height: 36px; flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--ui-border);
+  background: var(--ui-surface-2);
+  color: var(--ui-text-muted);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+.theme-toggle:hover { background: var(--ui-accent-soft); color: var(--ui-accent); }
+.theme-toggle:active { transform: scale(0.92); }
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle .ico-moon { display: none; }
+html[data-theme="dark"] .theme-toggle .ico-sun { display: none; }
+html[data-theme="dark"] .theme-toggle .ico-moon { display: block; }
 
-    .panel-quick-actions { display: flex; gap: 6px; margin-bottom: 14px; }
-    .panel-quick-actions button {
-      flex: 1; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
-      padding: 6px 4px; border-radius: 6px; border: 1px solid #D1D9ED; background: #fff;
-      color: #0A227A; cursor: pointer;
-    }
-    .panel-quick-actions button:hover { background: #F0F4FF; }
+/* ================================================================
+   4. LAYOUT PRINCIPAL (panel + stage)
+   ================================================================ */
+.app-shell { display: flex; flex-direction: row; flex: 1; min-height: 0; width: 100%; }
 
-    .mobile-tabs { display: none; background: #fff; border-bottom: 1px solid #D1D9ED; position: sticky; top: 0; z-index: 100; }
-    .tab-btn { flex: 1; padding: 12px; text-align: center; font-weight: 800; font-size: 13px; border: none; background: transparent; color: #656E85; cursor: pointer; }
-    .tab-btn.active { color: #1545D8; border-bottom: 3px solid #1545D8; }
+/* ================================================================
+   5. NAVEGACIÓN INFERIOR MÓVIL
+   ================================================================ */
+.mobile-tabs {
+  display: none;
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 300;
+  background: var(--ui-surface);
+  border-top: 1px solid var(--ui-border);
+  padding: 6px 10px calc(6px + env(safe-area-inset-bottom, 0px)) 10px;
+}
+.mobile-tabs > div { display: flex; gap: 6px; }
+.tab-btn {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  padding: 8px 4px 7px 4px;
+  border-radius: 14px;
+  border: none;
+  background: transparent;
+  color: var(--ui-text-soft);
+  font-weight: 700;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.tab-btn svg { width: 20px; height: 20px; }
+.tab-btn.active { color: var(--ui-accent-ink); background: var(--ui-accent-soft); }
 
-    details.fs {
-      border: 1px solid #D1D9ED; border-radius: 8px; margin-bottom: 8px; overflow: hidden; background: #fff;
-    }
-    details.fs summary {
-      list-style: none; cursor: pointer; padding: 9px 10px; font-size: 10px; font-weight: 800;
-      color: #1545D8; text-transform: uppercase; letter-spacing: 0.04em; background: #F0F4FF;
-      display: flex; align-items: center; justify-content: space-between; gap: 8px;
-    }
-    details.fs summary::-webkit-details-marker { display: none; }
-    details.fs summary::after {
-      content: ''; flex-shrink: 0; width: 0; height: 0;
-      border-left: 5px solid transparent; border-right: 5px solid transparent;
-      border-top: 6px solid #1545D8; transition: transform 0.15s ease;
-    }
-    details.fs[open] summary::after { transform: rotate(180deg); }
-    details.fs.fs-highlight summary { background: #1545D8; color: #fff; }
-    details.fs.fs-highlight summary::after { border-top-color: #fff; }
-    .fs-body { padding: 10px 10px 4px 10px; }
+/* ================================================================
+   6. PANEL DE CONTROL
+   ================================================================ */
+#panel {
+  width: 380px;
+  min-width: 320px;
+  background: var(--ui-bg);
+  border-right: 1px solid var(--ui-border);
+  padding: 20px 20px 40px 20px;
+  overflow-y: auto;
+  height: calc(100vh - var(--app-bar-h));
+  position: sticky;
+  top: var(--app-bar-h);
+  z-index: 10;
+}
+.panel-header { margin-bottom: 14px; }
+.panel-header h1 { font-size: 20px; font-weight: 800; color: var(--ui-text); letter-spacing: -0.02em; margin-bottom: 3px; }
+.panel-header p.sub { font-size: 12.5px; color: var(--ui-text-muted); font-weight: 600; }
 
-    label { display: block; font-size: 9px; font-weight: 700; color: #3A4259; margin: 4px 0 2px 0; text-transform: uppercase; letter-spacing: 0.03em; }
-    input[type="text"], input[type="date"], input[type="time"], input[type="number"], select, textarea {
-      width: 100%; padding: 6px 8px; font-size: 12px; border: 1px solid #D1D9ED; border-radius: 6px;
-      font-family: inherit; font-weight: 600; background: #fff; transition: border 0.15s; margin-bottom: 6px;
-    }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: #1545D8; }
+.panel-quick-actions { display: flex; gap: 8px; margin-bottom: 16px; }
+.panel-quick-actions button {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: 11px; font-weight: 700;
+  padding: 9px 8px;
+  border-radius: var(--ui-radius-sm);
+  border: 1px solid var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-text-muted);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.panel-quick-actions button svg { width: 14px; height: 14px; flex-shrink: 0; }
+.panel-quick-actions button:hover { background: var(--ui-accent-soft); border-color: var(--ui-accent); color: var(--ui-accent-ink); }
 
-    .file-input-group {
-      display: flex; align-items: center; gap: 6px; background: #F0F4FF; padding: 4px 6px;
-      border-radius: 6px; border: 1px dashed #D1D9ED; margin-bottom: 6px;
-    }
-    .file-input-group img { width: 28px; height: 28px; object-fit: contain; background: #fff; border-radius: 6px; border: 1px solid #ccc; }
-    .row2 { display: flex; gap: 6px; }
-    .row2>div { flex: 1; }
+/* ---- Pestañas internas del panel (agrupan las secciones) ---- */
+.panel-tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--ui-surface-2);
+  border: 1px solid var(--ui-border);
+  padding: 4px;
+  border-radius: 999px;
+  margin: 4px 0 14px 0;
+  position: sticky;
+  top: -1px;
+  z-index: 20;
+}
+.panel-tab-btn {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  border: none;
+  background: transparent;
+  color: var(--ui-text-muted);
+  font-weight: 800;
+  font-size: 11.5px;
+  padding: 9px 6px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+.panel-tab-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.panel-tab-btn.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--blue-institutional), var(--blue-electric));
+  box-shadow: var(--ui-shadow-sm);
+}
+.panel-tab-content { display: none; }
+.panel-tab-content.active { display: block; animation: tabFade 0.15s ease; }
+@keyframes tabFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-    .schedule-input-row { display: flex; gap: 4px; margin-bottom: 4px; align-items: center; }
-    .schedule-input-row input { flex: 1; font-size: 11px; padding: 5px 6px; margin-bottom: 0; }
-    .btn-remove-row { background: #e74c3c; color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 11px; }
+/* ---- Acordeón de pasos ---- */
+details.fs {
+  scroll-margin-top: 122px;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius-md);
+  margin-bottom: 10px;
+  overflow: hidden;
+  background: var(--ui-surface);
+  box-shadow: var(--ui-shadow-sm);
+  transition: border-color 0.15s;
+}
+details.fs summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 13px 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ui-text);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+}
+details.fs summary::-webkit-details-marker { display: none; }
+.step-ico {
+  width: 17px; height: 17px; flex-shrink: 0;
+  color: var(--ui-text-soft);
+  transition: color 0.15s;
+}
+.step-label { flex: 1; min-width: 0; }
+.step-label b {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; margin-right: 6px;
+  border-radius: 50%;
+  background: var(--ui-accent-soft);
+  color: var(--ui-accent-ink);
+  font-size: 9.5px; font-weight: 800;
+}
+details.fs summary::after {
+  content: '';
+  flex-shrink: 0; width: 8px; height: 8px;
+  border-right: 2px solid var(--ui-text-soft);
+  border-bottom: 2px solid var(--ui-text-soft);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+  margin-top: -3px;
+}
+details.fs[open] summary::after { transform: rotate(-135deg); margin-top: 3px; }
+details.fs[open] { border-color: var(--ui-border-strong); }
+details.fs[open] summary { border-bottom: 1px solid var(--ui-border); }
+details.fs.fs-highlight summary .step-ico { color: var(--ui-accent); }
+details.fs.fs-highlight { border-color: var(--ui-accent); box-shadow: 0 0 0 3px var(--ui-accent-soft); }
+.fs-body { padding: 4px 14px 14px 14px; }
 
-    .btn { display: block; width: 100%; padding: 8px 10px; border: none; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; margin-bottom: 4px; text-align: center; text-transform: uppercase; letter-spacing: 0.04em; }
-    .btn:disabled { opacity: 0.6; cursor: wait; }
-    .btn-primary { background: #0A227A; color: #fff; transition: background 0.15s; }
-    .btn-primary:hover { background: #1545D8; }
-    .btn-outline { background: #fff; color: #0A227A; border: 2px solid #0A227A; }
-    .btn-outline:hover { background: #F0F4FF; }
-    .btn-small { padding: 4px 8px; font-size: 9px; margin-top: 4px; }
+/* ---- Navegación tipo asistente (Anterior / Siguiente) dentro de cada paso ---- */
+.step-nav {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--ui-border);
+}
+.step-nav button {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 11px 10px;
+  border-radius: var(--ui-radius-sm);
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: opacity 0.15s, transform 0.08s;
+}
+.step-nav button:active { transform: scale(0.97); }
+.step-nav .step-prev { background: var(--ui-surface-2); border: 1.5px solid var(--ui-border); color: var(--ui-text-muted); flex: 0 0 auto; width: 46px; }
+.step-nav .step-prev svg { width: 16px; height: 16px; }
+.step-nav .step-prev[disabled] { opacity: 0.35; pointer-events: none; }
+.step-nav .step-next { background: linear-gradient(135deg, var(--blue-institutional), var(--blue-electric)); color: #fff; box-shadow: 0 6px 16px -6px rgba(10,34,122,0.4); }
+.step-nav .step-next svg { width: 15px; height: 15px; }
 
-    .export-hint { font-size: 9px; color: #656E85; text-align: center; margin-top: 6px; font-weight: 600; line-height: 1.4; }
+/* ---- Indicador de progreso (paso X de N) ---- */
+.step-progress {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--ui-text-soft);
+  text-align: right;
+  margin: -4px 0 8px 0;
+  letter-spacing: 0.02em;
+}
 
-    /* ================================================================
-       MODAL CROPPER
-       ================================================================ */
-    .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(10,18,42,0.85); display: none; align-items: center; justify-content: center;
-      z-index: 9999; padding: 15px;
-    }
-    .modal-overlay.active { display: flex; }
-    .modal-content {
-      background: #fff; border-radius: 14px; width: 100%; max-width: 480px; padding: 18px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
-    .modal-content h3 { font-size: 16px; font-weight: 800; color: #0A227A; margin-bottom: 10px; text-align: center; }
-    .img-container { width: 100%; height: 280px; background: #f0f0f0; margin-bottom: 12px; overflow: hidden; border-radius: 10px; }
-    .img-container img { max-width: 100%; }
-    .modal-actions { display: flex; gap: 10px; }
+/* ---- Formularios ---- */
+label {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--ui-text-muted);
+  margin: 10px 0 5px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+label:first-child { margin-top: 2px; }
+input[type="text"], input[type="date"], input[type="time"], input[type="number"], select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  border: 1.5px solid var(--ui-border);
+  border-radius: var(--ui-radius-sm);
+  font-family: inherit;
+  font-weight: 600;
+  background: var(--ui-surface-2);
+  color: var(--ui-text);
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  min-height: 42px;
+}
+textarea { min-height: unset; }
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--ui-accent);
+  background: var(--ui-surface);
+  box-shadow: 0 0 0 3px var(--ui-accent-soft);
+}
+input[type="range"] { min-height: unset; padding: 0; accent-color: var(--ui-accent); background: transparent; border: none; }
+::placeholder { color: var(--ui-text-soft); opacity: 1; }
 
-    /* ================================================================
-       VISTA PREVIA (stage)
-       ================================================================ */
-    #stage {
-      flex: 1; padding: 24px 20px; display: flex; flex-direction: column;
-      align-items: center; gap: 30px; overflow-y: auto; width: 100%;
-    }
-    .preview-block { width: 100%; display: flex; flex-direction: column; align-items: center; }
-    .preview-block h3 {
-      font-size: 11px; font-weight: 700; color: #656E85; text-transform: uppercase;
-      text-align: center; margin-bottom: 8px; letter-spacing: 0.06em;
-    }
+p.hint {
+  font-size: 10.5px;
+  color: var(--ui-text-soft);
+  margin-top: 4px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.check-row {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  color: var(--ui-text) !important;
+  padding: 7px 2px;
+}
+.check-row input[type="checkbox"] { width: 17px; height: 17px; margin: 0; accent-color: var(--ui-accent); flex-shrink: 0; }
 
-    .preview-frame {
-      box-shadow: 0 6px 18px rgba(10,34,122,0.10);
-      border-radius: 0;
-      overflow: hidden;
-      background: transparent;
-    }
+.file-input-group {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--ui-surface-2);
+  padding: 10px 12px;
+  border-radius: var(--ui-radius-sm);
+  border: 1.5px dashed var(--ui-border-strong);
+  margin-bottom: 8px;
+  position: relative;
+  transition: border-color 0.15s, background 0.15s;
+}
+.file-input-group:hover { border-color: var(--ui-accent); background: var(--ui-accent-soft); }
+.file-input-group::before {
+  content: '';
+  width: 30px; height: 30px; flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%231545D8' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 13V4M6.5 7.5L10 4l3.5 3.5'/%3E%3Cpath d='M4 14v1.3A1.7 1.7 0 005.7 17h8.6a1.7 1.7 0 001.7-1.7V14'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px;
+}
+.file-input-group img.mini { width: 30px; height: 30px; object-fit: contain; background: var(--ui-surface); border-radius: 8px; border: 1px solid var(--ui-border); }
+.file-input-group input[type="file"] {
+  flex: 1; min-height: unset; border: none; background: transparent; padding: 0;
+  font-size: 11.5px; font-weight: 600; color: var(--ui-text-muted);
+}
 
-    #wrap916 { width: clamp(240px, 30vw, 460px); aspect-ratio: 9 / 16; }
-    #wrap11 { width: clamp(280px, 34vw, 520px); aspect-ratio: 1 / 1; }
-    .scaler { transform-origin: top left; }
+.row2 { display: flex; gap: 8px; }
+.row2 > div { flex: 1; }
 
+.schedule-input-row { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
+.schedule-input-row input { flex: 1; margin-bottom: 0; }
+.btn-remove-row {
+  background: var(--ui-danger-soft); color: var(--ui-danger); border: 1px solid transparent;
+  width: 38px; height: 38px; flex-shrink: 0;
+  border-radius: var(--ui-radius-sm);
+  cursor: pointer; font-weight: 800; font-size: 13px;
+  transition: background 0.15s;
+}
+.btn-remove-row:hover { background: var(--ui-danger); color: #fff; }
+
+/* ---- Selectores segmentados (categoría / estilo) ---- */
+.cat-selector, .style-selector { display: flex; gap: 6px; }
+.cat-opt, .style-opt {
+  flex: 1;
+  border: 1.5px solid var(--ui-border);
+  border-radius: var(--ui-radius-sm);
+  padding: 10px 6px;
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 800;
+  cursor: pointer;
+  background: var(--ui-surface-2);
+  color: var(--ui-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: all 0.15s;
+}
+.cat-opt:hover, .style-opt:hover { border-color: var(--ui-border-strong); }
+.cat-opt.sel-primera.active { border-color: #1545D8; color: #0A227A; background: #EEF2FF; box-shadow: 0 0 0 3px rgba(21,69,216,0.12); }
+.cat-opt.sel-senior.active { border-color: #D89A1E; color: #7A4B0A; background: #FFF6E8; box-shadow: 0 0 0 3px rgba(216,154,30,0.12); }
+.cat-opt.sel-inferiores.active { border-color: #1FAE63; color: #0A6B3A; background: #EAFBF2; box-shadow: 0 0 0 3px rgba(31,174,99,0.12); }
+.style-opt.active { border-color: var(--ui-accent); color: var(--ui-accent-ink); background: var(--ui-accent-soft); box-shadow: 0 0 0 3px rgba(21,69,216,0.12); }
+html[data-theme="dark"] .cat-opt.sel-primera.active,
+html[data-theme="dark"] .cat-opt.sel-senior.active,
+html[data-theme="dark"] .cat-opt.sel-inferiores.active,
+html[data-theme="dark"] .style-opt.active { color: #fff; }
+
+/* ---- Botones ---- */
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: var(--ui-radius-sm);
+  font-weight: 800;
+  font-size: 12.5px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: transform 0.08s ease, box-shadow 0.15s, background 0.15s, opacity 0.15s;
+}
+.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.55; cursor: wait; transform: none; }
+.btn-primary { background: linear-gradient(135deg, var(--blue-institutional), var(--blue-electric)); color: #fff; box-shadow: 0 8px 20px -6px rgba(10,34,122,0.45); }
+.btn-primary:hover { box-shadow: 0 10px 24px -6px rgba(10,34,122,0.55); }
+.btn-outline { background: var(--ui-surface); color: var(--ui-accent-ink); border: 1.5px solid var(--ui-border-strong); }
+.btn-outline:hover { background: var(--ui-accent-soft); border-color: var(--ui-accent); }
+.btn-small { padding: 8px 10px; font-size: 10.5px; margin-top: 4px; margin-bottom: 0; }
+.btn-ghost-danger { background: transparent; color: var(--ui-danger); border: 1.5px solid transparent; box-shadow: none; }
+.btn-ghost-danger:hover { background: var(--ui-danger-soft); }
+.export-hint { font-size: 10px; color: var(--ui-text-soft); text-align: center; margin: 2px 0 10px 0; font-weight: 600; line-height: 1.5; }
+
+/* ---- Switch (interruptor) ---- */
+.switch-row {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px !important;
+  text-transform: none !important;
+  font-weight: 700 !important;
+  color: var(--ui-text) !important;
+  margin: 2px 0 10px 0 !important;
+  cursor: pointer;
+}
+.switch { position: relative; width: 40px; height: 24px; flex-shrink: 0; }
+.switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.switch-track {
+  position: absolute; inset: 0;
+  background: var(--ui-border-strong);
+  border-radius: 999px;
+  transition: background 0.15s;
+}
+.switch-track::after {
+  content: '';
+  position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  transition: transform 0.18s ease;
+}
+.switch input:checked + .switch-track { background: linear-gradient(135deg, var(--blue-institutional), var(--blue-electric)); }
+.switch input:checked + .switch-track::after { transform: translateX(16px); }
+.switch input:focus-visible + .switch-track { box-shadow: 0 0 0 3px var(--ui-accent-soft); }
+#accesos-fields { transition: opacity 0.15s; }
+.fs-body:has(#in-show-accesos:not(:checked)) #accesos-fields { opacity: 0.45; }
+#accesos-fields.js-dimmed { opacity: 0.45; }
+
+/* ================================================================
+   11. BOTÓN FLOTANTE "IR A UNA SECCIÓN" + HOJA DE SECCIONES
+   ================================================================ */
+.fab-sections {
+  position: fixed;
+  right: 18px;
+  bottom: calc(var(--bottom-nav-h) + 18px);
+  z-index: 400;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--blue-institutional), var(--blue-electric));
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 24px -6px rgba(10,34,122,0.5);
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+.fab-sections svg { width: 24px; height: 24px; }
+.fab-sections:active { transform: scale(0.93); }
+
+@media (min-width: 851px) {
+  .fab-sections { bottom: 26px; }
+}
+
+.sections-sheet-overlay {
+  position: fixed; inset: 0;
+  background: rgba(8,12,28,0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 500;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.sections-sheet-overlay.active { display: flex; animation: modalFade 0.15s ease; }
+.sections-sheet {
+  width: 100%;
+  max-width: 480px;
+  max-height: 74vh;
+  background: var(--ui-surface);
+  border-radius: 22px 22px 0 0;
+  padding: 10px 6px calc(18px + env(safe-area-inset-bottom, 0px)) 6px;
+  display: flex; flex-direction: column;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+}
+@media (min-width: 851px) {
+  .sections-sheet-overlay { align-items: center; }
+  .sections-sheet { border-radius: 22px; max-height: 80vh; }
+}
+.sections-sheet-handle { width: 38px; height: 4px; border-radius: 999px; background: var(--ui-border-strong); margin: 2px auto 8px auto; flex-shrink: 0; }
+.sections-sheet-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 14px 10px 14px; flex-shrink: 0;
+}
+.sections-sheet-header strong { font-size: 15px; font-weight: 800; color: var(--ui-text); }
+.sections-sheet-close {
+  width: 30px; height: 30px; border-radius: 50%; border: none;
+  background: var(--ui-surface-2); color: var(--ui-text-muted);
+  font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.sections-sheet-list { overflow-y: auto; padding: 4px 8px 4px 8px; }
+.sections-sheet-group-title {
+  font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--ui-text-soft); padding: 12px 10px 6px 10px;
+}
+.sections-sheet-item {
+  width: 100%;
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 10px;
+  border: none; background: transparent;
+  border-radius: var(--ui-radius-sm);
+  text-align: left; cursor: pointer;
+  font-size: 13px; font-weight: 700; color: var(--ui-text);
+}
+.sections-sheet-item:active { background: var(--ui-accent-soft); }
+.sections-sheet-item.current { background: var(--ui-accent-soft); color: var(--ui-accent-ink); }
+.sections-sheet-item svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--ui-text-soft); }
+.sections-sheet-item.current svg { color: var(--ui-accent); }
+.sections-sheet-item .sheet-item-check { margin-left: auto; width: 16px; height: 16px; flex-shrink: 0; color: var(--ui-accent); }
+
+/* ================================================================
+   7. MODAL CROPPER
+   ================================================================ */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(8,12,28,0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center;
+  z-index: 9999; padding: 16px;
+}
+.modal-overlay.active { display: flex; animation: modalFade 0.18s ease; }
+@keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+.modal-content {
+  background: var(--ui-surface); border-radius: var(--ui-radius-lg); width: 100%; max-width: 480px; padding: 22px;
+  box-shadow: var(--ui-shadow-lg);
+}
+.modal-content h3 { font-size: 16px; font-weight: 800; color: var(--ui-text); margin-bottom: 14px; text-align: center; letter-spacing: -0.01em; }
+.img-container { width: 100%; height: 280px; background: var(--ui-surface-2); margin-bottom: 14px; overflow: hidden; border-radius: var(--ui-radius-md); }
+.img-container img { max-width: 100%; }
+.modal-hint { font-size: 11px; color: var(--ui-text-muted); text-align: center; margin: -6px 0 14px 0; font-weight: 600; line-height: 1.5; }
+.modal-actions { display: flex; gap: 10px; }
+.modal-actions .btn { margin-bottom: 0; }
+
+/* ================================================================
+   8. VISTA PREVIA (stage)
+   ================================================================ */
+#stage {
+  flex: 1; padding: 28px 24px; display: flex; flex-direction: column;
+  align-items: center; gap: 34px; overflow-y: auto; width: 100%;
+}
+.preview-block { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.preview-block h3 {
+  font-size: 11px; font-weight: 700; color: var(--ui-text-muted); text-transform: uppercase;
+  text-align: center; margin-bottom: 10px; letter-spacing: 0.08em;
+}
+.preview-frame {
+  box-shadow: var(--ui-shadow-lg);
+  border-radius: 18px;
+  overflow: hidden;
+  background: transparent;
+}
+.scaler { transform-origin: top left; }
+
+/* Selector de formato (visible solo en móvil) */
+.format-selector-mobile {
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  padding: 5px;
+  border-radius: 999px;
+  box-shadow: var(--ui-shadow-sm);
+}
+.format-selector-mobile button {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--ui-text-muted);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: background 0.15s, color 0.15s;
+}
+.format-selector-mobile button.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--blue-institutional), var(--blue-electric));
+}
+
+/* ================================================================
+   9. TOAST DE CONFIRMACIÓN
+   ================================================================ */
+.toast-stack {
+  position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
+  z-index: 10000; display: flex; flex-direction: column; gap: 8px; align-items: center;
+  pointer-events: none; width: min(92vw, 380px);
+}
+.toast {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--ui-text); color: var(--ui-bg);
+  padding: 12px 16px; border-radius: var(--ui-radius-md);
+  font-size: 12.5px; font-weight: 700;
+  box-shadow: var(--ui-shadow-lg);
+  opacity: 0; transform: translateY(10px);
+  animation: toastIn 0.25s ease forwards, toastOut 0.25s ease forwards 2.6s;
+}
+.toast svg { width: 16px; height: 16px; color: var(--ui-success); flex-shrink: 0; }
+@keyframes toastIn { to { opacity: 1; transform: translateY(0); } }
+@keyframes toastOut { to { opacity: 0; transform: translateY(-6px); } }
     /* ================================================================
        DISEÑO DEL FLYER – FONDO DE ESTADIO
        ================================================================ */
@@ -552,14 +1076,23 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: 260px;
       background: linear-gradient(to bottom,
-        rgba(5, 12, 30, 0.70) 0%,
-        rgba(5, 12, 30, 0.45) 30%,
-        rgba(5, 12, 30, 0.18) 60%,
+        rgba(5, 12, 30, 0.68) 0%,
+        rgba(5, 12, 30, 0.52) 20%,
+        rgba(5, 12, 30, 0.32) 42%,
+        rgba(5, 12, 30, 0.14) 65%,
+        rgba(5, 12, 30, 0.05) 84%,
         rgba(5, 12, 30, 0) 100%);
       pointer-events: none;
+      border: none !important;
+      border-bottom: none !important;
+      box-shadow: none !important;
+      outline: none !important;
       z-index: 0;
+    }
+    .card-11.flyer-foto .flyer-header::before {
+      height: 190px;
     }
     .flyer-foto .flyer-header .club-crest,
     .flyer-foto .flyer-header .club-name {
@@ -799,131 +1332,148 @@
       pointer-events: none;
     }
 
-    /* ================================================================
-       RESPONSIVE
-       ================================================================ */
-    @media (max-width: 850px) {
-      body { flex-direction: column; }
-      .mobile-tabs { display: flex; flex-direction: column; }
-      .mobile-tabs > div:first-child {
-        padding: 8px 12px;
-        font-weight: 800;
-        color: #0A227A;
-        font-size: 14px;
-        border-bottom: 1px solid #D1D9ED;
-        text-align: center;
-      }
-      .mobile-tabs > div:last-child { display: flex; }
-      .mobile-tabs .tab-btn { font-size: 15px; padding: 14px; }
-      #panel { width: 100%; min-width: 100%; height: auto; position: relative; padding: 16px; box-shadow: none; }
-      #stage { padding: 20px 10px; }
-      #wrap916 { width: clamp(200px, 62vw, 340px); aspect-ratio: 9 / 16; }
-      #wrap11 { width: clamp(220px, 78vw, 380px); aspect-ratio: 1 / 1; }
-      .view-tab-content { display: none; }
-      .view-tab-content.active { display: block; }
-      #exportbar { position: sticky; bottom: 0; margin-top: 20px; background: #fff; padding: 12px 0 0 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); border-top: 1px solid #D8DCE8; }
-      #exportbar .btn { font-size: 13px; padding: 12px; }
-      #exportbar .export-hint { font-size: 10px; }
-      #exportbar .btn-outline#btn-reset-all { font-size: 11px; padding: 10px; }
+/* ================================================================
+   NUEVO — ACCESOS A LA CANCHA (opcional, dentro del flyer)
+   Se agrega sin modificar los estilos existentes del flyer.
+   ================================================================ */
+.flyer-accesos {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  position: relative;
+  z-index: 5;
+}
+.flyer-accesos .acceso-item { text-align: center; flex: 1; min-width: 40%; }
+.flyer-accesos .acceso-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blue-electric);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.flyer-accesos .acceso-text {
+  display: block;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.card-11 .flyer-accesos .acceso-label { font-size: 11px; }
+.card-11 .flyer-accesos .acceso-text { font-size: 14px; }
 
-      /* En móvil, mostrar solo una vista previa según selector */
-      .preview-block { display: none; }
-      .preview-block.active { display: flex; }
-      .format-selector-mobile { display: flex !important; }
+/* ================================================================
+   10. RESPONSIVE — mobile first (uso principal desde el celular)
+   ================================================================ */
+@media (max-width: 850px) {
+  .app-shell { flex-direction: column; }
+  .mobile-tabs { display: block; }
+  #panel {
+    width: 100%; min-width: 100%; height: auto; position: relative; top: 0;
+    padding: 16px 16px calc(96px + env(safe-area-inset-bottom, 0px)) 16px;
+    box-shadow: none;
+  }
+  #stage { padding: 18px 12px calc(96px + env(safe-area-inset-bottom, 0px)) 12px; gap: 22px; }
+  #wrap916 { width: clamp(210px, 68vw, 360px); aspect-ratio: 9 / 16; }
+  #wrap11 { width: clamp(230px, 82vw, 400px); aspect-ratio: 1 / 1; }
+  .view-tab-content { display: none; }
+  .view-tab-content.active { display: block; }
+  #stage.view-tab-content.active { display: flex; }
 
-      /* Botones y controles más grandes */
-      .btn { font-size: 13px; padding: 12px; }
-      .btn-small { font-size: 11px; padding: 8px 12px; }
-      .cat-opt, .style-opt { font-size: 11px; padding: 10px 6px; }
-      .schedule-input-row input { font-size: 13px; padding: 8px; }
-      .btn-remove-row { font-size: 14px; padding: 8px 12px; }
-      .file-input-group { padding: 6px; }
-      .file-input-group img { width: 32px; height: 32px; }
-      .panel-header h1 { font-size: 18px; }
-      .panel-header p.sub { font-size: 12px; }
-      details.fs summary { font-size: 12px; padding: 12px; }
-      .fs-body { padding: 12px; }
-      label { font-size: 10px; }
-      input, select, textarea { font-size: 14px; padding: 10px; }
+  #exportbar {
+    position: static;
+    margin-top: 22px;
+    background: var(--ui-surface);
+    padding: 16px;
+    border-radius: var(--ui-radius-lg);
+    border: 1px solid var(--ui-border);
+    box-shadow: var(--ui-shadow-sm);
+  }
 
-      .format-selector-mobile button { font-size: 13px; padding: 10px 20px; }
-    }
+  /* En móvil, mostrar solo una vista previa según selector */
+  .preview-block { display: none; }
+  .preview-block.active { display: flex; }
+  .format-selector-mobile { display: flex !important; }
 
-    /* Selector de formato (visible solo en móvil) */
-    .format-selector-mobile {
-      display: none;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-    .format-selector-mobile button {
-      padding: 8px 16px;
-      border: 2px solid #D1D9ED;
-      border-radius: 20px;
-      background: #fff;
-      font-weight: 700;
-      font-size: 12px;
-      color: #656E85;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .format-selector-mobile button.active {
-      border-color: #1545D8;
-      color: #0A227A;
-      background: #F0F4FF;
-    }
+  .app-bar-text small { display: none; }
+}
 
-    /* Ajustes para el panel en móvil */
-    @media (max-width: 500px) {
-      .panel-header h1 { font-size: 16px; }
-      .panel-header p.sub { font-size: 10px; }
-      .cat-opt, .style-opt { font-size: 10px; padding: 8px 4px; }
-      .fs-body { padding: 8px; }
-      .btn { font-size: 12px; padding: 10px; }
-      .file-input-group { padding: 4px; }
-      input, select, textarea { font-size: 13px; padding: 8px; }
-    }
+@media (min-width: 851px) {
+  #stage { min-height: calc(100vh - var(--app-bar-h)); }
+}
 
-    /* Safe area en móvil */
-    @supports (padding: max(0px)) {
-      #exportbar {
-        padding-bottom: max(12px, env(safe-area-inset-bottom));
-      }
-    }
-  </style>
+/* Ajustes finos para pantallas muy chicas */
+@media (max-width: 420px) {
+  .panel-header h1 { font-size: 18px; }
+  .app-bar-crest { width: 30px; height: 30px; font-size: 10.5px; }
+  #wrap916 { width: clamp(190px, 72vw, 320px); }
+  #wrap11 { width: clamp(210px, 84vw, 360px); }
+}
+
+/* Área segura en dispositivos con notch */
+@supports (padding: max(0px)) {
+  .mobile-tabs { padding-bottom: max(6px, env(safe-area-inset-bottom)); }
+}
+</style>
 </head>
-
 <body>
 
   <!-- ================================================================
-     PESTAÑAS MÓVILES
+     BARRA SUPERIOR (APP BAR)
      ================================================================ -->
-  <div class="mobile-tabs">
-    <div>Generador de Flyers</div>
-    <div>
-      <button class="tab-btn active" onclick="switchTab('editor')">Editor</button>
-      <button class="tab-btn" onclick="switchTab('preview')">Vista Previa</button>
+  <header class="app-bar">
+    <div class="app-bar-brand">
+      <span class="app-bar-crest">CA</span>
+      <div class="app-bar-text">
+        <strong>Generador de Flyers</strong>
+        <small>Club Social y Deportivo Cerámica Argentina</small>
+      </div>
     </div>
-  </div>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema claro/oscuro">
+      <svg class="ico-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="3.4"/><path d="M10 2.5v2M10 15.5v2M4 4l1.4 1.4M14.6 14.6L16 16M2.5 10h2M15.5 10h2M4 16l1.4-1.4M14.6 5.4L16 4"/></svg>
+      <svg class="ico-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 12.3A6.8 6.8 0 017.7 3.5a6.8 6.8 0 108.8 8.8z"/></svg>
+    </button>
+  </header>
+
+  <!-- ================================================================
+     PESTAÑAS MÓVILES (barra inferior)
+     ================================================================ -->
+  <nav class="mobile-tabs">
+    <div>
+      <button class="tab-btn active" onclick="switchTab('editor')">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h9.5L16 6.5V16H4z"/><path d="M7 8h6M7 11h6M7 14h3.5"/></svg>
+        Editor
+      </button>
+      <button class="tab-btn" onclick="switchTab('preview')">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.8 10S4.8 4.2 10 4.2 18.2 10 18.2 10 15.2 15.8 10 15.8 1.8 10 1.8 10z"/><circle cx="10" cy="10" r="2.4"/></svg>
+        Vista Previa
+      </button>
+    </div>
+  </nav>
+
+  <div class="app-shell">
 
   <!-- ================================================================
      PANEL DE CONTROL
      ================================================================ -->
   <div id="panel" class="view-tab-content active">
     <div class="panel-header">
-      <h1>Generador de Flyers</h1>
-      <p class="sub">Club Social y Deportivo Cerámica Argentina</p>
+      <h1>Armá tu flyer</h1>
+      <p class="sub">Completá los pasos y mirá el resultado en tiempo real</p>
     </div>
 
     <div class="panel-quick-actions">
-      <button type="button" id="btn-expand-all">Expandir Todo</button>
-      <button type="button" id="btn-collapse-all">Contraer Todo</button>
+      <button type="button" id="btn-expand-all"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7l6-3 6 3M4 13l6 3 6-3"/></svg>Expandir todo</button>
+      <button type="button" id="btn-collapse-all"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8l6 3 6-3M4 12l6-3 6 3"/></svg>Contraer todo</button>
     </div>
 
     <!-- PASO 1: ESCUDO DEL CLUB -->
     <details class="fs fs-highlight" open>
-      <summary>1. Escudo del Club</summary>
+      <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7.2"/><path d="M7 10.2l2 2 4-4.2"/></svg><span class="step-label"><b>1</b> Escudo del Club</span></summary>
       <div class="fs-body">
         <label>Cargar / Cambiar Escudo de Cerámica:</label>
         <div class="file-input-group">
@@ -934,8 +1484,8 @@
     </details>
 
     <!-- PASO 2: CATEGORÍA -->
-    <details class="fs" open>
-      <summary>2. Categoría</summary>
+    <details class="fs">
+      <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.4V4h6.4L17 11.6a1.6 1.6 0 010 2.3l-3.1 3.1a1.6 1.6 0 01-2.3 0L3 10.4z"/><circle cx="7" cy="7" r="1"/></svg><span class="step-label"><b>2</b> Categoría</span></summary>
       <div class="fs-body">
         <label>Seleccioná la categoría del flyer:</label>
         <div class="cat-selector" id="cat-selector">
@@ -947,8 +1497,8 @@
     </details>
 
     <!-- PASO 3: TIPO DE FLYER -->
-    <details class="fs" open>
-      <summary>3. Formato de Flyer</summary>
+    <details class="fs">
+      <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M3 8h14M8 8v9"/></svg><span class="step-label"><b>3</b> Formato de Flyer</span></summary>
       <div class="fs-body">
         <label>Seleccionar Tipo:</label>
         <select id="in-mode">
@@ -961,9 +1511,23 @@
       </div>
     </details>
 
+    <!-- TABS DEL PANEL: agrupan las secciones para no mostrar todo apilado -->
+    <div class="panel-tabs" role="tablist">
+      <button type="button" class="panel-tab-btn active" data-paneltab="partido">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M1.8 10S4.8 4.2 10 4.2 18.2 10 18.2 10 15.2 15.8 10 15.8 1.8 10 1.8 10z"/><circle cx="10" cy="10" r="2.4"/></svg>
+        Datos del partido
+      </button>
+      <button type="button" class="panel-tab-btn" data-paneltab="marca">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3a7 7 0 100 14c1 0 1.6-.6 1.6-1.4 0-.4-.2-.7-.2-1.1 0-.7.6-1.2 1.3-1.2H14a3 3 0 003-3c0-4-3.1-7.3-7-7.3z"/><circle cx="6.8" cy="8.2" r=".9"/><circle cx="9.4" cy="6" r=".9"/><circle cx="12.6" cy="7" r=".9"/></svg>
+        Marca y estilo
+      </button>
+    </div>
+
+    <div class="panel-tab-content active" data-paneltab-content="partido">
+
     <!-- ENCABEZADO -->
     <details class="fs">
-      <summary>Encabezado</summary>
+      <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h12M10 5v11M7 16h6"/></svg><span class="step-label">Encabezado</span></summary>
       <div class="fs-body">
         <label>Línea 1</label>
         <input type="text" class="in-brand1" value="CLUB SOCIAL Y DEPORTIVO">
@@ -975,7 +1539,7 @@
         <input type="text" class="in-t2" value="PARTIDO">
         <label>Subtítulo (se muestra en la pill)</label>
         <input type="text" class="in-cat" value="AMISTOSO">
-        <p style="font-size:9px; color:#656E85; margin-top:-2px; font-weight:600;">
+        <p class="hint">
           La categoría (Primera/Seniors/Inferiores) se muestra como texto destacado.
         </p>
       </div>
@@ -984,7 +1548,7 @@
     <!-- SECCIÓN MODO VS (y también RESULTADO) -->
     <div id="field-group-vs">
       <details class="fs">
-        <summary>Condición del Partido</summary>
+        <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17V3"/><path d="M5 4h9l-2 3 2 3H5"/></svg><span class="step-label">Condición del Partido</span></summary>
         <div class="fs-body">
           <label>Cerámica Argentina juega como:</label>
           <select id="in-condicion">
@@ -994,7 +1558,7 @@
         </div>
       </details>
       <details class="fs">
-        <summary>Rival y Escudo</summary>
+        <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="7" r="2.6"/><path d="M2.5 17c0-2.8 2.3-5 5-5s5 2.2 5 5"/><circle cx="14.5" cy="8" r="2.1"/><path d="M12.5 12.3c2.2.4 3.8 2.2 3.8 4.7"/></svg><span class="step-label">Rival y Escudo</span></summary>
         <div class="fs-body">
           <label>Escudo Rival (JPG/PNG)</label>
           <div class="file-input-group">
@@ -1009,8 +1573,8 @@
 
     <!-- SECCIÓN MODO LIBRE (CRONOGRAMA) -->
     <div id="field-group-libre" style="display: none;">
-      <details class="fs" open>
-        <summary>Cronograma de Partidos / Horarios</summary>
+      <details class="fs">
+        <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="12.5" rx="2"/><path d="M3 8.5h14M7 3v3M13 3v3"/></svg><span class="step-label">Cronograma de Partidos / Horarios</span></summary>
         <div class="fs-body">
           <div id="schedule-inputs">
             <div class="schedule-input-row">
@@ -1042,7 +1606,7 @@
     <!-- SECCIÓN MODO FOTO (canvas interactivo, sin sliders) -->
     <div id="field-group-foto" style="display: none;">
       <details class="fs fs-highlight" open>
-        <summary>Fotografía</summary>
+        <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="15" height="10.5" rx="2"/><circle cx="10" cy="11.2" r="3"/><path d="M7 6l1.3-2h3.4L13 6"/></svg><span class="step-label">Fotografía</span></summary>
         <div class="fs-body">
           <label>Cargar fotografía</label>
           <div class="file-input-group">
@@ -1062,7 +1626,7 @@
               <div class="style-opt active" data-fit="cover">Cubrir Lienzo</div>
               <div class="style-opt" data-fit="contain">Foto Completa</div>
             </div>
-            <p style="font-size:9px; color:#656E85; font-weight:600; margin-top:6px;">
+            <p class="hint">
               "Cubrir Lienzo": la foto llena todo el formato (puede recortar bordes). "Foto Completa": se ve la imagen entera, sin recortar, rellenando el resto con el fondo del flyer.
             </p>
           </div>
@@ -1072,7 +1636,7 @@
             <button class="btn btn-outline btn-small" id="btn-reset-foto" style="flex:1;">Restablecer</button>
           </div>
 
-          <p style="font-size:9px; color:#656E85; font-weight:600; margin-top:8px; line-height:1.5;">
+          <p class="hint">
             Mové la foto con un dedo. Usá dos dedos para hacer zoom.
           </p>
         </div>
@@ -1081,8 +1645,8 @@
 
     <!-- SECCIÓN MODO GENÉRICO -->
     <div id="field-group-generico" style="display: none;">
-      <details class="fs" open>
-        <summary>Contenido Libre</summary>
+      <details class="fs">
+        <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="14" height="12" rx="2"/><circle cx="7.3" cy="8.3" r="1.3"/><path d="M17 13l-4.2-4.2-3 3-2-2L3 14.5"/></svg><span class="step-label">Contenido Libre</span></summary>
         <div class="fs-body">
           <!-- Bloque de carga de imagen (visible siempre) -->
           <div id="generico-upload-block">
@@ -1092,7 +1656,7 @@
               <input type="file" accept="image/*" id="file-generico">
             </div>
             <div id="generico-img-actions" style="display:none; flex-direction:column; gap:6px; margin-bottom:8px;">
-              <p style="font-size:9px; color:#656E85; font-weight:600; margin:0;">
+              <p class="hint">
                 Historia y Feed tienen formas distintas: ajustá el recorte para cada uno.
               </p>
               <div style="display:flex; gap:6px; align-items:center;">
@@ -1122,7 +1686,7 @@
                 <input type="range" id="in-gen-zoom" min="50" max="200" value="100" step="5" style="flex:1;">
                 <span id="zoom-label" style="font-size:11px; font-weight:600; color:#0A227A; min-width:40px;">100%</span>
               </div>
-              <p style="font-size:9px; color:#656E85; font-weight:600; margin:0 0 6px 0;">
+              <p class="hint">
                 Ajusta el zoom para encuadrar mejor la imagen.
               </p>
             </div>
@@ -1152,36 +1716,36 @@
       <!-- Opciones de estilo (ocultas en modo FOTO) -->
       <div id="generico-style-block" style="display:block;">
         <details class="fs" open>
-          <summary>Estilo y Elementos</summary>
+          <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3a7 7 0 100 14c1 0 1.6-.6 1.6-1.4 0-.4-.2-.7-.2-1.1 0-.7.6-1.2 1.3-1.2H14a3 3 0 003-3c0-4-3.1-7.3-7-7.3z"/><circle cx="6.8" cy="8.2" r=".9"/><circle cx="9.4" cy="6" r=".9"/><circle cx="12.6" cy="7" r=".9"/></svg><span class="step-label">Estilo y Elementos</span></summary>
           <div class="fs-body">
             <label>Estilo del diseño</label>
             <div class="style-selector" id="generico-style-selector">
               <div class="style-opt active" data-style="tradicional">Tradicional</div>
               <div class="style-opt" data-style="minimal">Minimalista (vidrio)</div>
             </div>
-            <p style="font-size:9px; color:#656E85; font-weight:600; margin:6px 0 10px 0;">
+            <p class="hint">
               "Minimalista" pone la foto a pantalla completa y deja el encabezado y el pie como
               barras finas semi-transparentes (efecto vidrio) flotando sobre la imagen.
             </p>
 
             <label>Elementos a mostrar</label>
             <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
-              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+              <label class="check-row">
                 <input type="checkbox" id="in-gen-show-header" checked style="width:auto; margin:0;"> Encabezado (escudo + marca)
               </label>
-              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+              <label class="check-row">
                 <input type="checkbox" id="in-gen-show-categoria" checked style="width:auto; margin:0;"> Categoría
               </label>
-              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+              <label class="check-row">
                 <input type="checkbox" id="in-gen-show-titulo" checked style="width:auto; margin:0;"> Título grande
               </label>
-              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+              <label class="check-row">
                 <input type="checkbox" id="in-gen-show-texto" checked style="width:auto; margin:0;"> Texto libre
               </label>
-              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+              <label class="check-row">
                 <input type="checkbox" id="in-gen-show-sponsors" checked style="width:auto; margin:0;"> Sponsors
               </label>
-              <label style="display:flex; align-items:center; gap:6px; font-size:11px; text-transform:none; font-weight:600; color:#0A122A;">
+              <label class="check-row">
                 <input type="checkbox" id="in-gen-show-footer" checked style="width:auto; margin:0;"> Pie de página
               </label>
             </div>
@@ -1192,8 +1756,8 @@
 
     <!-- SECCIÓN MODO RESULTADO -->
     <div id="field-group-resultado" style="display: none;">
-      <details class="fs" open>
-        <summary>Marcador Final</summary>
+      <details class="fs">
+        <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="15" height="10" rx="1.6"/><path d="M2.5 8.2h15M8 8.2V15M12 8.2V15"/></svg><span class="step-label">Marcador Final</span></summary>
         <div class="fs-body">
           <div class="row2">
             <div>
@@ -1208,7 +1772,7 @@
         </div>
       </details>
       <details class="fs">
-        <summary>Goleadores (Opcional)</summary>
+        <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6.8"/><circle cx="10" cy="10" r="3.6"/><circle cx="10" cy="10" r=".8"/></svg><span class="step-label">Goleadores (Opcional)</span></summary>
         <div class="fs-body">
           <div id="goal-inputs">
             <div class="schedule-input-row">
@@ -1227,7 +1791,7 @@
 
     <!-- CANCHA Y HORARIO -->
     <details class="fs" id="fieldset-cancha">
-      <summary>Cancha y Horario</summary>
+      <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17.5S16 12 16 8a6 6 0 10-12 0c0 4 6 9.5 6 9.5z"/><circle cx="10" cy="8" r="2.2"/></svg><span class="step-label">Cancha y Horario</span></summary>
       <div class="fs-body">
         <label>Estadio</label>
         <input type="text" class="in-estadio" value="ESTADIO HECTOR C. CARDOSO">
@@ -1248,18 +1812,32 @@
 
     <!-- ACCESOS -->
     <details class="fs" id="fieldset-accesos">
-      <summary>Accesos</summary>
+      <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2.5" width="10" height="15" rx="1.2"/><circle cx="11.8" cy="10" r=".8"/></svg><span class="step-label">Accesos</span></summary>
       <div class="fs-body">
-        <label>Acceso Local</label>
-        <input type="text" class="in-acc-local" value='SERGIO "PELA" GIROTTI X CALLE ALEM'>
-        <label>Acceso Visitante</label>
-        <input type="text" class="in-acc-visit" value="SOBRE CALLE BROWN">
+        <label class="switch-row" for="in-show-accesos">
+          <span>Mostrar accesos en el flyer</span>
+          <span class="switch">
+            <input type="checkbox" id="in-show-accesos">
+            <span class="switch-track"></span>
+          </span>
+        </label>
+        <div id="accesos-fields">
+          <label>Acceso Local</label>
+          <input type="text" class="in-acc-local" value='SERGIO "PELA" GIROTTI X CALLE ALEM'>
+          <label>Acceso Visitante</label>
+          <input type="text" class="in-acc-visit" value="SOBRE CALLE BROWN">
+          <p class="hint">Se muestran como dos líneas debajo del horario y la cancha, solo si activás la opción de arriba.</p>
+        </div>
       </div>
     </details>
 
+    </div><!-- /panel-tab-content: partido -->
+
+    <div class="panel-tab-content" data-paneltab-content="marca">
+
     <!-- PUBLICIDAD -->
     <details class="fs">
-      <summary>Publicidad / Auspiciante (Opcional)</summary>
+      <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5v3l3 .8V16l2 1v-4.5l7 2v-9l-7 2H3z"/></svg><span class="step-label">Publicidad / Auspiciante (Opcional)</span></summary>
       <div class="fs-body">
         <label>Logo o imagen del sponsor:</label>
         <div class="file-input-group">
@@ -1272,7 +1850,7 @@
 
     <!-- FONDO PERSONALIZADO -->
     <details class="fs">
-      <summary>Fondo de la Plantilla (Opcional)</summary>
+      <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="3.5" width="15" height="13" rx="2"/><path d="M2.5 13l4-4 3 3 3.5-4.5 4 4.5"/><circle cx="7" cy="7.5" r="1.1"/></svg><span class="step-label">Fondo de la Plantilla (Opcional)</span></summary>
       <div class="fs-body">
         <label>Imagen de fondo (JPG/PNG):</label>
         <div class="file-input-group">
@@ -1280,13 +1858,13 @@
           <input type="file" accept="image/*" id="file-background">
         </div>
         <button class="btn btn-outline btn-small" id="btn-remove-background" style="display:none;">Quitar Fondo</button>
-        <p style="font-size:9px; color:#656E85; margin-top:6px;">Si no cargás nada, se usará el fondo de estadio nocturno.</p>
+        <p class="hint">Si no cargás nada, se usará el fondo de estadio nocturno.</p>
       </div>
     </details>
 
     <!-- PIE DE PÁGINA -->
     <details class="fs">
-      <summary>Pie de Página</summary>
+      <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h14v9H8.5L5 16.5v-3H3v-9z"/></svg><span class="step-label">Pie de Página</span></summary>
       <div class="fs-body">
         <label>Slogan</label>
         <input type="text" class="in-foot-slogan" value="¡VAMOS CERA!">
@@ -1297,12 +1875,23 @@
       </div>
     </details>
 
+    </div><!-- /panel-tab-content: marca -->
+
     <!-- BOTONES DE EXPORTACIÓN Y RESTABLECER -->
     <div id="exportbar">
-      <button class="btn btn-primary" id="btn-916">Exportar Historia 9:16</button>
-      <button class="btn btn-outline" id="btn-11">Exportar Feed 1:1</button>
-      <p class="export-hint">En el celular la imagen se abre en una pestaña nueva: mantené el dedo presionado sobre ella para guardarla.</p>
-      <button class="btn btn-outline" id="btn-reset-all" style="margin-top:10px; border-color:#e74c3c; color:#e74c3c;">Restablecer Todo</button>
+      <button class="btn btn-primary" id="btn-916">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v10.5M6 9.8L10 13.5l4-3.7"/><path d="M3.5 15.5v1.2a1.8 1.8 0 001.8 1.8h9.4a1.8 1.8 0 001.8-1.8v-1.2"/></svg>
+        Exportar Historia 9:16
+      </button>
+      <button class="btn btn-outline" id="btn-11">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v10.5M6 9.8L10 13.5l4-3.7"/><path d="M3.5 15.5v1.2a1.8 1.8 0 001.8 1.8h9.4a1.8 1.8 0 001.8-1.8v-1.2"/></svg>
+        Exportar Feed 1:1
+      </button>
+      <p class="export-hint">En el celular, la imagen se abre en una pestaña nueva: mantené el dedo presionado sobre ella para guardarla.</p>
+      <button class="btn btn-ghost-danger" id="btn-reset-all">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h12M8 5.5V4a1 1 0 011-1h2a1 1 0 011 1v1.5M5.5 5.5l.7 10.2a1.6 1.6 0 001.6 1.5h4.4a1.6 1.6 0 001.6-1.5l.7-10.2"/></svg>
+        Restablecer todo
+      </button>
     </div>
   </div>
 
@@ -1315,11 +1904,11 @@
       <div class="img-container">
         <img id="cropImage" src="" alt="Ajustar Imagen">
       </div>
-      <p id="cropModalHint" style="display:none; font-size:11px; color:#656E85; text-align:center; margin:-4px 0 12px 0; font-weight:600;">
+      <p id="cropModalHint" class="modal-hint" style="display:none;">
         El recuadro ya tiene el tamaño y la forma exactos que va a ocupar en el flyer. Arrastrá la foto para moverla y usá los dedos (o la ruedita) para hacer zoom hasta que quede como querés.
       </p>
       <div class="modal-actions">
-        <button class="btn btn-primary" id="btnCropSave">Confirmar Recorte</button>
+        <button class="btn btn-primary" id="btnCropSave">Confirmar recorte</button>
         <button class="btn btn-outline" id="btnCropCancel">Cancelar</button>
       </div>
     </div>
@@ -1361,9 +1950,261 @@
     <div class="card card-11 group11" id="export11"></div>
   </div>
 
+  </div><!-- /app-shell -->
+
+  <!-- Botón flotante para saltar a cualquier sección sin scrollear -->
+  <button type="button" class="fab-sections" id="fab-sections" aria-label="Ir a una sección">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h12M4 10h12M4 14h8"/></svg>
+  </button>
+
+  <div class="sections-sheet-overlay" id="sections-sheet-overlay">
+    <div class="sections-sheet">
+      <div class="sections-sheet-handle"></div>
+      <div class="sections-sheet-header">
+        <strong>Ir a una sección</strong>
+        <button type="button" class="sections-sheet-close" id="sections-sheet-close" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="sections-sheet-list" id="sections-sheet-list"><!-- se completa con JavaScript --></div>
+    </div>
+  </div>
+
+  <!-- Contenedor de notificaciones (toasts) -->
+  <div class="toast-stack" id="toast-stack"></div>
+
   <!-- ================================================================
-     JAVASCRIPT – TODA LA LÓGICA
-     ================================================================ -->
+       MEJORAS DE INTERFAZ (aditivo) — tema claro/oscuro y notificaciones.
+       No modifica ninguna función existente del generador.
+       ================================================================ -->
+  <script>
+    (function () {
+      // ---- Tema claro / oscuro ----
+      var root = document.documentElement;
+      var toggleBtn = document.getElementById('theme-toggle');
+      var THEME_KEY = 'cera-flyers-theme';
+      try {
+        var saved = localStorage.getItem(THEME_KEY);
+        if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+      } catch (e) {}
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function () {
+          var current = root.getAttribute('data-theme');
+          var isDark = current
+            ? current === 'dark'
+            : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var next = isDark ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+        });
+      }
+
+      // ---- Notificaciones (toast) ----
+      var stack = document.getElementById('toast-stack');
+      function showToast(message) {
+        if (!stack) return;
+        var toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l3.8 3.8L16 6"/></svg><span></span>';
+        toast.querySelector('span').textContent = message;
+        stack.appendChild(toast);
+        setTimeout(function () { toast.remove(); }, 3000);
+      }
+      window.showFlyerToast = showToast;
+
+      // ---- Pestañas internas del panel (Datos del partido / Marca y estilo) ----
+      var panelTabBtns = document.querySelectorAll('.panel-tab-btn');
+      function activatePanelTab(target) {
+        panelTabBtns.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-paneltab') === target); });
+        document.querySelectorAll('.panel-tab-content').forEach(function (c) {
+          c.classList.toggle('active', c.getAttribute('data-paneltab-content') === target);
+        });
+      }
+      panelTabBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () { activatePanelTab(btn.getAttribute('data-paneltab')); });
+      });
+
+      // ================================================================
+      // ASISTENTE PASO A PASO — evita tener que scrollear buscando campos.
+      // Solo un paso se muestra abierto a la vez; "Siguiente"/"Anterior"
+      // navegan entre ellos y hacen scroll automático hasta el paso.
+      // No modifica ninguna lógica de generación del flyer.
+      // ================================================================
+      var allStepDetails = Array.from(document.querySelectorAll('#panel details.fs'));
+      var topSteps = allStepDetails.filter(function (d) {
+        return !d.parentElement.closest('details.fs');
+      });
+
+      function isStepModeVisible(d) {
+        var el = d.parentElement;
+        while (el && el !== document.body) {
+          if (el.style && el.style.display === 'none') return false;
+          el = el.parentElement;
+        }
+        return true;
+      }
+      function getVisibleSteps() {
+        return topSteps.filter(isStepModeVisible);
+      }
+      function tabOfStep(step) {
+        var host = step.closest('.panel-tab-content');
+        return host ? host.getAttribute('data-paneltab-content') : null;
+      }
+      function openStep(step) {
+        var tab = tabOfStep(step);
+        if (tab) activatePanelTab(tab);
+        topSteps.forEach(function (s) { if (s !== step) s.open = false; });
+        step.open = true;
+        updateAllStepUI();
+        setTimeout(function () { step.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
+      }
+
+      // Exclusividad: al abrir un paso manualmente (tocando el título), se cierran los demás.
+      topSteps.forEach(function (step) {
+        step.addEventListener('toggle', function () {
+          if (step.open) {
+            topSteps.forEach(function (s) { if (s !== step) s.open = false; });
+            updateAllStepUI();
+          }
+        });
+      });
+
+      // Inserta la barra "Anterior / Siguiente" y el contador "Paso X de N" en cada paso.
+      topSteps.forEach(function (step) {
+        var body = step.querySelector(':scope > .fs-body');
+        if (!body) return;
+
+        var progress = document.createElement('div');
+        progress.className = 'step-progress';
+        body.insertBefore(progress, body.firstChild);
+
+        var nav = document.createElement('div');
+        nav.className = 'step-nav';
+        nav.innerHTML =
+          '<button type="button" class="step-prev" aria-label="Paso anterior">' +
+          '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 4.5L6 10l6.5 5.5"/></svg></button>' +
+          '<button type="button" class="step-next">Siguiente<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 4.5L14 10l-6.5 5.5"/></svg></button>';
+        body.appendChild(nav);
+
+        nav.querySelector('.step-prev').addEventListener('click', function () {
+          var steps = getVisibleSteps();
+          var idx = steps.indexOf(step);
+          if (idx > 0) openStep(steps[idx - 1]);
+        });
+        nav.querySelector('.step-next').addEventListener('click', function () {
+          var steps = getVisibleSteps();
+          var idx = steps.indexOf(step);
+          if (idx >= 0 && idx < steps.length - 1) {
+            openStep(steps[idx + 1]);
+          } else {
+            // Último paso: dejamos todo cerrado y llevamos a la barra de exportación
+            // (que está al final del panel, debajo de todos los pasos).
+            step.open = false;
+            var bar = document.getElementById('exportbar');
+            if (bar) setTimeout(function () { bar.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60);
+          }
+        });
+      });
+
+      function updateAllStepUI() {
+        var steps = getVisibleSteps();
+        steps.forEach(function (s, i) {
+          var body = s.querySelector(':scope > .fs-body');
+          if (!body) return;
+          var progress = body.querySelector(':scope > .step-progress');
+          if (progress) progress.textContent = 'Paso ' + (i + 1) + ' de ' + steps.length;
+          var prevBtn = body.querySelector(':scope > .step-nav .step-prev');
+          if (prevBtn) prevBtn.disabled = (i === 0);
+          var nextBtn = body.querySelector(':scope > .step-nav .step-next');
+          if (nextBtn) nextBtn.innerHTML = (i === steps.length - 1)
+            ? 'Ir a exportar<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v10.5M6 9.8L10 13.5l4-3.7"/></svg>'
+            : 'Siguiente<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 4.5L14 10l-6.5 5.5"/></svg>';
+        });
+      }
+      updateAllStepUI();
+
+      // Cuando cambian el modo del flyer (in-mode) o la categoría, los pasos
+      // visibles cambian: recalculamos numeración y botones tras un instante.
+      var modeSelect = document.getElementById('in-mode');
+      if (modeSelect) modeSelect.addEventListener('change', function () { setTimeout(updateAllStepUI, 50); });
+      document.querySelectorAll('.cat-opt').forEach(function (el) {
+        el.addEventListener('click', function () { setTimeout(updateAllStepUI, 50); });
+      });
+
+      // ---- Hoja flotante "Ir a una sección" (acceso directo a cualquier paso) ----
+      var fabSections = document.getElementById('fab-sections');
+      var sheetOverlay = document.getElementById('sections-sheet-overlay');
+      var sheetList = document.getElementById('sections-sheet-list');
+      var sheetClose = document.getElementById('sections-sheet-close');
+
+      function stepLabelText(step) {
+        var span = step.querySelector('summary .step-label');
+        return span ? span.textContent.replace(/^\s*\d+\s*/, '').trim() : 'Sección';
+      }
+      function stepIconMarkup(step) {
+        var ico = step.querySelector('summary .step-ico');
+        return ico ? ico.outerHTML : '';
+      }
+      function buildSectionsSheet() {
+        var steps = getVisibleSteps();
+        var groups = [
+          { key: null, title: null },              // pasos 1-3 (siempre visibles, sin pestaña)
+          { key: 'partido', title: 'Datos del partido' },
+          { key: 'marca', title: 'Marca y estilo' }
+        ];
+        var html = '';
+        groups.forEach(function (g) {
+          var groupSteps = steps.filter(function (s) { return tabOfStep(s) === g.key; });
+          if (!groupSteps.length) return;
+          if (g.title) html += '<div class="sections-sheet-group-title">' + g.title + '</div>';
+          groupSteps.forEach(function (s) {
+            var isCurrent = s.open;
+            html += '<button type="button" class="sections-sheet-item' + (isCurrent ? ' current' : '') + '" data-step-index="' + steps.indexOf(s) + '">' +
+              stepIconMarkup(s) + '<span>' + stepLabelText(s) + '</span>' +
+              (isCurrent ? '<svg class="sheet-item-check" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l3.8 3.8L16 6"/></svg>' : '') +
+              '</button>';
+          });
+        });
+        sheetList.innerHTML = html;
+        Array.from(sheetList.querySelectorAll('.sections-sheet-item')).forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var idx = parseInt(btn.getAttribute('data-step-index'), 10);
+            var steps2 = getVisibleSteps();
+            closeSheet();
+            if (steps2[idx]) openStep(steps2[idx]);
+          });
+        });
+      }
+      function openSheet() { buildSectionsSheet(); sheetOverlay.classList.add('active'); }
+      function closeSheet() { sheetOverlay.classList.remove('active'); }
+      if (fabSections) fabSections.addEventListener('click', openSheet);
+      if (sheetClose) sheetClose.addEventListener('click', closeSheet);
+      if (sheetOverlay) sheetOverlay.addEventListener('click', function (e) { if (e.target === sheetOverlay) closeSheet(); });
+
+      // ---- Accesos: atenuar visualmente los campos si el switch está apagado
+      // (redundante con la regla CSS :has(), pero garantiza el efecto en
+      // versiones de Safari que todavía no soportan :has()). ----
+      var showAccesosChk = document.getElementById('in-show-accesos');
+      var accesosFieldsBox = document.getElementById('accesos-fields');
+      function syncAccesosDim() {
+        if (showAccesosChk && accesosFieldsBox) {
+          accesosFieldsBox.classList.toggle('js-dimmed', !showAccesosChk.checked);
+        }
+      }
+      if (showAccesosChk) {
+        syncAccesosDim();
+        showAccesosChk.addEventListener('change', syncAccesosDim);
+      }
+
+      var btn916 = document.getElementById('btn-916');
+      var btn11 = document.getElementById('btn-11');
+      var btnReset = document.getElementById('btn-reset-all');
+      if (btn916) btn916.addEventListener('click', function () { showToast('Generando Historia 9:16…'); });
+      if (btn11) btn11.addEventListener('click', function () { showToast('Generando Feed 1:1…'); });
+      if (btnReset) btnReset.addEventListener('click', function () {
+        setTimeout(function () { showToast('Se restableció todo el flyer'); }, 50);
+      });
+    })();
+  </script>
+
   <script>
     // ================================================================
     //  VARIABLES GLOBALES
@@ -1764,6 +2605,19 @@
       const hora = getFormattedHora();
       const estadio = document.querySelector('.in-estadio').value;
 
+      // ---- NUEVO: Accesos a la cancha (opcional) ----
+      const showAccesos = document.getElementById('in-show-accesos').checked;
+      const accLocalTxt = document.querySelector('.in-acc-local').value.trim();
+      const accVisitTxt = document.querySelector('.in-acc-visit').value.trim();
+      let accesosHTML = '';
+      if (showAccesos && (accLocalTxt || accVisitTxt)) {
+        accesosHTML = `
+        <div class="flyer-accesos">
+          ${accLocalTxt ? `<div class="acceso-item"><span class="acceso-label">Acceso Local</span><span class="acceso-text">${accLocalTxt}</span></div>` : ''}
+          ${accVisitTxt ? `<div class="acceso-item"><span class="acceso-label">Acceso Visitante</span><span class="acceso-text">${accVisitTxt}</span></div>` : ''}
+        </div>`;
+      }
+
       const teamHomeShield = isLocal ? getCeramicaShieldHTML() : getRivalShieldHTML();
       const teamHomeName = isLocal ? 'CERÁMICA ARGENTINA' : rivalName;
       const teamAwayShield = isLocal ? getRivalShieldHTML() : getCeramicaShieldHTML();
@@ -1797,6 +2651,8 @@
             <span class="info-stadium">${estadio}</span>
           </div>
         </div>
+
+        ${accesosHTML}
       `;
 
       return buildBaseContent(inner, format);
@@ -2216,6 +3072,7 @@
 
     document.querySelector('.in-hora').addEventListener('input', () => { renderCards(); saveState(); });
     document.getElementById('in-condicion').addEventListener('change', () => { renderCards(); saveState(); });
+    document.getElementById('in-show-accesos').addEventListener('change', () => { renderCards(); saveState(); });
     datePicker.addEventListener('change', () => { renderCards(); saveState(); });
     document.getElementById('in-goles-local').addEventListener('input', () => { renderCards(); saveState(); });
     document.getElementById('in-goles-rival').addEventListener('input', () => { renderCards(); saveState(); });
@@ -2647,6 +3504,10 @@
       return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
 
+    function isIOSDevice() {
+      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
     function showBlobInNewTab(blob, filename, existingWindow) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -2667,15 +3528,34 @@
       reader.readAsDataURL(blob);
     }
 
+    // Descarga directa vía <a download>. Funciona en Chrome/Brave/Firefox/Edge
+    // tanto en escritorio como en Android: no abre ninguna ventana ni pestaña,
+    // por lo que no depende del bloqueador de ventanas emergentes del navegador.
+    function downloadBlobDirect(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = url;
+      link.rel = 'noopener';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    }
+
     function exportCard(elementId, filename) {
       const el = document.getElementById(elementId);
       const buttons = document.querySelectorAll('#exportbar .btn');
       buttons.forEach(b => b.disabled = true);
 
       const mobile = isMobileDevice();
+      const ios = isIOSDevice();
       const hasShareApi = mobile && !!navigator.share;
 
-      const mobileWindow = (mobile && !hasShareApi) ? window.open('', '_blank') : null;
+      // Solo en iOS necesitamos abrir la ventana de forma síncrona (dentro del
+      // gesto de click) para poder usarla después, ya que Safari no soporta
+      // la descarga directa de blobs. En Android/escritorio no se abre nada.
+      const mobileWindow = (ios && !hasShareApi) ? window.open('', '_blank') : null;
 
       html2canvas(el, {
         backgroundColor: null, // Fondo transparente para respetar el diseño
@@ -2690,6 +3570,7 @@
           buttons.forEach(b => b.disabled = false);
           if (!blob) {
             if (mobileWindow) mobileWindow.close();
+            if (window.showFlyerToast) window.showFlyerToast('No se pudo generar la imagen. Probá de nuevo.');
             return;
           }
 
@@ -2703,27 +3584,23 @@
                 if (err && err.name === 'AbortError') return;
               }
             }
-            showBlobInNewTab(blob, filename, null);
-            return;
+            // El share falló o no está soportado: seguimos con el resto de la lógica.
           }
 
-          if (mobile) {
+          if (ios) {
             showBlobInNewTab(blob, filename, mobileWindow);
             return;
           }
 
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.download = filename;
-          link.href = url;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          setTimeout(() => URL.revokeObjectURL(url), 60000);
+          // Android, escritorio y cualquier otro navegador: descarga directa,
+          // sin ventanas emergentes (evita el bloqueo de popups de Brave/Android).
+          downloadBlobDirect(blob, filename);
+          if (window.showFlyerToast) window.showFlyerToast('Imagen descargada');
         }, 'image/jpeg', 0.98);
       }).catch(() => {
         buttons.forEach(b => b.disabled = false);
         if (mobileWindow) mobileWindow.close();
+        if (window.showFlyerToast) window.showFlyerToast('No se pudo generar la imagen. Probá de nuevo.');
       });
     }
 
@@ -2762,6 +3639,7 @@
           footR2: document.querySelector('.in-foot-r2').value,
           accLocal: document.querySelector('.in-acc-local').value,
           accVisit: document.querySelector('.in-acc-visit').value,
+          showAccesos: document.getElementById('in-show-accesos').checked,
           // generico
           genTexto: document.getElementById('in-gen-texto').value,
           genPosX: genericoImgPosX,
@@ -2816,6 +3694,7 @@
         document.querySelector('.in-foot-r2').value = state.footR2 || 'TORNEO AÑO 2026';
         document.querySelector('.in-acc-local').value = state.accLocal || 'SERGIO "PELA" GIROTTI X CALLE ALEM';
         document.querySelector('.in-acc-visit').value = state.accVisit || 'SOBRE CALLE BROWN';
+        document.getElementById('in-show-accesos').checked = state.showAccesos || false;
         // genérico
         document.getElementById('in-gen-texto').value = state.genTexto || '¡Gracias por acompañarnos siempre!';
         genericoImgPosX = state.genPosX || 50;
