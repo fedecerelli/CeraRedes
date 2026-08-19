@@ -1875,6 +1875,22 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       </div>
     </details>
 
+    <!-- ===== NUEVA SECCIÓN: VISIBILIDAD DE ELEMENTOS (común a todos los modos) ===== -->
+    <details class="fs" open>
+      <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.8 10S4.8 4.2 10 4.2 18.2 10 18.2 10 15.2 15.8 10 15.8 1.8 10 1.8 10z"/><circle cx="10" cy="10" r="2.4"/></svg><span class="step-label">Visibilidad de elementos</span></summary>
+      <div class="fs-body">
+        <p class="hint" style="margin-bottom:6px;">Marcá qué elementos querés que aparezcan en el flyer (aplica a todos los modos, excepto Genérico que tiene sus propios controles).</p>
+        <label class="check-row"><input type="checkbox" id="in-show-header" checked> Encabezado (escudo + marca)</label>
+        <label class="check-row"><input type="checkbox" id="in-show-category" checked> Categoría</label>
+        <label class="check-row"><input type="checkbox" id="in-show-title" checked> Título</label>
+        <label class="check-row"><input type="checkbox" id="in-show-info" checked> Información (fecha/hora/cancha)</label>
+        <label class="check-row"><input type="checkbox" id="in-show-teams" checked> Equipos / Marcador</label>
+        <label class="check-row"><input type="checkbox" id="in-show-footer" checked> Pie de página (slogan + competencia)</label>
+        <label class="check-row"><input type="checkbox" id="in-show-sponsors" checked> Sponsors</label>
+        <!-- El checkbox de accesos ya existe en su sección, se usa independientemente -->
+      </div>
+    </details>
+
     </div><!-- /panel-tab-content: marca -->
 
     <!-- BOTONES DE EXPORTACIÓN Y RESTABLECER -->
@@ -2095,8 +2111,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
           if (idx >= 0 && idx < steps.length - 1) {
             openStep(steps[idx + 1]);
           } else {
-            // Último paso: dejamos todo cerrado y llevamos a la barra de exportación
-            // (que está al final del panel, debajo de todos los pasos).
             step.open = false;
             var bar = document.getElementById('exportbar');
             if (bar) setTimeout(function () { bar.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60);
@@ -2146,7 +2160,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       function buildSectionsSheet() {
         var steps = getVisibleSteps();
         var groups = [
-          { key: null, title: null },              // pasos 1-3 (siempre visibles, sin pestaña)
+          { key: null, title: null },
           { key: 'partido', title: 'Datos del partido' },
           { key: 'marca', title: 'Marca y estilo' }
         ];
@@ -2179,9 +2193,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       if (sheetClose) sheetClose.addEventListener('click', closeSheet);
       if (sheetOverlay) sheetOverlay.addEventListener('click', function (e) { if (e.target === sheetOverlay) closeSheet(); });
 
-      // ---- Accesos: atenuar visualmente los campos si el switch está apagado
-      // (redundante con la regla CSS :has(), pero garantiza el efecto en
-      // versiones de Safari que todavía no soportan :has()). ----
+      // ---- Accesos: atenuar visualmente los campos si el switch está apagado ----
       var showAccesosChk = document.getElementById('in-show-accesos');
       var accesosFieldsBox = document.getElementById('accesos-fields');
       function syncAccesosDim() {
@@ -2230,11 +2242,11 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
     let currentTargetTeam = null;
 
     // ---- MOTOR DE CANVAS INTERACTIVO PARA MODO FOTO ----
-    let fotoImgSrc = null;                 // data URL de la foto original (sin recortar)
-    let fotoNatural = { w: 0, h: 0 };       // dimensiones naturales de la foto
-    let fotoState = { '916': null, '11': null }; // transform independiente por formato
+    let fotoImgSrc = null;
+    let fotoNatural = { w: 0, h: 0 };
+    let fotoState = { '916': null, '11': null };
     const FOTO_CANVAS = { '916': { w: 1080, h: 1920 }, '11': { w: 1080, h: 1080 } };
-    let fotoInitialState = { '916': null, '11': null }; // para restablecer
+    let fotoInitialState = { '916': null, '11': null };
 
     const cropModal = document.getElementById('cropModal');
     const cropImage = document.getElementById('cropImage');
@@ -2269,7 +2281,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         const format = this.dataset.format;
         document.querySelectorAll('.preview-block').forEach(block => block.classList.remove('active'));
         document.getElementById('preview-' + format).classList.add('active');
-        // Re-escalar después de cambio
         setTimeout(fitAll, 50);
       });
     });
@@ -2294,7 +2305,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
     }
 
     function getCalculatedDateInfo() {
-      // Usar siempre la fecha del input, o la actual si no está definida
       let dateStr = datePicker.value;
       let dateObj;
       if (!dateStr) {
@@ -2330,312 +2340,63 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       return `<div class="generated-shield">${rivalName}</div>`;
     }
 
-    // ================================================================
-    //  FUNCIÓN AUXILIAR PARA GENERAR EL FONDO (con imagen o sin ella)
-    // ================================================================
-    function getBackgroundHTML(imgSrc, extraStyles = '') {
+    function getBackgroundHTML(imgSrc) {
       if (!imgSrc) {
         return `<div class="flyer-background"></div>`;
       }
-      // Si hay imagen, la ponemos como <img> dentro de un contenedor
       return `
         <div class="flyer-background has-bg-img" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; overflow:hidden;">
-          <img src="${imgSrc}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1; ${extraStyles}">
+          <img src="${imgSrc}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;">
         </div>
       `;
     }
 
-    // ---- Calcula el transform inicial de la foto para un formato dado, según el modo de ajuste ----
-    function setFotoFitMode(format, fitMode) {
-      const canvas = FOTO_CANVAS[format];
-      const minScale = fitMode === 'contain'
-        ? Math.min(canvas.w / fotoNatural.w, canvas.h / fotoNatural.h)  // entra la foto entera
-        : Math.max(canvas.w / fotoNatural.w, canvas.h / fotoNatural.h); // cubre todo el lienzo
-      const scale = minScale;
-      const w = fotoNatural.w * scale;
-      const h = fotoNatural.h * scale;
-      fotoState[format] = {
-        fitMode,
-        scale, minScale, maxScale: minScale * 4,
-        w, h,
-        left: (canvas.w - w) / 2,
-        top: (canvas.h - h) / 2
+    // ---- Funciones de visibilidad (comunes) ----
+    function getVisibilityFlags() {
+      return {
+        showHeader: document.getElementById('in-show-header').checked,
+        showCategory: document.getElementById('in-show-category').checked,
+        showTitle: document.getElementById('in-show-title').checked,
+        showInfo: document.getElementById('in-show-info').checked,
+        showTeams: document.getElementById('in-show-teams').checked,
+        showFooter: document.getElementById('in-show-footer').checked,
+        showSponsors: document.getElementById('in-show-sponsors').checked,
+        showAccesos: document.getElementById('in-show-accesos').checked,
       };
-      // Guardar estado inicial para restablecer
-      fotoInitialState[format] = JSON.parse(JSON.stringify(fotoState[format]));
     }
 
-    // ---- Inicializa el transform de la foto (una vez cargada) para ambos formatos ----
-    function initFotoState() {
-      ['916', '11'].forEach(format => setFotoFitMode(format, 'cover'));
-    }
-
-    // ---- Asegura que la foto se mantenga dentro de rango: sin huecos en modo "cubrir",
-    //      centrada con fondo visible en modo "completa" ----
-    function clampFotoState(format) {
-      const st = fotoState[format];
-      if (!st) return;
-      const canvas = FOTO_CANVAS[format];
-      st.scale = Math.max(st.minScale, Math.min(st.maxScale, st.scale));
-      st.w = fotoNatural.w * st.scale;
-      st.h = fotoNatural.h * st.scale;
-
-      // Eje X
-      if (st.w <= canvas.w) {
-        st.left = (canvas.w - st.w) / 2; // más chica que el lienzo: se centra, queda fondo visible
-      } else {
-        if (st.left > 0) st.left = 0;
-        if (st.left + st.w < canvas.w) st.left = canvas.w - st.w;
-      }
-      // Eje Y
-      if (st.h <= canvas.h) {
-        st.top = (canvas.h - st.h) / 2;
-      } else {
-        if (st.top > 0) st.top = 0;
-        if (st.top + st.h < canvas.h) st.top = canvas.h - st.h;
-      }
-    }
-
-    // ---- Aplica el transform actual directamente al DOM (preview + export), sin re-render completo ----
-    function applyFotoTransform(format) {
-      const st = fotoState[format];
-      if (!st) return;
-      document.querySelectorAll(`.foto-photo-img[data-format="${format}"]`).forEach(img => {
-        img.style.left = st.left + 'px';
-        img.style.top = st.top + 'px';
-        img.style.width = st.w + 'px';
-        img.style.height = st.h + 'px';
-      });
-    }
-
-    // ---- Hace zoom manteniendo fijo el punto bajo el cursor / centro del pellizco ----
-    function zoomFotoAt(format, ratio, clientPoint, origin, scaleFactor) {
-      const st = fotoState[format];
-      if (!st) return;
-      const canvasPoint = {
-        x: (clientPoint.x - origin.x) / scaleFactor,
-        y: (clientPoint.y - origin.y) / scaleFactor
-      };
-      const localX = (canvasPoint.x - st.left) / st.scale;
-      const localY = (canvasPoint.y - st.top) / st.scale;
-      let newScale = st.scale * ratio;
-      newScale = Math.max(st.minScale, Math.min(st.maxScale, newScale));
-      st.scale = newScale;
-      st.w = fotoNatural.w * newScale;
-      st.h = fotoNatural.h * newScale;
-      st.left = canvasPoint.x - localX * newScale;
-      st.top = canvasPoint.y - localY * newScale;
-      clampFotoState(format);
-      applyFotoTransform(format);
-    }
-
-    // ---- Conecta arrastre (mouse/touch), pellizco (2 dedos) y rueda del mouse al canvas visible ----
-    function attachFotoCanvasEvents() {
-      ['916', '11'].forEach(format => {
-        const layer = document.querySelector(`#wrap${format} .foto-canvas-layer`);
-        if (!layer) return;
-
-        const pointers = new Map();
-        let dragLast = null;
-        let lastDist = null;
-
-        function getScaleFactor() {
-          const rect = layer.getBoundingClientRect();
-          return rect.width / FOTO_CANVAS[format].w;
-        }
-        function getOrigin() {
-          const rect = layer.getBoundingClientRect();
-          return { x: rect.left, y: rect.top };
-        }
-
-        layer.addEventListener('pointerdown', (e) => {
-          if (!fotoImgSrc) return;
-          layer.setPointerCapture(e.pointerId);
-          pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-          if (pointers.size === 1) {
-            dragLast = { x: e.clientX, y: e.clientY };
-          } else if (pointers.size === 2) {
-            const pts = Array.from(pointers.values());
-            lastDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-          }
-        });
-
-        layer.addEventListener('pointermove', (e) => {
-          if (!pointers.has(e.pointerId)) return;
-          pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-          const scaleFactor = getScaleFactor();
-          const origin = getOrigin();
-
-          if (pointers.size === 1 && dragLast) {
-            const st = fotoState[format];
-            if (st) {
-              const dx = (e.clientX - dragLast.x) / scaleFactor;
-              const dy = (e.clientY - dragLast.y) / scaleFactor;
-              st.left += dx;
-              st.top += dy;
-              clampFotoState(format);
-              applyFotoTransform(format);
-            }
-            dragLast = { x: e.clientX, y: e.clientY };
-          } else if (pointers.size === 2) {
-            const pts = Array.from(pointers.values());
-            const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-            const mid = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 };
-            if (lastDist) {
-              const ratio = dist / lastDist;
-              zoomFotoAt(format, ratio, mid, origin, scaleFactor);
-            }
-            lastDist = dist;
-          }
-        });
-
-        function endPointer(e) {
-          if (pointers.has(e.pointerId)) pointers.delete(e.pointerId);
-          lastDist = null;
-          if (pointers.size === 1) {
-            const remaining = Array.from(pointers.values())[0];
-            dragLast = { x: remaining.x, y: remaining.y };
-          } else {
-            dragLast = null;
-          }
-        }
-        layer.addEventListener('pointerup', endPointer);
-        layer.addEventListener('pointercancel', endPointer);
-        layer.addEventListener('pointerleave', (e) => { if (pointers.size <= 1) endPointer(e); });
-
-        layer.addEventListener('wheel', (e) => {
-          if (!fotoImgSrc) return;
-          e.preventDefault();
-          const ratio = e.deltaY < 0 ? 1.08 : 0.92;
-          zoomFotoAt(format, ratio, { x: e.clientX, y: e.clientY }, getOrigin(), getScaleFactor());
-        }, { passive: false });
-      });
-    }
-
-    // ================================================================
-    //  FUNCIONES PARA CENTRAR Y RESTABLECER FOTO
-    // ================================================================
-
-    function centrarFoto(format) {
-      const st = fotoState[format];
-      if (!st) return;
-      const canvas = FOTO_CANVAS[format];
-      // Centrar manteniendo el zoom actual
-      st.left = (canvas.w - st.w) / 2;
-      st.top = (canvas.h - st.h) / 2;
-      clampFotoState(format);
-      applyFotoTransform(format);
-    }
-
-    function resetearFoto(format) {
-      if (fotoInitialState[format]) {
-        fotoState[format] = JSON.parse(JSON.stringify(fotoInitialState[format]));
-        applyFotoTransform(format);
-      }
-    }
-
-    // ================================================================
-    //  CONSTRUCCIÓN DEL FLYER
-    // ================================================================
-
-    function buildCardHTML(format) {
-      const mode = document.getElementById('in-mode').value;
-      if (mode === 'VS') return buildVSHTML(format);
-      if (mode === 'LIBRE') return buildLibreHTML(format);
-      if (mode === 'RESULTADO') return buildResultadoHTML(format);
-      if (mode === 'FOTO') return buildFotoHTML(format);
-      if (mode === 'GENERICO') return buildGenericoHTML(format);
-      return '';
-    }
-
-    // ---- MODO FOTO (canvas interactivo tipo Canva) ----
-    function buildFotoHTML(format) {
-      const ceramicaShield = getCeramicaShieldHTML();
-      const brand1 = document.querySelector('.in-brand1').value;
-      const brand2 = document.querySelector('.in-brand2').value;
-
-      // Fondo: solo si hay imagen de fondo personalizada
-      let bgHTML = '';
-      if (backgroundImgSrc) {
-        bgHTML = `
-          <div class="flyer-background has-bg-img" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; overflow:hidden;">
-            <img src="${backgroundImgSrc}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;">
-          </div>
-        `;
-      }
-
-      let photoLayerInner;
-      if (fotoImgSrc && fotoState[format]) {
-        const st = fotoState[format];
-        photoLayerInner = `<img class="foto-photo-img" data-format="${format}" src="${fotoImgSrc}" draggable="false" alt="" style="position:absolute; left:${st.left}px; top:${st.top}px; width:${st.w}px; height:${st.h}px;">`;
-      } else {
-        photoLayerInner = `
-          <div class="foto-canvas-placeholder">
-            <span class="icon">📷</span>
-            <span>Subí una fotografía<br>para empezar a editar</span>
-          </div>
-        `;
-      }
-
-      const html = `
-        <div class="card-content flyer-foto">
-          ${bgHTML}
-          <div class="flyer-background has-bg-img foto-canvas-layer" data-format="${format}" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:3; overflow:hidden; background:transparent !important;">
-            ${photoLayerInner}
-          </div>
-
-          <div class="flyer-header">
-            <div class="club-crest">${ceramicaShield}</div>
-            <div class="club-name">
-              <span class="line1 dyn-brand1">${brand1}</span>
-              <span class="line2 dyn-brand2">${brand2}</span>
-              <span class="foto-header-line"></span>
-            </div>
+    // ---- Funciones auxiliares para bloques comunes ----
+    function buildHeaderHTML(ceramicaShield, brand1, brand2, show) {
+      if (!show) return '';
+      return `
+        <div class="flyer-header">
+          <div class="club-crest">${ceramicaShield}</div>
+          <div class="club-name">
+            <span class="line1 dyn-brand1">${brand1}</span>
+            <span class="line2 dyn-brand2">${brand2}</span>
           </div>
         </div>
       `;
-      return html;
     }
 
-    // ---- MODO VS ----
-    function buildVSHTML(format) {
-      const isLocal = document.getElementById('in-condicion').value === 'LOCAL';
-      const rivalName = document.getElementById('in-nombre-rival').value.toUpperCase() || 'RIVAL';
-      const { dayName, formattedDate } = getCalculatedDateInfo();
-      const hora = getFormattedHora();
-      const estadio = document.querySelector('.in-estadio').value;
+    function buildCategoryHTML(cat, show) {
+      if (!show) return '';
+      return `<div class="flyer-category">${cat}</div>`;
+    }
 
-      // ---- NUEVO: Accesos a la cancha (opcional) ----
-      const showAccesos = document.getElementById('in-show-accesos').checked;
-      const accLocalTxt = document.querySelector('.in-acc-local').value.trim();
-      const accVisitTxt = document.querySelector('.in-acc-visit').value.trim();
-      let accesosHTML = '';
-      if (showAccesos && (accLocalTxt || accVisitTxt)) {
-        accesosHTML = `
-        <div class="flyer-accesos">
-          ${accLocalTxt ? `<div class="acceso-item"><span class="acceso-label">Acceso Local</span><span class="acceso-text">${accLocalTxt}</span></div>` : ''}
-          ${accVisitTxt ? `<div class="acceso-item"><span class="acceso-label">Acceso Visitante</span><span class="acceso-text">${accVisitTxt}</span></div>` : ''}
-        </div>`;
-      }
-
-      const teamHomeShield = isLocal ? getCeramicaShieldHTML() : getRivalShieldHTML();
-      const teamHomeName = isLocal ? 'CERÁMICA ARGENTINA' : rivalName;
-      const teamAwayShield = isLocal ? getRivalShieldHTML() : getCeramicaShieldHTML();
-      const teamAwayName = isLocal ? rivalName : 'CERÁMICA ARGENTINA';
-
-      const inner = `
-        <div class="flyer-teams">
-          <div class="team home">
-            <div class="team-crest">${teamHomeShield}</div>
-            <div class="team-name">${teamHomeName}</div>
-          </div>
-          <div class="team-vs">VS</div>
-          <div class="team away">
-            <div class="team-crest">${teamAwayShield}</div>
-            <div class="team-name">${teamAwayName}</div>
-          </div>
+    function buildTitleHTML(t1, t2, show) {
+      if (!show) return '';
+      return `
+        <div class="flyer-title">
+          <span class="dyn-t1">${t1}</span>
+          <span class="dyn-t2">${t2}</span>
         </div>
+      `;
+    }
 
+    function buildInfoHTML(dayName, formattedDate, hora, estadio, show) {
+      if (!show) return '';
+      return `
         <div class="flyer-info">
           <div class="info-item">
             <span class="info-day">${dayName}</span>
@@ -2651,17 +2412,113 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
             <span class="info-stadium">${estadio}</span>
           </div>
         </div>
-
-        ${accesosHTML}
       `;
+    }
 
+    function buildAccesosHTML(accLocal, accVisit, show) {
+      if (!show || (!accLocal && !accVisit)) return '';
+      let html = '<div class="flyer-accesos">';
+      if (accLocal) html += `<div class="acceso-item"><span class="acceso-label">Acceso Local</span><span class="acceso-text">${accLocal}</span></div>`;
+      if (accVisit) html += `<div class="acceso-item"><span class="acceso-label">Acceso Visitante</span><span class="acceso-text">${accVisit}</span></div>`;
+      html += '</div>';
+      return html;
+    }
+
+    function buildFooterHTML(footR1, footR2, slogan, show) {
+      if (!show) return '';
+      return `
+        <div class="flyer-competition">
+          <span class="dyn-foot-r1">${footR1}</span>
+          <span class="dyn-foot-r2">${footR2}</span>
+        </div>
+        <div class="flyer-slogan dyn-foot-slogan">${slogan}</div>
+      `;
+    }
+
+    function buildSponsorHTML(src, show) {
+      if (!show || !src) return '';
+      return `<div class="flyer-sponsor"><img src="${src}" alt="Sponsor"></div>`;
+    }
+
+    // ================================================================
+    //  FUNCIONES DE CONSTRUCCIÓN DEL FLYER POR MODO
+    // ================================================================
+
+    function buildVSHTML(format) {
+      const flags = getVisibilityFlags();
+      const isLocal = document.getElementById('in-condicion').value === 'LOCAL';
+      const rivalName = document.getElementById('in-nombre-rival').value.toUpperCase() || 'RIVAL';
+      const { dayName, formattedDate } = getCalculatedDateInfo();
+      const hora = getFormattedHora();
+      const estadio = document.querySelector('.in-estadio').value;
+      const accLocalTxt = document.querySelector('.in-acc-local').value.trim();
+      const accVisitTxt = document.querySelector('.in-acc-visit').value.trim();
+      const brand1 = document.querySelector('.in-brand1').value;
+      const brand2 = document.querySelector('.in-brand2').value;
+      const t1 = document.querySelector('.in-t1').value;
+      const t2 = document.querySelector('.in-t2').value;
+      const footR1 = document.querySelector('.in-foot-r1').value;
+      const footR2 = document.querySelector('.in-foot-r2').value;
+      const slogan = document.querySelector('.in-foot-slogan').value;
+      const ceramicaShield = getCeramicaShieldHTML();
+      const rivalShield = getRivalShieldHTML();
+
+      const teamHomeShield = isLocal ? ceramicaShield : rivalShield;
+      const teamHomeName = isLocal ? 'CERÁMICA ARGENTINA' : rivalName;
+      const teamAwayShield = isLocal ? rivalShield : ceramicaShield;
+      const teamAwayName = isLocal ? rivalName : 'CERÁMICA ARGENTINA';
+
+      // Bloques
+      let teamsHTML = '';
+      if (flags.showTeams) {
+        teamsHTML = `
+          <div class="flyer-teams">
+            <div class="team home">
+              <div class="team-crest">${teamHomeShield}</div>
+              <div class="team-name">${teamHomeName}</div>
+            </div>
+            <div class="team-vs">VS</div>
+            <div class="team away">
+              <div class="team-crest">${teamAwayShield}</div>
+              <div class="team-name">${teamAwayName}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      let infoHTML = buildInfoHTML(dayName, formattedDate, hora, estadio, flags.showInfo);
+      let accesosHTML = buildAccesosHTML(accLocalTxt, accVisitTxt, flags.showAccesos);
+      let headerHTML = buildHeaderHTML(ceramicaShield, brand1, brand2, flags.showHeader);
+      let categoryHTML = buildCategoryHTML(currentCategory, flags.showCategory);
+      let titleHTML = buildTitleHTML(t1, t2, flags.showTitle);
+      let footerHTML = buildFooterHTML(footR1, footR2, slogan, flags.showFooter);
+      let sponsorHTML = buildSponsorHTML(sponsorSrc, flags.showSponsors);
+
+      let inner = `
+        ${headerHTML}
+        ${categoryHTML}
+        ${titleHTML}
+        ${teamsHTML}
+        ${infoHTML}
+        ${accesosHTML}
+        ${footerHTML}
+        ${sponsorHTML}
+      `;
       return buildBaseContent(inner, format);
     }
 
-    // ---- MODO LIBRE ----
     function buildLibreHTML(format) {
+      const flags = getVisibilityFlags();
       const { dayName, formattedDate } = getCalculatedDateInfo();
       const estadio = document.querySelector('.in-estadio').value;
+      const brand1 = document.querySelector('.in-brand1').value;
+      const brand2 = document.querySelector('.in-brand2').value;
+      const t1 = document.querySelector('.in-t1').value;
+      const t2 = document.querySelector('.in-t2').value;
+      const footR1 = document.querySelector('.in-foot-r1').value;
+      const footR2 = document.querySelector('.in-foot-r2').value;
+      const slogan = document.querySelector('.in-foot-slogan').value;
+      const ceramicaShield = getCeramicaShieldHTML();
 
       const times = document.querySelectorAll('.sched-in-time');
       const cats = document.querySelectorAll('.sched-in-cat');
@@ -2676,45 +2533,50 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
           </div>
         `;
       });
-
       if (!scheduleRows) {
-        scheduleRows = `
-          <div class="sched-row">
-            <div class="sched-cat" style="flex:1; text-align:center; opacity:0.6;">Agregá horarios en el panel</div>
-          </div>
-        `;
+        scheduleRows = `<div class="sched-row"><div class="sched-cat" style="flex:1; text-align:center; opacity:0.6;">Agregá horarios en el panel</div></div>`;
       }
 
-      const infoHTML = `
-        <div class="flyer-info">
-          <div class="info-item">
-            <span class="info-day">${dayName}</span>
-            <span class="info-date">${formattedDate}</span>
-          </div>
-          <div class="info-divider"></div>
-          <div class="info-item">
-            <span class="info-label">CANCHA</span>
-            <span class="info-stadium">${estadio}</span>
-          </div>
-        </div>
-      `;
+      let infoHTML = buildInfoHTML(dayName, formattedDate, '', estadio, flags.showInfo);
+      let headerHTML = buildHeaderHTML(ceramicaShield, brand1, brand2, flags.showHeader);
+      let categoryHTML = buildCategoryHTML(currentCategory, flags.showCategory);
+      let titleHTML = buildTitleHTML(t1, t2, flags.showTitle);
+      let footerHTML = buildFooterHTML(footR1, footR2, slogan, flags.showFooter);
+      let sponsorHTML = buildSponsorHTML(sponsorSrc, flags.showSponsors);
 
-      const inner = `${infoHTML}<div class="flyer-schedule">${scheduleRows}</div>`;
+      let inner = `
+        ${headerHTML}
+        ${categoryHTML}
+        ${titleHTML}
+        ${infoHTML}
+        <div class="flyer-schedule">${scheduleRows}</div>
+        ${footerHTML}
+        ${sponsorHTML}
+      `;
       return buildBaseContent(inner, format);
     }
 
-    // ---- MODO RESULTADO ----
     function buildResultadoHTML(format) {
+      const flags = getVisibilityFlags();
       const isLocal = document.getElementById('in-condicion').value === 'LOCAL';
       const rivalName = document.getElementById('in-nombre-rival').value.toUpperCase() || 'RIVAL';
       const golesCeramica = parseInt(document.getElementById('in-goles-local').value, 10) || 0;
       const golesRival = parseInt(document.getElementById('in-goles-rival').value, 10) || 0;
       const golesTeam1 = isLocal ? golesCeramica : golesRival;
       const golesTeam2 = isLocal ? golesRival : golesCeramica;
+      const brand1 = document.querySelector('.in-brand1').value;
+      const brand2 = document.querySelector('.in-brand2').value;
+      const t1 = document.querySelector('.in-t1').value;
+      const t2 = document.querySelector('.in-t2').value;
+      const footR1 = document.querySelector('.in-foot-r1').value;
+      const footR2 = document.querySelector('.in-foot-r2').value;
+      const slogan = document.querySelector('.in-foot-slogan').value;
+      const ceramicaShield = getCeramicaShieldHTML();
+      const rivalShield = getRivalShieldHTML();
 
-      const teamHomeShield = isLocal ? getCeramicaShieldHTML() : getRivalShieldHTML();
+      const teamHomeShield = isLocal ? ceramicaShield : rivalShield;
       const teamHomeName = isLocal ? 'CERÁMICA ARGENTINA' : rivalName;
-      const teamAwayShield = isLocal ? getRivalShieldHTML() : getCeramicaShieldHTML();
+      const teamAwayShield = isLocal ? rivalShield : ceramicaShield;
       const teamAwayName = isLocal ? rivalName : 'CERÁMICA ARGENTINA';
 
       const goles = Array.from(document.querySelectorAll('.goal-in-text'))
@@ -2726,30 +2588,88 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         goleadoresHTML = `<div class="flyer-goleadores">${goles.map(g => `<span class="gol-chip">${g.replace(/</g, '&lt;')}</span>`).join('')}</div>`;
       }
 
-      const inner = `
-        <div class="flyer-resultado">
-          <div class="team home">
-            <div class="team-crest">${teamHomeShield}</div>
-            <div class="team-name">${teamHomeName}</div>
+      let teamsHTML = '';
+      if (flags.showTeams) {
+        teamsHTML = `
+          <div class="flyer-resultado">
+            <div class="team home">
+              <div class="team-crest">${teamHomeShield}</div>
+              <div class="team-name">${teamHomeName}</div>
+            </div>
+            <div class="score">
+              <span>${golesTeam1}</span>
+              <span class="score-sep">-</span>
+              <span>${golesTeam2}</span>
+            </div>
+            <div class="team away">
+              <div class="team-crest">${teamAwayShield}</div>
+              <div class="team-name">${teamAwayName}</div>
+            </div>
           </div>
-          <div class="score">
-            <span>${golesTeam1}</span>
-            <span class="score-sep">-</span>
-            <span>${golesTeam2}</span>
-          </div>
-          <div class="team away">
-            <div class="team-crest">${teamAwayShield}</div>
-            <div class="team-name">${teamAwayName}</div>
-          </div>
-        </div>
-        ${goleadoresHTML}
-      `;
+          ${goleadoresHTML}
+        `;
+      } else {
+        // Si no se muestran equipos, tampoco mostramos goleadores (por coherencia)
+        // pero podríamos mostrarlos igual si se desea. Lo dejamos así.
+      }
 
+      let headerHTML = buildHeaderHTML(ceramicaShield, brand1, brand2, flags.showHeader);
+      let categoryHTML = buildCategoryHTML(currentCategory, flags.showCategory);
+      let titleHTML = buildTitleHTML(t1, t2, flags.showTitle);
+      let footerHTML = buildFooterHTML(footR1, footR2, slogan, flags.showFooter);
+      let sponsorHTML = buildSponsorHTML(sponsorSrc, flags.showSponsors);
+
+      let inner = `
+        ${headerHTML}
+        ${categoryHTML}
+        ${titleHTML}
+        ${teamsHTML}
+        ${footerHTML}
+        ${sponsorHTML}
+      `;
       return buildBaseContent(inner, format);
     }
 
-    // ---- MODO GENÉRICO (con todos los controles) ----
+    function buildFotoHTML(format) {
+      const flags = getVisibilityFlags();
+      const ceramicaShield = getCeramicaShieldHTML();
+      const brand1 = document.querySelector('.in-brand1').value;
+      const brand2 = document.querySelector('.in-brand2').value;
+
+      let bgHTML = '';
+      if (backgroundImgSrc) {
+        bgHTML = getBackgroundHTML(backgroundImgSrc);
+      }
+
+      let photoLayerInner;
+      if (fotoImgSrc && fotoState[format]) {
+        const st = fotoState[format];
+        photoLayerInner = `<img class="foto-photo-img" data-format="${format}" src="${fotoImgSrc}" draggable="false" alt="" style="position:absolute; left:${st.left}px; top:${st.top}px; width:${st.w}px; height:${st.h}px;">`;
+      } else {
+        photoLayerInner = `
+          <div class="foto-canvas-placeholder">
+            <span class="icon">📷</span>
+            <span>Subí una fotografía<br>para empezar a editar</span>
+          </div>
+        `;
+      }
+
+      let headerHTML = buildHeaderHTML(ceramicaShield, brand1, brand2, flags.showHeader);
+
+      const html = `
+        <div class="card-content flyer-foto">
+          ${bgHTML}
+          <div class="flyer-background has-bg-img foto-canvas-layer" data-format="${format}" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:3; overflow:hidden; background:transparent !important;">
+            ${photoLayerInner}
+          </div>
+          ${headerHTML}
+        </div>
+      `;
+      return html;
+    }
+
     function buildGenericoHTML(format) {
+      // Mantiene sus propios checkboxes, no usa los comunes
       const is916 = format === '916';
       const showHeader = document.getElementById('in-gen-show-header').checked;
       const showCategoria = document.getElementById('in-gen-show-categoria').checked;
@@ -2763,7 +2683,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       const texto = document.getElementById('in-gen-texto').value.trim();
       const ceramicaShield = getCeramicaShieldHTML();
 
-      // Construir fondo con imagen si existe
       let bgHTML = '';
       if (src) {
         const zoomPercent = genericoZoom / 100;
@@ -2778,7 +2697,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         bgHTML = `<div class="flyer-background"></div>`;
       }
 
-      // Minimalista
       if (genericoStyle === 'minimal') {
         const blurSrc = is916 ? genericoImgBlurStory : genericoImgBlurFeed;
         const glassBg = blurSrc ?
@@ -2846,7 +2764,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         return inner;
       }
 
-      // ---- Estilo tradicional ----
+      // Estilo tradicional
       let imgHTML = '';
       if (src) {
         const canvas = is916 ? { w: 950, h: 620 } : { w: 970, h: 340 };
@@ -2880,109 +2798,43 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       const footR1 = document.querySelector('.in-foot-r1').value;
       const footR2 = document.querySelector('.in-foot-r2').value;
       const slogan = document.querySelector('.in-foot-slogan').value;
-      const sponsorHTML = showSponsors && sponsorSrc ? `<div class="flyer-sponsor"><img src="${sponsorSrc}" alt="Sponsor"></div>` : '';
+
+      let headerHTML = showHeader ? buildHeaderHTML(ceramicaShield, brand1, brand2, true) : '';
+      let categoryHTML = showCategoria ? buildCategoryHTML(currentCategory, true) : '';
+      let titleHTML = showTitulo ? buildTitleHTML(t1, t2, true) : '';
+      let footerHTML = showFooter ? buildFooterHTML(footR1, footR2, slogan, true) : '';
+      let sponsorHTML = showSponsors ? buildSponsorHTML(sponsorSrc, true) : '';
 
       let inner = `
         ${bgHTML}
         <div class="flyer-overlay"></div>
         <div class="flyer-texture"></div>
         <div class="card-content" style="padding: 30px 40px; display:flex; flex-direction:column; height:100%; position:relative; z-index:4;">
-          ${showHeader ? `
-          <div class="flyer-header">
-            <div class="club-crest">${ceramicaShield}</div>
-            <div class="club-name">
-              <span class="line1 dyn-brand1">${brand1}</span>
-              <span class="line2 dyn-brand2">${brand2}</span>
-            </div>
-          </div>
-          ` : ''}
-
-          ${showCategoria ? `<div class="flyer-category">${currentCategory}</div>` : ''}
-
-          ${showTitulo ? `
-          <div class="flyer-title">
-            <span class="dyn-t1">${t1}</span>
-            <span class="dyn-t2">${t2}</span>
-          </div>
-          ` : ''}
-
+          ${headerHTML}
+          ${categoryHTML}
+          ${titleHTML}
           <div class="flyer-generico" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; width:100%;">
             ${imgHTML}
             ${textoHTML}
           </div>
-
           ${sponsorHTML}
-
-          ${showFooter ? `
-          <div class="flyer-competition">
-            <span class="dyn-foot-r1">${footR1}</span>
-            <span class="dyn-foot-r2">${footR2}</span>
-          </div>
-          <div class="flyer-slogan dyn-foot-slogan">${slogan}</div>
-          ` : ''}
+          ${footerHTML}
         </div>
       `;
       return inner;
     }
 
-    // ===== BASE COMÚN PARA VS, LIBRE, RESULTADO =====
+    // ===== BASE COMÚN (fondo, overlay, textura) =====
     function buildBaseContent(innerContent, format) {
-      const brand1 = document.querySelector('.in-brand1').value;
-      const brand2 = document.querySelector('.in-brand2').value;
-      const t1 = document.querySelector('.in-t1').value;
-      const t2 = document.querySelector('.in-t2').value;
-      const footR1 = document.querySelector('.in-foot-r1').value;
-      const footR2 = document.querySelector('.in-foot-r2').value;
-      const slogan = document.querySelector('.in-foot-slogan').value;
-      const sponsor = sponsorSrc ? `<div class="flyer-sponsor"><img src="${sponsorSrc}" alt="Sponsor"></div>` : '';
-      const ceramicaShield = getCeramicaShieldHTML();
-
-      // Fondo: si hay backgroundImgSrc, usar <img>, sino el fondo por defecto
-      let bgHTML;
-      if (backgroundImgSrc) {
-        bgHTML = `
-          <div class="flyer-background has-bg-img" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; overflow:hidden;">
-            <img src="${backgroundImgSrc}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;">
-          </div>
-        `;
-      } else {
-        bgHTML = `<div class="flyer-background"></div>`;
-      }
-
-      let html = `
+      let bgHTML = backgroundImgSrc ? getBackgroundHTML(backgroundImgSrc) : `<div class="flyer-background"></div>`;
+      return `
         <div class="card-content">
           ${bgHTML}
           <div class="flyer-overlay"></div>
           <div class="flyer-texture"></div>
-
-          <div class="flyer-header">
-            <div class="club-crest">${ceramicaShield}</div>
-            <div class="club-name">
-              <span class="line1 dyn-brand1">${brand1}</span>
-              <span class="line2 dyn-brand2">${brand2}</span>
-            </div>
-          </div>
-
-          <div class="flyer-category">${currentCategory}</div>
-
-          <div class="flyer-title">
-            <span class="dyn-t1">${t1}</span>
-            <span class="dyn-t2">${t2}</span>
-          </div>
-
           ${innerContent}
-
-          <div class="flyer-competition">
-            <span class="dyn-foot-r1">${footR1}</span>
-            <span class="dyn-foot-r2">${footR2}</span>
-          </div>
-
-          <div class="flyer-slogan dyn-foot-slogan">${slogan}</div>
-
-          ${sponsor}
         </div>
       `;
-      return html;
     }
 
     // ================================================================
@@ -2995,9 +2847,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
 
       document.querySelectorAll('.card').forEach(el => {
         const format = el.classList.contains('card-11') ? '11' : '916';
-        el.innerHTML = buildCardHTML(format);
-
-        // Si es modo foto, agregar clase para estilos específicos
+        el.innerHTML = buildCardHTML(format, mode);
         if (isFoto) {
           el.classList.add('flyer-foto');
         } else {
@@ -3006,8 +2856,16 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       });
       updateAllText();
 
-      // Reconectar el canvas interactivo (arrastre / pellizco / rueda) sobre los nodos recién creados
       if (isFoto) attachFotoCanvasEvents();
+    }
+
+    function buildCardHTML(format, mode) {
+      if (mode === 'VS') return buildVSHTML(format);
+      if (mode === 'LIBRE') return buildLibreHTML(format);
+      if (mode === 'RESULTADO') return buildResultadoHTML(format);
+      if (mode === 'FOTO') return buildFotoHTML(format);
+      if (mode === 'GENERICO') return buildGenericoHTML(format);
+      return '';
     }
 
     function setText(cls, val) {
@@ -3060,6 +2918,11 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         renderCards();
         saveState();
       });
+    });
+
+    // Visibilidad común: todos los checkboxes de la nueva sección
+    document.querySelectorAll('#in-show-header, #in-show-category, #in-show-title, #in-show-info, #in-show-teams, #in-show-footer, #in-show-sponsors').forEach(chk => {
+      chk.addEventListener('change', () => { renderCards(); saveState(); });
     });
 
     document.querySelectorAll('#panel input[type="text"]').forEach(inp => {
@@ -3334,7 +3197,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
     });
 
     // ================================================================
-    //  FOTOGRAFÍA – MODO FOTO (carga directa al canvas interactivo)
+    //  FOTOGRAFÍA – MODO FOTO (canvas interactivo)
     // ================================================================
     document.getElementById('file-foto').addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -3472,6 +3335,183 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
     });
 
     // ================================================================
+    //  FUNCIONES DE FOTO (transformaciones)
+    // ================================================================
+
+    function setFotoFitMode(format, fitMode) {
+      const canvas = FOTO_CANVAS[format];
+      const minScale = fitMode === 'contain'
+        ? Math.min(canvas.w / fotoNatural.w, canvas.h / fotoNatural.h)
+        : Math.max(canvas.w / fotoNatural.w, canvas.h / fotoNatural.h);
+      const scale = minScale;
+      const w = fotoNatural.w * scale;
+      const h = fotoNatural.h * scale;
+      fotoState[format] = {
+        fitMode,
+        scale, minScale, maxScale: minScale * 4,
+        w, h,
+        left: (canvas.w - w) / 2,
+        top: (canvas.h - h) / 2
+      };
+      fotoInitialState[format] = JSON.parse(JSON.stringify(fotoState[format]));
+    }
+
+    function initFotoState() {
+      ['916', '11'].forEach(format => setFotoFitMode(format, 'cover'));
+    }
+
+    function clampFotoState(format) {
+      const st = fotoState[format];
+      if (!st) return;
+      const canvas = FOTO_CANVAS[format];
+      st.scale = Math.max(st.minScale, Math.min(st.maxScale, st.scale));
+      st.w = fotoNatural.w * st.scale;
+      st.h = fotoNatural.h * st.scale;
+      if (st.w <= canvas.w) {
+        st.left = (canvas.w - st.w) / 2;
+      } else {
+        if (st.left > 0) st.left = 0;
+        if (st.left + st.w < canvas.w) st.left = canvas.w - st.w;
+      }
+      if (st.h <= canvas.h) {
+        st.top = (canvas.h - st.h) / 2;
+      } else {
+        if (st.top > 0) st.top = 0;
+        if (st.top + st.h < canvas.h) st.top = canvas.h - st.h;
+      }
+    }
+
+    function applyFotoTransform(format) {
+      const st = fotoState[format];
+      if (!st) return;
+      document.querySelectorAll(`.foto-photo-img[data-format="${format}"]`).forEach(img => {
+        img.style.left = st.left + 'px';
+        img.style.top = st.top + 'px';
+        img.style.width = st.w + 'px';
+        img.style.height = st.h + 'px';
+      });
+    }
+
+    function zoomFotoAt(format, ratio, clientPoint, origin, scaleFactor) {
+      const st = fotoState[format];
+      if (!st) return;
+      const canvasPoint = {
+        x: (clientPoint.x - origin.x) / scaleFactor,
+        y: (clientPoint.y - origin.y) / scaleFactor
+      };
+      const localX = (canvasPoint.x - st.left) / st.scale;
+      const localY = (canvasPoint.y - st.top) / st.scale;
+      let newScale = st.scale * ratio;
+      newScale = Math.max(st.minScale, Math.min(st.maxScale, newScale));
+      st.scale = newScale;
+      st.w = fotoNatural.w * newScale;
+      st.h = fotoNatural.h * newScale;
+      st.left = canvasPoint.x - localX * newScale;
+      st.top = canvasPoint.y - localY * newScale;
+      clampFotoState(format);
+      applyFotoTransform(format);
+    }
+
+    function centrarFoto(format) {
+      const st = fotoState[format];
+      if (!st) return;
+      const canvas = FOTO_CANVAS[format];
+      st.left = (canvas.w - st.w) / 2;
+      st.top = (canvas.h - st.h) / 2;
+      clampFotoState(format);
+      applyFotoTransform(format);
+    }
+
+    function resetearFoto(format) {
+      if (fotoInitialState[format]) {
+        fotoState[format] = JSON.parse(JSON.stringify(fotoInitialState[format]));
+        applyFotoTransform(format);
+      }
+    }
+
+    function attachFotoCanvasEvents() {
+      ['916', '11'].forEach(format => {
+        const layer = document.querySelector(`#wrap${format} .foto-canvas-layer`);
+        if (!layer) return;
+
+        const pointers = new Map();
+        let dragLast = null;
+        let lastDist = null;
+
+        function getScaleFactor() {
+          const rect = layer.getBoundingClientRect();
+          return rect.width / FOTO_CANVAS[format].w;
+        }
+        function getOrigin() {
+          const rect = layer.getBoundingClientRect();
+          return { x: rect.left, y: rect.top };
+        }
+
+        layer.addEventListener('pointerdown', (e) => {
+          if (!fotoImgSrc) return;
+          layer.setPointerCapture(e.pointerId);
+          pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+          if (pointers.size === 1) {
+            dragLast = { x: e.clientX, y: e.clientY };
+          } else if (pointers.size === 2) {
+            const pts = Array.from(pointers.values());
+            lastDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+          }
+        });
+
+        layer.addEventListener('pointermove', (e) => {
+          if (!pointers.has(e.pointerId)) return;
+          pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+          const scaleFactor = getScaleFactor();
+          const origin = getOrigin();
+
+          if (pointers.size === 1 && dragLast) {
+            const st = fotoState[format];
+            if (st) {
+              const dx = (e.clientX - dragLast.x) / scaleFactor;
+              const dy = (e.clientY - dragLast.y) / scaleFactor;
+              st.left += dx;
+              st.top += dy;
+              clampFotoState(format);
+              applyFotoTransform(format);
+            }
+            dragLast = { x: e.clientX, y: e.clientY };
+          } else if (pointers.size === 2) {
+            const pts = Array.from(pointers.values());
+            const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+            const mid = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 };
+            if (lastDist) {
+              const ratio = dist / lastDist;
+              zoomFotoAt(format, ratio, mid, origin, scaleFactor);
+            }
+            lastDist = dist;
+          }
+        });
+
+        function endPointer(e) {
+          if (pointers.has(e.pointerId)) pointers.delete(e.pointerId);
+          lastDist = null;
+          if (pointers.size === 1) {
+            const remaining = Array.from(pointers.values())[0];
+            dragLast = { x: remaining.x, y: remaining.y };
+          } else {
+            dragLast = null;
+          }
+        }
+        layer.addEventListener('pointerup', endPointer);
+        layer.addEventListener('pointercancel', endPointer);
+        layer.addEventListener('pointerleave', (e) => { if (pointers.size <= 1) endPointer(e); });
+
+        layer.addEventListener('wheel', (e) => {
+          if (!fotoImgSrc) return;
+          e.preventDefault();
+          const ratio = e.deltaY < 0 ? 1.08 : 0.92;
+          zoomFotoAt(format, ratio, { x: e.clientX, y: e.clientY }, getOrigin(), getScaleFactor());
+        }, { passive: false });
+      });
+    }
+
+    // ================================================================
     //  ESCALADO DE LA VISTA PREVIA
     // ================================================================
     function scalePreview(scalerId, wrapId, fullW, fullH) {
@@ -3528,9 +3568,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       reader.readAsDataURL(blob);
     }
 
-    // Descarga directa vía <a download>. Funciona en Chrome/Brave/Firefox/Edge
-    // tanto en escritorio como en Android: no abre ninguna ventana ni pestaña,
-    // por lo que no depende del bloqueador de ventanas emergentes del navegador.
     function downloadBlobDirect(blob, filename) {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -3551,14 +3588,10 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       const mobile = isMobileDevice();
       const ios = isIOSDevice();
       const hasShareApi = mobile && !!navigator.share;
-
-      // Solo en iOS necesitamos abrir la ventana de forma síncrona (dentro del
-      // gesto de click) para poder usarla después, ya que Safari no soporta
-      // la descarga directa de blobs. En Android/escritorio no se abre nada.
       const mobileWindow = (ios && !hasShareApi) ? window.open('', '_blank') : null;
 
       html2canvas(el, {
-        backgroundColor: null, // Fondo transparente para respetar el diseño
+        backgroundColor: null,
         scale: 2,
         useCORS: true,
         allowTaint: true,
@@ -3584,7 +3617,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
                 if (err && err.name === 'AbortError') return;
               }
             }
-            // El share falló o no está soportado: seguimos con el resto de la lógica.
           }
 
           if (ios) {
@@ -3592,8 +3624,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
             return;
           }
 
-          // Android, escritorio y cualquier otro navegador: descarga directa,
-          // sin ventanas emergentes (evita el bloqueo de popups de Brave/Android).
           downloadBlobDirect(blob, filename);
           if (window.showFlyerToast) window.showFlyerToast('Imagen descargada');
         }, 'image/jpeg', 0.98);
@@ -3640,6 +3670,14 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
           accLocal: document.querySelector('.in-acc-local').value,
           accVisit: document.querySelector('.in-acc-visit').value,
           showAccesos: document.getElementById('in-show-accesos').checked,
+          // visibilidad común
+          showHeader: document.getElementById('in-show-header').checked,
+          showCategory: document.getElementById('in-show-category').checked,
+          showTitle: document.getElementById('in-show-title').checked,
+          showInfo: document.getElementById('in-show-info').checked,
+          showTeams: document.getElementById('in-show-teams').checked,
+          showFooter: document.getElementById('in-show-footer').checked,
+          showSponsors: document.getElementById('in-show-sponsors').checked,
           // generico
           genTexto: document.getElementById('in-gen-texto').value,
           genPosX: genericoImgPosX,
@@ -3656,16 +3694,10 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
           fotoState: fotoState,
           fotoNatural: fotoNatural,
           fotoInitialState: fotoInitialState,
-          fotoImgSrc: fotoImgSrc, // podría ser pesado, pero lo guardamos solo si es pequeño
+          fotoImgSrc: fotoImgSrc && fotoImgSrc.length < 500000 ? fotoImgSrc : null,
         };
-        // No guardar fotoImgSrc si es muy grande (más de 500KB)
-        if (fotoImgSrc && fotoImgSrc.length > 500000) {
-          state.fotoImgSrc = null;
-        }
         localStorage.setItem('flyerData', JSON.stringify(state));
-      } catch (e) {
-        // Ignorar errores de localStorage (cuota excedida, etc.)
-      }
+      } catch (e) {}
     }
 
     function restoreState() {
@@ -3695,7 +3727,15 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         document.querySelector('.in-acc-local').value = state.accLocal || 'SERGIO "PELA" GIROTTI X CALLE ALEM';
         document.querySelector('.in-acc-visit').value = state.accVisit || 'SOBRE CALLE BROWN';
         document.getElementById('in-show-accesos').checked = state.showAccesos || false;
-        // genérico
+        // visibilidad común
+        document.getElementById('in-show-header').checked = state.showHeader !== undefined ? state.showHeader : true;
+        document.getElementById('in-show-category').checked = state.showCategory !== undefined ? state.showCategory : true;
+        document.getElementById('in-show-title').checked = state.showTitle !== undefined ? state.showTitle : true;
+        document.getElementById('in-show-info').checked = state.showInfo !== undefined ? state.showInfo : true;
+        document.getElementById('in-show-teams').checked = state.showTeams !== undefined ? state.showTeams : true;
+        document.getElementById('in-show-footer').checked = state.showFooter !== undefined ? state.showFooter : true;
+        document.getElementById('in-show-sponsors').checked = state.showSponsors !== undefined ? state.showSponsors : true;
+        // generico
         document.getElementById('in-gen-texto').value = state.genTexto || '¡Gracias por acompañarnos siempre!';
         genericoImgPosX = state.genPosX || 50;
         genericoImgPosY = state.genPosY || 50;
@@ -3711,7 +3751,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         document.getElementById('in-gen-show-texto').checked = state.genShowTexto !== undefined ? state.genShowTexto : true;
         document.getElementById('in-gen-show-sponsors').checked = state.genShowSponsors !== undefined ? state.genShowSponsors : true;
         document.getElementById('in-gen-show-footer').checked = state.genShowFooter !== undefined ? state.genShowFooter : true;
-        // estilo minimalista
         document.querySelectorAll('#generico-style-selector .style-opt').forEach(o => {
           o.classList.toggle('active', o.dataset.style === genericoStyle);
         });
@@ -3722,25 +3761,20 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
           fotoInitialState = state.fotoInitialState || { '916': null, '11': null };
           if (state.fotoImgSrc) {
             fotoImgSrc = state.fotoImgSrc;
-            // Mostrar miniatura
             const mini = document.querySelector('.mini-foto');
             mini.src = fotoImgSrc; mini.style.display = 'block';
             document.getElementById('btn-remove-foto').style.display = 'block';
             document.getElementById('foto-fit-controls').style.display = 'block';
-            // Si no se guardó la imagen, mostrar mensaje
           } else if (fotoImgSrc) {
-            // La imagen se perdió, mostrar aviso
-            alert('Diseño recuperado. Volvé a cargar la fotografía.');
             fotoImgSrc = null;
             fotoState = { '916': null, '11': null };
             fotoInitialState = { '916': null, '11': null };
           }
         }
-        // Forzar actualización de categoría
+        // categoría
         document.querySelectorAll('.cat-opt').forEach(opt => {
           opt.classList.toggle('active', opt.dataset.cat === currentCategory);
         });
-        // Disparar cambios para actualizar UI
         document.getElementById('in-mode').dispatchEvent(new Event('change'));
         renderCards();
         return true;
@@ -3755,9 +3789,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
 
     function resetAll() {
       if (!confirm('¿Querés restablecer todo el diseño a los valores iniciales?')) return;
-      // Limpiar localStorage
       localStorage.removeItem('flyerData');
-      // Recargar la página para resetear todo
       location.reload();
     }
 
@@ -3767,7 +3799,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
     //  INICIALIZACIÓN
     // ================================================================
 
-    // Preguntar si restaurar estado guardado
     const hasSaved = localStorage.getItem('flyerData');
     if (hasSaved) {
       if (confirm('¿Deseas recuperar el último diseño guardado?')) {
@@ -3787,7 +3818,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       return w / h;
     }
 
-    // Guardar estado automáticamente cada 5 segundos (solo si hay cambios)
     setInterval(saveState, 5000);
   </script>
 </body>
