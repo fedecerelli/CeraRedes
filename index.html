@@ -17,7 +17,6 @@
 <style>
 /* ================================================================
    1. VARIABLES GLOBALES — Sistema de diseño 2026
-   Colores institucionales del club preservados como base de marca.
    ================================================================ */
 :root {
   --blue-deep: #0B132B;
@@ -762,7 +761,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.04) 0%, transparent 60%),
         radial-gradient(ellipse at 20% 0%, rgba(46,134,171,0.15) 0%, transparent 30%),
         radial-gradient(ellipse at 80% 0%, rgba(46,134,171,0.15) 0%, transparent 30%),
-        linear-gradient(180deg, #0B132B 0%, #141E3A 40%, #1A2A6C 100%);
+        linear-gradient(180deg, #0B132B 0%, #141E3A 30%, #1A2A6C 100%);
       background-size: cover;
       background-position: center;
     }
@@ -776,7 +775,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: 2;
-      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.6) 100%);
+      background: radial-gradient(ellipse at 50% 50%, transparent 20%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.55) 100%);
       pointer-events: none;
     }
 
@@ -1332,7 +1331,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
 
 /* ================================================================
    NUEVO — ACCESOS A LA CANCHA (opcional, dentro del flyer)
-   Se agrega sin modificar los estilos existentes del flyer.
    ================================================================ */
 .flyer-accesos {
   display: flex;
@@ -1365,7 +1363,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
 .card-11 .flyer-accesos .acceso-text { font-size: 14px; }
 
 /* ================================================================
-   NUEVO — PERSONALIZACIÓN AVANZADA (fuentes y fondos de texto)
+   NUEVO — PERSONALIZACIÓN AVANZADA (fuentes, fondos de texto, tamaño escudos)
    ================================================================ */
 /* Fuentes */
 .card.font-bebas { font-family: 'Bebas Neue', cursive; }
@@ -1585,7 +1583,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
 }
 
 /* ================================================================
-   10. RESPONSIVE — mobile first (uso principal desde el celular)
+   10. RESPONSIVE — mobile first
    ================================================================ */
 @media (max-width: 850px) {
   .app-shell { flex-direction: column; }
@@ -2102,7 +2100,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       </div>
     </details>
 
-    <!-- ===== NUEVA SECCIÓN: PERSONALIZACIÓN AVANZADA (fuentes y fondos) ===== -->
+    <!-- ===== NUEVA SECCIÓN: PERSONALIZACIÓN AVANZADA ===== -->
     <details class="fs" open>
       <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3a7 7 0 100 14c1 0 1.6-.6 1.6-1.4 0-.4-.2-.7-.2-1.1 0-.7.6-1.2 1.3-1.2H14a3 3 0 003-3c0-4-3.1-7.3-7-7.3z"/><circle cx="6.8" cy="8.2" r=".9"/><circle cx="9.4" cy="6" r=".9"/><circle cx="12.6" cy="7" r=".9"/></svg><span class="step-label">Personalización avanzada</span></summary>
       <div class="fs-body">
@@ -2126,6 +2124,13 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
           </span>
         </label>
         <p class="hint">Añade un fondo oscuro con desenfoque a cada bloque de texto para mejorar la legibilidad sobre fondos complejos.</p>
+
+        <label>Tamaño de los escudos (PX) — modos VS y Resultado</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <input type="range" id="in-shield-size" min="80" max="350" value="200" step="5" style="flex:1;">
+          <span id="shield-size-label" style="font-weight:700; font-size:14px; min-width:40px; color:var(--ui-accent-ink);">200</span>
+        </div>
+        <p class="hint">Ajusta el tamaño de los escudos de los equipos en los flyers de Partido Único y Resultados.</p>
       </div>
     </details>
 
@@ -2226,9 +2231,8 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
   <div class="toast-stack" id="toast-stack"></div>
 
   <!-- ================================================================
-       MEJORAS DE INTERFAZ (aditivo) — tema claro/oscuro y notificaciones.
-       No modifica ninguna función existente del generador.
-       ================================================================ -->
+     MEJORAS DE INTERFAZ (tema claro/oscuro, notificaciones, asistente)
+     ================================================================ -->
   <script>
     (function () {
       // ---- Tema claro / oscuro ----
@@ -2264,7 +2268,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       }
       window.showFlyerToast = showToast;
 
-      // ---- Pestañas internas del panel (Datos del partido / Marca y estilo) ----
+      // ---- Pestañas internas del panel ----
       var panelTabBtns = document.querySelectorAll('.panel-tab-btn');
       function activatePanelTab(target) {
         panelTabBtns.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-paneltab') === target); });
@@ -2276,12 +2280,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         btn.addEventListener('click', function () { activatePanelTab(btn.getAttribute('data-paneltab')); });
       });
 
-      // ================================================================
-      // ASISTENTE PASO A PASO — evita tener que scrollear buscando campos.
-      // Solo un paso se muestra abierto a la vez; "Siguiente"/"Anterior"
-      // navegan entre ellos y hacen scroll automático hasta el paso.
-      // No modifica ninguna lógica de generación del flyer.
-      // ================================================================
+      // ---- Asistente paso a paso ----
       var allStepDetails = Array.from(document.querySelectorAll('#panel details.fs'));
       var topSteps = allStepDetails.filter(function (d) {
         return !d.parentElement.closest('details.fs');
@@ -2311,7 +2310,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         setTimeout(function () { step.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
       }
 
-      // Exclusividad: al abrir un paso manualmente (tocando el título), se cierran los demás.
       topSteps.forEach(function (step) {
         step.addEventListener('toggle', function () {
           if (step.open) {
@@ -2321,7 +2319,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         });
       });
 
-      // Inserta la barra "Anterior / Siguiente" y el contador "Paso X de N" en cada paso.
       topSteps.forEach(function (step) {
         var body = step.querySelector(':scope > .fs-body');
         if (!body) return;
@@ -2373,15 +2370,13 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       }
       updateAllStepUI();
 
-      // Cuando cambian el modo del flyer (in-mode) o la categoría, los pasos
-      // visibles cambian: recalculamos numeración y botones tras un instante.
       var modeSelect = document.getElementById('in-mode');
       if (modeSelect) modeSelect.addEventListener('change', function () { setTimeout(updateAllStepUI, 50); });
       document.querySelectorAll('.cat-opt').forEach(function (el) {
         el.addEventListener('click', function () { setTimeout(updateAllStepUI, 50); });
       });
 
-      // ---- Hoja flotante "Ir a una sección" (acceso directo a cualquier paso) ----
+      // ---- Hoja flotante "Ir a una sección" ----
       var fabSections = document.getElementById('fab-sections');
       var sheetOverlay = document.getElementById('sections-sheet-overlay');
       var sheetList = document.getElementById('sections-sheet-list');
@@ -2431,7 +2426,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       if (sheetClose) sheetClose.addEventListener('click', closeSheet);
       if (sheetOverlay) sheetOverlay.addEventListener('click', function (e) { if (e.target === sheetOverlay) closeSheet(); });
 
-      // ---- Accesos: atenuar visualmente los campos si el switch está apagado ----
+      // ---- Accesos: atenuar ----
       var showAccesosChk = document.getElementById('in-show-accesos');
       var accesosFieldsBox = document.getElementById('accesos-fields');
       function syncAccesosDim() {
@@ -2493,6 +2488,8 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
     // ---- Nuevos controles de personalización ----
     const fontSelector = document.getElementById('font-selector');
     const textBgToggle = document.getElementById('in-text-bg');
+    const shieldSizeInput = document.getElementById('in-shield-size');
+    const shieldSizeLabel = document.getElementById('shield-size-label');
 
     if (!datePicker.value) {
       const today = new Date();
@@ -2500,6 +2497,15 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       const month = String(today.getMonth() + 1).padStart(2, '0');
       const day = String(today.getDate()).padStart(2, '0');
       datePicker.value = `${year}-${month}-${day}`;
+    }
+
+    // Sincronizar label del tamaño de escudos
+    if (shieldSizeInput && shieldSizeLabel) {
+      shieldSizeInput.addEventListener('input', () => {
+        shieldSizeLabel.textContent = shieldSizeInput.value;
+        renderCards();
+        saveState();
+      });
     }
 
     const zoomInput = document.getElementById('in-gen-zoom');
@@ -2701,6 +2707,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       const slogan = document.querySelector('.in-foot-slogan').value;
       const ceramicaShield = getCeramicaShieldHTML();
       const rivalShield = getRivalShieldHTML();
+      const shieldSize = parseInt(shieldSizeInput.value, 10) || 200;
 
       const teamHomeShield = isLocal ? ceramicaShield : rivalShield;
       const teamHomeName = isLocal ? 'CERÁMICA ARGENTINA' : rivalName;
@@ -2712,12 +2719,12 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         teamsHTML = `
           <div class="flyer-teams">
             <div class="team home">
-              <div class="team-crest">${teamHomeShield}</div>
+              <div class="team-crest" style="width:${shieldSize}px; height:${shieldSize}px;">${teamHomeShield}</div>
               <div class="team-name">${teamHomeName}</div>
             </div>
             <div class="team-vs">VS</div>
             <div class="team away">
-              <div class="team-crest">${teamAwayShield}</div>
+              <div class="team-crest" style="width:${shieldSize}px; height:${shieldSize}px;">${teamAwayShield}</div>
               <div class="team-name">${teamAwayName}</div>
             </div>
           </div>
@@ -2811,6 +2818,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       const slogan = document.querySelector('.in-foot-slogan').value;
       const ceramicaShield = getCeramicaShieldHTML();
       const rivalShield = getRivalShieldHTML();
+      const shieldSize = parseInt(shieldSizeInput.value, 10) || 200;
 
       const teamHomeShield = isLocal ? ceramicaShield : rivalShield;
       const teamHomeName = isLocal ? 'CERÁMICA ARGENTINA' : rivalName;
@@ -2831,7 +2839,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         teamsHTML = `
           <div class="flyer-resultado">
             <div class="team home">
-              <div class="team-crest">${teamHomeShield}</div>
+              <div class="team-crest" style="width:${shieldSize}px; height:${shieldSize}px;">${teamHomeShield}</div>
               <div class="team-name">${teamHomeName}</div>
             </div>
             <div class="score">
@@ -2840,7 +2848,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
               <span>${golesTeam2}</span>
             </div>
             <div class="team away">
-              <div class="team-crest">${teamAwayShield}</div>
+              <div class="team-crest" style="width:${shieldSize}px; height:${shieldSize}px;">${teamAwayShield}</div>
               <div class="team-name">${teamAwayName}</div>
             </div>
           </div>
@@ -3168,9 +3176,10 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       chk.addEventListener('change', () => { renderCards(); saveState(); });
     });
 
-    // Personalización: fuente y fondo de texto
+    // Personalización: fuente y fondo de texto, tamaño de escudos
     fontSelector.addEventListener('change', () => { renderCards(); saveState(); });
     textBgToggle.addEventListener('change', () => { renderCards(); saveState(); });
+    // shieldSizeInput ya tiene su propio listener
 
     document.querySelectorAll('#panel input[type="text"]').forEach(inp => {
       inp.addEventListener('input', () => {
@@ -3831,53 +3840,59 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       const buttons = document.querySelectorAll('#exportbar .btn');
       buttons.forEach(b => b.disabled = true);
 
-      const mobile = isMobileDevice();
-      const ios = isIOSDevice();
-      const hasShareApi = mobile && !!navigator.share;
-      const mobileWindow = (ios && !hasShareApi) ? window.open('', '_blank') : null;
+      // Forzar un reflow para asegurar que el navegador pinte todo correctamente
+      void el.offsetHeight;
 
-      html2canvas(el, {
-        backgroundColor: null,
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
-        width: el.offsetWidth,
-        height: el.offsetHeight
-      }).then(canvas => {
-        canvas.toBlob(async (blob) => {
-          buttons.forEach(b => b.disabled = false);
-          if (!blob) {
-            if (mobileWindow) mobileWindow.close();
-            if (window.showFlyerToast) window.showFlyerToast('No se pudo generar la imagen. Probá de nuevo.');
-            return;
-          }
+      // Pequeño retraso para dar tiempo a que las imágenes se rendericen (especialmente en Firefox iOS)
+      setTimeout(() => {
+        const mobile = isMobileDevice();
+        const ios = isIOSDevice();
+        const hasShareApi = mobile && !!navigator.share;
+        const mobileWindow = (ios && !hasShareApi) ? window.open('', '_blank') : null;
 
-          if (hasShareApi) {
-            const file = new File([blob], filename, { type: 'image/jpeg' });
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-              try {
-                await navigator.share({ files: [file], title: filename });
-                return;
-              } catch (err) {
-                if (err && err.name === 'AbortError') return;
+        html2canvas(el, {
+          backgroundColor: null,
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+          width: el.offsetWidth,
+          height: el.offsetHeight
+        }).then(canvas => {
+          canvas.toBlob(async (blob) => {
+            buttons.forEach(b => b.disabled = false);
+            if (!blob) {
+              if (mobileWindow) mobileWindow.close();
+              if (window.showFlyerToast) window.showFlyerToast('No se pudo generar la imagen. Probá de nuevo.');
+              return;
+            }
+
+            if (hasShareApi) {
+              const file = new File([blob], filename, { type: 'image/jpeg' });
+              if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                  await navigator.share({ files: [file], title: filename });
+                  return;
+                } catch (err) {
+                  if (err && err.name === 'AbortError') return;
+                }
               }
             }
-          }
 
-          if (ios) {
-            showBlobInNewTab(blob, filename, mobileWindow);
-            return;
-          }
+            if (ios) {
+              showBlobInNewTab(blob, filename, mobileWindow);
+              return;
+            }
 
-          downloadBlobDirect(blob, filename);
-          if (window.showFlyerToast) window.showFlyerToast('Imagen descargada');
-        }, 'image/jpeg', 0.98);
-      }).catch(() => {
-        buttons.forEach(b => b.disabled = false);
-        if (mobileWindow) mobileWindow.close();
-        if (window.showFlyerToast) window.showFlyerToast('No se pudo generar la imagen. Probá de nuevo.');
-      });
+            downloadBlobDirect(blob, filename);
+            if (window.showFlyerToast) window.showFlyerToast('Imagen descargada');
+          }, 'image/jpeg', 0.98);
+        }).catch(() => {
+          buttons.forEach(b => b.disabled = false);
+          if (mobileWindow) mobileWindow.close();
+          if (window.showFlyerToast) window.showFlyerToast('No se pudo generar la imagen. Probá de nuevo.');
+        });
+      }, 300); // espera 300ms
     }
 
     document.getElementById('btn-916').addEventListener('click', () => {
@@ -3926,7 +3941,8 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
           // Personalización
           font: fontSelector.value,
           textBg: textBgToggle.checked,
-          // genérico
+          shieldSize: shieldSizeInput.value,
+          // generico
           genTexto: document.getElementById('in-gen-texto').value,
           genPosX: genericoImgPosX,
           genPosY: genericoImgPosY,
@@ -3986,6 +4002,8 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         // personalización
         fontSelector.value = state.font || 'jakarta';
         textBgToggle.checked = state.textBg || false;
+        shieldSizeInput.value = state.shieldSize || 200;
+        shieldSizeLabel.textContent = shieldSizeInput.value;
         // generico
         document.getElementById('in-gen-texto').value = state.genTexto || '¡Gracias por acompañarnos siempre!';
         genericoImgPosX = state.genPosX || 50;
