@@ -9,7 +9,7 @@
 <title>Generador de Flyers · Cerámica Argentina</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@400;600;700&family=Roboto:wght@400;500;700;900&family=Lato:wght@400;700;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
@@ -20,7 +20,6 @@
    Colores institucionales del club preservados como base de marca.
    ================================================================ */
 :root {
-  /* Marca del club (no se alteran) */
   --blue-deep: #0B132B;
   --blue-mid: #141E3A;
   --blue-institutional: #0A227A;
@@ -30,7 +29,6 @@
   --grey-light: rgba(255,255,255,0.15);
   --grey-text: rgba(255,255,255,0.7);
 
-  /* Escala neutra UI */
   --ui-bg: #F4F6FB;
   --ui-surface: #FFFFFF;
   --ui-surface-2: #F8F9FD;
@@ -1367,6 +1365,226 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
 .card-11 .flyer-accesos .acceso-text { font-size: 14px; }
 
 /* ================================================================
+   NUEVO — PERSONALIZACIÓN AVANZADA (fuentes y fondos de texto)
+   ================================================================ */
+/* Fuentes */
+.card.font-bebas { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-header .club-name { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-category { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-title { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .team .team-name { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .team-vs { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-info .info-date { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-info .info-time { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-info .info-stadium { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-competition { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-slogan { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-schedule .sched-time { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-schedule .sched-cat { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-resultado .score { font-family: 'Bebas Neue', cursive; }
+.card.font-bebas .flyer-generico .gen-texto { font-family: 'Bebas Neue', cursive; }
+
+.card.font-montserrat { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-header .club-name { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-category { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-title { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .team .team-name { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .team-vs { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-info .info-date { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-info .info-time { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-info .info-stadium { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-competition { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-slogan { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-schedule .sched-time { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-schedule .sched-cat { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-resultado .score { font-family: 'Montserrat', sans-serif; }
+.card.font-montserrat .flyer-generico .gen-texto { font-family: 'Montserrat', sans-serif; }
+
+.card.font-oswald { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-header .club-name { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-category { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-title { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .team .team-name { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .team-vs { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-info .info-date { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-info .info-time { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-info .info-stadium { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-competition { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-slogan { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-schedule .sched-time { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-schedule .sched-cat { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-resultado .score { font-family: 'Oswald', sans-serif; }
+.card.font-oswald .flyer-generico .gen-texto { font-family: 'Oswald', sans-serif; }
+
+.card.font-roboto { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-header .club-name { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-category { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-title { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .team .team-name { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .team-vs { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-info .info-date { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-info .info-time { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-info .info-stadium { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-competition { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-slogan { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-schedule .sched-time { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-schedule .sched-cat { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-resultado .score { font-family: 'Roboto', sans-serif; }
+.card.font-roboto .flyer-generico .gen-texto { font-family: 'Roboto', sans-serif; }
+
+.card.font-lato { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-header .club-name { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-category { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-title { font-family: 'Lato', sans-serif; }
+.card.font-lato .team .team-name { font-family: 'Lato', sans-serif; }
+.card.font-lato .team-vs { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-info .info-date { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-info .info-time { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-info .info-stadium { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-competition { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-slogan { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-schedule .sched-time { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-schedule .sched-cat { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-resultado .score { font-family: 'Lato', sans-serif; }
+.card.font-lato .flyer-generico .gen-texto { font-family: 'Lato', sans-serif; }
+
+.card.font-playfair { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-header .club-name { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-category { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-title { font-family: 'Playfair Display', serif; }
+.card.font-playfair .team .team-name { font-family: 'Playfair Display', serif; }
+.card.font-playfair .team-vs { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-info .info-date { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-info .info-time { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-info .info-stadium { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-competition { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-slogan { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-schedule .sched-time { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-schedule .sched-cat { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-resultado .score { font-family: 'Playfair Display', serif; }
+.card.font-playfair .flyer-generico .gen-texto { font-family: 'Playfair Display', serif; }
+
+.card.font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-header .club-name { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-category { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-title { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .team .team-name { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .team-vs { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-info .info-date { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-info .info-time { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-info .info-stadium { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-competition { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-slogan { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-schedule .sched-time { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-schedule .sched-cat { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-resultado .score { font-family: 'Plus Jakarta Sans', sans-serif; }
+.card.font-jakarta .flyer-generico .gen-texto { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+/* Fondo semitransparente para bloques de texto */
+.card.text-bg .flyer-header .club-name {
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 6px 16px 8px 16px;
+  border-radius: 12px;
+  display: inline-block;
+}
+.card.text-bg .flyer-category {
+  background: rgba(0,0,0,0.40);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 4px 18px;
+  border-radius: 40px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.card.text-bg .flyer-title {
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 6px 20px;
+  border-radius: 16px;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+.card.text-bg .flyer-info {
+  background: rgba(0,0,0,0.30);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.card.text-bg .flyer-teams {
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 20px 30px;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.card.text-bg .flyer-resultado {
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 20px 30px;
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.card.text-bg .flyer-competition {
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 8px 20px;
+  border-radius: 30px;
+  display: inline-block;
+}
+.card.text-bg .flyer-slogan {
+  background: rgba(0,0,0,0.30);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 4px 20px;
+  border-radius: 30px;
+  display: inline-block;
+}
+.card.text-bg .flyer-sponsor {
+  background: rgba(0,0,0,0.20);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 6px 16px;
+  border-radius: 16px;
+  display: inline-block;
+}
+.card.text-bg .flyer-schedule {
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.card.text-bg .flyer-accesos {
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 10px 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.card.text-bg .flyer-generico .gen-texto {
+  background: rgba(0,0,0,0.30);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 10px 24px;
+  border-radius: 20px;
+  display: inline-block;
+}
+.card.text-bg .flyer-generico .gen-img-frame {
+  border: 2px solid rgba(255,255,255,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+/* ================================================================
    10. RESPONSIVE — mobile first (uso principal desde el celular)
    ================================================================ */
 @media (max-width: 850px) {
@@ -1394,7 +1612,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
     box-shadow: var(--ui-shadow-sm);
   }
 
-  /* En móvil, mostrar solo una vista previa según selector */
   .preview-block { display: none; }
   .preview-block.active { display: flex; }
   .format-selector-mobile { display: flex !important; }
@@ -1406,7 +1623,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
   #stage { min-height: calc(100vh - var(--app-bar-h)); }
 }
 
-/* Ajustes finos para pantallas muy chicas */
 @media (max-width: 420px) {
   .panel-header h1 { font-size: 18px; }
   .app-bar-crest { width: 30px; height: 30px; font-size: 10.5px; }
@@ -1414,7 +1630,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
   #wrap11 { width: clamp(210px, 84vw, 360px); }
 }
 
-/* Área segura en dispositivos con notch */
 @supports (padding: max(0px)) {
   .mobile-tabs { padding-bottom: max(6px, env(safe-area-inset-bottom)); }
 }
@@ -1648,7 +1863,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       <details class="fs">
         <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="14" height="12" rx="2"/><circle cx="7.3" cy="8.3" r="1.3"/><path d="M17 13l-4.2-4.2-3 3-2-2L3 14.5"/></svg><span class="step-label">Contenido Libre</span></summary>
         <div class="fs-body">
-          <!-- Bloque de carga de imagen (visible siempre) -->
           <div id="generico-upload-block">
             <label>Imagen de fondo o contenido</label>
             <div class="file-input-group">
@@ -1692,7 +1906,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
             </div>
           </div>
 
-          <!-- Opciones adicionales (ocultas en modo FOTO) -->
           <div id="generico-options" style="display:block;">
             <label>Formato de la imagen</label>
             <select id="in-gen-imgformat">
@@ -1713,7 +1926,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         </div>
       </details>
 
-      <!-- Opciones de estilo (ocultas en modo FOTO) -->
       <div id="generico-style-block" style="display:block;">
         <details class="fs" open>
           <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3a7 7 0 100 14c1 0 1.6-.6 1.6-1.4 0-.4-.2-.7-.2-1.1 0-.7.6-1.2 1.3-1.2H14a3 3 0 003-3c0-4-3.1-7.3-7-7.3z"/><circle cx="6.8" cy="8.2" r=".9"/><circle cx="9.4" cy="6" r=".9"/><circle cx="12.6" cy="7" r=".9"/></svg><span class="step-label">Estilo y Elementos</span></summary>
@@ -1887,7 +2099,33 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         <label class="check-row"><input type="checkbox" id="in-show-teams" checked> Equipos / Marcador</label>
         <label class="check-row"><input type="checkbox" id="in-show-footer" checked> Pie de página (slogan + competencia)</label>
         <label class="check-row"><input type="checkbox" id="in-show-sponsors" checked> Sponsors</label>
-        <!-- El checkbox de accesos ya existe en su sección, se usa independientemente -->
+      </div>
+    </details>
+
+    <!-- ===== NUEVA SECCIÓN: PERSONALIZACIÓN AVANZADA (fuentes y fondos) ===== -->
+    <details class="fs" open>
+      <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3a7 7 0 100 14c1 0 1.6-.6 1.6-1.4 0-.4-.2-.7-.2-1.1 0-.7.6-1.2 1.3-1.2H14a3 3 0 003-3c0-4-3.1-7.3-7-7.3z"/><circle cx="6.8" cy="8.2" r=".9"/><circle cx="9.4" cy="6" r=".9"/><circle cx="12.6" cy="7" r=".9"/></svg><span class="step-label">Personalización avanzada</span></summary>
+      <div class="fs-body">
+        <label>Fuente tipográfica</label>
+        <select id="font-selector">
+          <option value="bebas">Bebas Neue</option>
+          <option value="montserrat">Montserrat</option>
+          <option value="oswald">Oswald</option>
+          <option value="roboto">Roboto</option>
+          <option value="lato">Lato</option>
+          <option value="playfair">Playfair Display</option>
+          <option value="jakarta" selected>Plus Jakarta Sans</option>
+        </select>
+        <p class="hint">La fuente se aplica a todos los textos del flyer.</p>
+
+        <label class="switch-row" for="in-text-bg">
+          <span>Fondo semitransparente para textos</span>
+          <span class="switch">
+            <input type="checkbox" id="in-text-bg">
+            <span class="switch-track"></span>
+          </span>
+        </label>
+        <p class="hint">Añade un fondo oscuro con desenfoque a cada bloque de texto para mejorar la legibilidad sobre fondos complejos.</p>
       </div>
     </details>
 
@@ -2235,7 +2473,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
     let genericoStyle = 'tradicional';
     let genericoImgPosX = 50;
     let genericoImgPosY = 50;
-    let genericoZoom = 100; // porcentaje (50-200)
+    let genericoZoom = 100;
     let backgroundImgSrc = null;
     let currentCategory = 'PRIMERA';
     let cropper = null;
@@ -2252,7 +2490,10 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
     const cropImage = document.getElementById('cropImage');
     const datePicker = document.getElementById('in-fecha-picker');
 
-    // Inicializar fecha actual si no está establecida
+    // ---- Nuevos controles de personalización ----
+    const fontSelector = document.getElementById('font-selector');
+    const textBgToggle = document.getElementById('in-text-bg');
+
     if (!datePicker.value) {
       const today = new Date();
       const year = today.getFullYear();
@@ -2261,7 +2502,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       datePicker.value = `${year}-${month}-${day}`;
     }
 
-    // Actualizar etiqueta del zoom
     const zoomInput = document.getElementById('in-gen-zoom');
     const zoomLabel = document.getElementById('zoom-label');
     if (zoomInput && zoomLabel) {
@@ -2273,7 +2513,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       });
     }
 
-    // ---- Selector de formato en móvil ----
     document.querySelectorAll('.format-selector-mobile button').forEach(btn => {
       btn.addEventListener('click', function() {
         document.querySelectorAll('.format-selector-mobile button').forEach(b => b.classList.remove('active'));
@@ -2468,7 +2707,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       const teamAwayShield = isLocal ? rivalShield : ceramicaShield;
       const teamAwayName = isLocal ? rivalName : 'CERÁMICA ARGENTINA';
 
-      // Bloques
       let teamsHTML = '';
       if (flags.showTeams) {
         teamsHTML = `
@@ -2584,7 +2822,7 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         .filter(Boolean);
 
       let goleadoresHTML = '';
-      if (goles.length) {
+      if (goles.length && flags.showTeams) {
         goleadoresHTML = `<div class="flyer-goleadores">${goles.map(g => `<span class="gol-chip">${g.replace(/</g, '&lt;')}</span>`).join('')}</div>`;
       }
 
@@ -2608,9 +2846,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
           </div>
           ${goleadoresHTML}
         `;
-      } else {
-        // Si no se muestran equipos, tampoco mostramos goleadores (por coherencia)
-        // pero podríamos mostrarlos igual si se desea. Lo dejamos así.
       }
 
       let headerHTML = buildHeaderHTML(ceramicaShield, brand1, brand2, flags.showHeader);
@@ -2669,7 +2904,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
     }
 
     function buildGenericoHTML(format) {
-      // Mantiene sus propios checkboxes, no usa los comunes
       const is916 = format === '916';
       const showHeader = document.getElementById('in-gen-show-header').checked;
       const showCategoria = document.getElementById('in-gen-show-categoria').checked;
@@ -2838,15 +3072,24 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
     }
 
     // ================================================================
-    //  RENDER Y ACTUALIZACIÓN
+    //  RENDER Y ACTUALIZACIÓN (incluye personalización)
     // ================================================================
 
     function renderCards() {
       const mode = document.getElementById('in-mode').value;
       const isFoto = mode === 'FOTO';
 
+      // Aplicar fuente y fondo de texto a todos los cards
+      const selectedFont = fontSelector.value;
+      const textBgOn = textBgToggle.checked;
+
       document.querySelectorAll('.card').forEach(el => {
         const format = el.classList.contains('card-11') ? '11' : '916';
+        // Limpiar clases de fuente y text-bg
+        el.className = el.className.split(' ').filter(c => !c.startsWith('font-') && c !== 'text-bg').join(' ');
+        el.classList.add('font-' + selectedFont);
+        if (textBgOn) el.classList.add('text-bg');
+
         el.innerHTML = buildCardHTML(format, mode);
         if (isFoto) {
           el.classList.add('flyer-foto');
@@ -2920,10 +3163,14 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       });
     });
 
-    // Visibilidad común: todos los checkboxes de la nueva sección
+    // Visibilidad común
     document.querySelectorAll('#in-show-header, #in-show-category, #in-show-title, #in-show-info, #in-show-teams, #in-show-footer, #in-show-sponsors').forEach(chk => {
       chk.addEventListener('change', () => { renderCards(); saveState(); });
     });
+
+    // Personalización: fuente y fondo de texto
+    fontSelector.addEventListener('change', () => { renderCards(); saveState(); });
+    textBgToggle.addEventListener('change', () => { renderCards(); saveState(); });
 
     document.querySelectorAll('#panel input[type="text"]').forEach(inp => {
       inp.addEventListener('input', () => {
@@ -3255,7 +3502,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
       });
     });
 
-    // Botones centrar y restablecer foto
     document.getElementById('btn-center-foto').addEventListener('click', () => {
       if (!fotoImgSrc) return;
       ['916', '11'].forEach(format => centrarFoto(format));
@@ -3670,7 +3916,6 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
           accLocal: document.querySelector('.in-acc-local').value,
           accVisit: document.querySelector('.in-acc-visit').value,
           showAccesos: document.getElementById('in-show-accesos').checked,
-          // visibilidad común
           showHeader: document.getElementById('in-show-header').checked,
           showCategory: document.getElementById('in-show-category').checked,
           showTitle: document.getElementById('in-show-title').checked,
@@ -3678,7 +3923,10 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
           showTeams: document.getElementById('in-show-teams').checked,
           showFooter: document.getElementById('in-show-footer').checked,
           showSponsors: document.getElementById('in-show-sponsors').checked,
-          // generico
+          // Personalización
+          font: fontSelector.value,
+          textBg: textBgToggle.checked,
+          // genérico
           genTexto: document.getElementById('in-gen-texto').value,
           genPosX: genericoImgPosX,
           genPosY: genericoImgPosY,
@@ -3735,6 +3983,9 @@ html[data-theme="dark"] .style-opt.active { color: #fff; }
         document.getElementById('in-show-teams').checked = state.showTeams !== undefined ? state.showTeams : true;
         document.getElementById('in-show-footer').checked = state.showFooter !== undefined ? state.showFooter : true;
         document.getElementById('in-show-sponsors').checked = state.showSponsors !== undefined ? state.showSponsors : true;
+        // personalización
+        fontSelector.value = state.font || 'jakarta';
+        textBgToggle.checked = state.textBg || false;
         // generico
         document.getElementById('in-gen-texto').value = state.genTexto || '¡Gracias por acompañarnos siempre!';
         genericoImgPosX = state.genPosX || 50;
