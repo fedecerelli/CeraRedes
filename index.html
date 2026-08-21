@@ -2881,11 +2881,17 @@
     }
 
     /* ================================================================
-   TAMAÑO DE ELEMENTOS — escalado individual (nueva función)
-   Cada bloque del flyer tiene su propia variable --scale-* (1 = 100%).
-   Se controla desde el panel "Tamaño de elementos" y se aplica tanto
-   a la vista previa como al card oculto usado para exportar, porque
-   ambos comparten las mismas clases .flyer-*.
+   TAMAÑO Y POSICIÓN DE ELEMENTOS (nueva función)
+   Cada bloque del flyer tiene:
+     --scale-*  → tamaño  (1 = 100%)
+     --pos-x-*, --pos-y-* → desplazamiento manual en px (0 = posición original)
+   El transform-origin de cada bloque se eligió según su alineación real
+   (izquierda para los que arrancan pegados al margen, centro para los
+   que ya están centrados) para que, al cambiar el tamaño, el elemento
+   NO se desplace de su lugar. El desplazamiento sólo ocurre si el
+   usuario lo pide con los botones de posición.
+   Se aplica tanto a la vista previa como al card oculto de exportación,
+   porque ambos comparten las mismas clases .flyer-*.
    ================================================================ */
     :root {
       --scale-header: 1;
@@ -2898,61 +2904,156 @@
       --scale-sponsor: 1;
       --scale-gentexto: 1;
       --scale-genblock: 1;
+
+      --pos-x-header: 0px;
+      --pos-y-header: 0px;
+      --pos-x-catsub: 0px;
+      --pos-y-catsub: 0px;
+      --pos-x-title: 0px;
+      --pos-y-title: 0px;
+      --pos-x-info: 0px;
+      --pos-y-info: 0px;
+      --pos-x-teams: 0px;
+      --pos-y-teams: 0px;
+      --pos-x-accesos: 0px;
+      --pos-y-accesos: 0px;
+      --pos-x-footer: 0px;
+      --pos-y-footer: 0px;
+      --pos-x-sponsor: 0px;
+      --pos-y-sponsor: 0px;
+      --pos-x-gentexto: 0px;
+      --pos-y-gentexto: 0px;
+      --pos-x-genblock: 0px;
+      --pos-y-genblock: 0px;
     }
 
+    /* Encabezado: fila con align-items:center pero SIN justify-content
+       → el contenido arranca pegado a la izquierda. Ancla arriba-izquierda. */
     .card .flyer-header {
-      transform: scale(var(--scale-header));
-      transform-origin: top center;
+      transform: translate(var(--pos-x-header), var(--pos-y-header)) scale(var(--scale-header));
+      transform-origin: top left;
     }
 
+    /* Categoría / subtítulo: texto en bloque, sin text-align propio
+       → se apoya a la izquierda. Ancla arriba-izquierda. */
     .card .flyer-category,
     .card .flyer-subtitle {
-      transform: scale(var(--scale-catsub));
-      transform-origin: top center;
+      transform: translate(var(--pos-x-catsub), var(--pos-y-catsub)) scale(var(--scale-catsub));
+      transform-origin: top left;
     }
 
+    /* Título: bloque de texto sin centrar → ancla arriba-izquierda. */
     .card .flyer-title {
-      transform: scale(var(--scale-title));
+      transform: translate(var(--pos-x-title), var(--pos-y-title)) scale(var(--scale-title));
+      transform-origin: top left;
+    }
+
+    /* Info y horarios: justify-content:center → ancla al centro. */
+    .card .flyer-info {
+      transform: translate(var(--pos-x-info), var(--pos-y-info)) scale(var(--scale-info));
       transform-origin: center center;
     }
 
-    .card .flyer-info,
+    /* Cronograma: bloque de ancho completo sin centrar → arriba-izquierda. */
     .card .flyer-schedule {
-      transform: scale(var(--scale-info));
-      transform-origin: center center;
+      transform: translate(var(--pos-x-info), var(--pos-y-info)) scale(var(--scale-info));
+      transform-origin: top left;
     }
 
+    /* Equipos / resultado / goleadores: justify-content:center → centro. */
     .card .flyer-teams,
     .card .flyer-resultado,
     .card .flyer-goleadores {
-      transform: scale(var(--scale-teams));
+      transform: translate(var(--pos-x-teams), var(--pos-y-teams)) scale(var(--scale-teams));
       transform-origin: center center;
     }
 
+    /* Accesos: justify-content:center → centro. */
     .card .flyer-accesos {
-      transform: scale(var(--scale-accesos));
-      transform-origin: bottom center;
+      transform: translate(var(--pos-x-accesos), var(--pos-y-accesos)) scale(var(--scale-accesos));
+      transform-origin: center center;
     }
 
+    /* Slogan / competencia: text-align:center, pegados al pie → centro-abajo. */
     .card .flyer-slogan,
     .card .flyer-competition {
-      transform: scale(var(--scale-footer));
+      transform: translate(var(--pos-x-footer), var(--pos-y-footer)) scale(var(--scale-footer));
       transform-origin: bottom center;
     }
 
+    /* Sponsors: text-align:center, pegado al pie → centro-abajo. */
     .card .flyer-sponsor {
-      transform: scale(var(--scale-sponsor));
+      transform: translate(var(--pos-x-sponsor), var(--pos-y-sponsor)) scale(var(--scale-sponsor));
       transform-origin: bottom center;
     }
 
+    /* Texto y bloque genérico: centrados por flex → centro. */
     .card .flyer-generico-texto {
-      transform: scale(var(--scale-gentexto));
+      transform: translate(var(--pos-x-gentexto), var(--pos-y-gentexto)) scale(var(--scale-gentexto));
       transform-origin: center center;
     }
 
     .card .flyer-generico {
-      transform: scale(var(--scale-genblock));
+      transform: translate(var(--pos-x-genblock), var(--pos-y-genblock)) scale(var(--scale-genblock));
       transform-origin: center center;
+    }
+
+    /* Botonera de posición (nudge) */
+    .pos-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .pos-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ui-text-soft);
+      letter-spacing: 0.01em;
+    }
+
+    .pos-pad {
+      display: flex;
+      gap: 4px;
+      margin-left: auto;
+    }
+
+    .pos-pad button {
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid var(--ui-border-strong);
+      background: var(--ui-surface);
+      color: var(--ui-text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .pos-pad button svg {
+      width: 13px;
+      height: 13px;
+      pointer-events: none;
+    }
+
+    .pos-pad button:hover {
+      background: var(--ui-accent-soft);
+      border-color: var(--ui-accent);
+      color: var(--ui-accent-ink);
+    }
+
+    .pos-pad button.pos-reset {
+      color: var(--ui-text-soft);
+    }
+
+    .pos-pad button.pos-reset:hover {
+      background: var(--ui-danger-soft);
+      border-color: var(--ui-danger);
+      color: var(--ui-danger);
     }
 
     /* Sliders del panel "Tamaño de elementos" */
@@ -3656,6 +3757,16 @@
                   class="size-row-value" id="size-header-val">100%</span></div>
               <input type="range" class="size-slider" id="size-header" data-var="--scale-header" min="50" max="200"
                 value="100" step="2">
+              <div class="pos-row">
+                <span class="pos-label">Posición</span>
+                <div class="pos-pad" data-key="header">
+                  <button type="button" class="pos-btn" data-dir="left" title="Mover a la izquierda"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M9.5 5.5L5 10l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="up" title="Mover arriba"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5v10M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="down" title="Mover abajo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M5.5 10.5L10 15l4.5-4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="right" title="Mover a la derecha"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10H5M10.5 5.5L15 10l-4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn pos-reset" data-dir="reset" title="Restablecer posición"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v3M10 14v3M3 10h3M14 10h3"/><circle cx="10" cy="10" r="2"/></svg></button>
+                </div>
+              </div>
             </div>
 
             <div class="size-row">
@@ -3663,6 +3774,16 @@
                   class="size-row-value" id="size-catsub-val">100%</span></div>
               <input type="range" class="size-slider" id="size-catsub" data-var="--scale-catsub" min="50" max="200"
                 value="100" step="2">
+              <div class="pos-row">
+                <span class="pos-label">Posición</span>
+                <div class="pos-pad" data-key="catsub">
+                  <button type="button" class="pos-btn" data-dir="left" title="Mover a la izquierda"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M9.5 5.5L5 10l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="up" title="Mover arriba"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5v10M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="down" title="Mover abajo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M5.5 10.5L10 15l4.5-4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="right" title="Mover a la derecha"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10H5M10.5 5.5L15 10l-4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn pos-reset" data-dir="reset" title="Restablecer posición"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v3M10 14v3M3 10h3M14 10h3"/><circle cx="10" cy="10" r="2"/></svg></button>
+                </div>
+              </div>
             </div>
 
             <div class="size-row">
@@ -3670,6 +3791,16 @@
                   class="size-row-value" id="size-title-val">100%</span></div>
               <input type="range" class="size-slider" id="size-title" data-var="--scale-title" min="50" max="200"
                 value="100" step="2">
+              <div class="pos-row">
+                <span class="pos-label">Posición</span>
+                <div class="pos-pad" data-key="title">
+                  <button type="button" class="pos-btn" data-dir="left" title="Mover a la izquierda"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M9.5 5.5L5 10l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="up" title="Mover arriba"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5v10M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="down" title="Mover abajo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M5.5 10.5L10 15l4.5-4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="right" title="Mover a la derecha"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10H5M10.5 5.5L15 10l-4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn pos-reset" data-dir="reset" title="Restablecer posición"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v3M10 14v3M3 10h3M14 10h3"/><circle cx="10" cy="10" r="2"/></svg></button>
+                </div>
+              </div>
             </div>
 
             <div class="size-row">
@@ -3677,6 +3808,16 @@
                   class="size-row-value" id="size-info-val">100%</span></div>
               <input type="range" class="size-slider" id="size-info" data-var="--scale-info" min="50" max="200"
                 value="100" step="2">
+              <div class="pos-row">
+                <span class="pos-label">Posición</span>
+                <div class="pos-pad" data-key="info">
+                  <button type="button" class="pos-btn" data-dir="left" title="Mover a la izquierda"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M9.5 5.5L5 10l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="up" title="Mover arriba"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5v10M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="down" title="Mover abajo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M5.5 10.5L10 15l4.5-4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="right" title="Mover a la derecha"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10H5M10.5 5.5L15 10l-4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn pos-reset" data-dir="reset" title="Restablecer posición"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v3M10 14v3M3 10h3M14 10h3"/><circle cx="10" cy="10" r="2"/></svg></button>
+                </div>
+              </div>
             </div>
 
             <div class="size-row">
@@ -3684,13 +3825,33 @@
                   class="size-row-value" id="size-teams-val">100%</span></div>
               <input type="range" class="size-slider" id="size-teams" data-var="--scale-teams" min="50" max="200"
                 value="100" step="2">
+              <div class="pos-row">
+                <span class="pos-label">Posición</span>
+                <div class="pos-pad" data-key="teams">
+                  <button type="button" class="pos-btn" data-dir="left" title="Mover a la izquierda"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M9.5 5.5L5 10l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="up" title="Mover arriba"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5v10M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="down" title="Mover abajo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M5.5 10.5L10 15l4.5-4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="right" title="Mover a la derecha"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10H5M10.5 5.5L15 10l-4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn pos-reset" data-dir="reset" title="Restablecer posición"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v3M10 14v3M3 10h3M14 10h3"/><circle cx="10" cy="10" r="2"/></svg></button>
+                </div>
+              </div>
             </div>
 
             <div class="size-row">
-              <div class="size-row-head"><label for="size-accesos">Accesos</label><span class="size-row-value"
-                  id="size-accesos-val">100%</span></div>
+              <div class="size-row-head"><label for="size-accesos">Accesos</label><span
+                  class="size-row-value" id="size-accesos-val">100%</span></div>
               <input type="range" class="size-slider" id="size-accesos" data-var="--scale-accesos" min="50" max="200"
                 value="100" step="2">
+              <div class="pos-row">
+                <span class="pos-label">Posición</span>
+                <div class="pos-pad" data-key="accesos">
+                  <button type="button" class="pos-btn" data-dir="left" title="Mover a la izquierda"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M9.5 5.5L5 10l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="up" title="Mover arriba"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5v10M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="down" title="Mover abajo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M5.5 10.5L10 15l4.5-4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="right" title="Mover a la derecha"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10H5M10.5 5.5L15 10l-4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn pos-reset" data-dir="reset" title="Restablecer posición"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v3M10 14v3M3 10h3M14 10h3"/><circle cx="10" cy="10" r="2"/></svg></button>
+                </div>
+              </div>
             </div>
 
             <div class="size-row">
@@ -3698,36 +3859,75 @@
                   class="size-row-value" id="size-footer-val">100%</span></div>
               <input type="range" class="size-slider" id="size-footer" data-var="--scale-footer" min="50" max="200"
                 value="100" step="2">
+              <div class="pos-row">
+                <span class="pos-label">Posición</span>
+                <div class="pos-pad" data-key="footer">
+                  <button type="button" class="pos-btn" data-dir="left" title="Mover a la izquierda"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M9.5 5.5L5 10l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="up" title="Mover arriba"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5v10M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="down" title="Mover abajo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M5.5 10.5L10 15l4.5-4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="right" title="Mover a la derecha"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10H5M10.5 5.5L15 10l-4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn pos-reset" data-dir="reset" title="Restablecer posición"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v3M10 14v3M3 10h3M14 10h3"/><circle cx="10" cy="10" r="2"/></svg></button>
+                </div>
+              </div>
             </div>
 
             <div class="size-row">
-              <div class="size-row-head"><label for="size-sponsor">Sponsors</label><span class="size-row-value"
-                  id="size-sponsor-val">100%</span></div>
+              <div class="size-row-head"><label for="size-sponsor">Sponsors</label><span
+                  class="size-row-value" id="size-sponsor-val">100%</span></div>
               <input type="range" class="size-slider" id="size-sponsor" data-var="--scale-sponsor" min="50" max="200"
                 value="100" step="2">
+              <div class="pos-row">
+                <span class="pos-label">Posición</span>
+                <div class="pos-pad" data-key="sponsor">
+                  <button type="button" class="pos-btn" data-dir="left" title="Mover a la izquierda"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M9.5 5.5L5 10l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="up" title="Mover arriba"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5v10M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="down" title="Mover abajo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M5.5 10.5L10 15l4.5-4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="right" title="Mover a la derecha"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10H5M10.5 5.5L15 10l-4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn pos-reset" data-dir="reset" title="Restablecer posición"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v3M10 14v3M3 10h3M14 10h3"/><circle cx="10" cy="10" r="2"/></svg></button>
+                </div>
+              </div>
             </div>
 
             <div class="size-row">
               <div class="size-row-head"><label for="size-gentexto">Texto genérico (modo Genérico)</label><span
                   class="size-row-value" id="size-gentexto-val">100%</span></div>
-              <input type="range" class="size-slider" id="size-gentexto" data-var="--scale-gentexto" min="50"
-                max="200" value="100" step="2">
+              <input type="range" class="size-slider" id="size-gentexto" data-var="--scale-gentexto" min="50" max="200"
+                value="100" step="2">
+              <div class="pos-row">
+                <span class="pos-label">Posición</span>
+                <div class="pos-pad" data-key="gentexto">
+                  <button type="button" class="pos-btn" data-dir="left" title="Mover a la izquierda"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M9.5 5.5L5 10l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="up" title="Mover arriba"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5v10M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="down" title="Mover abajo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M5.5 10.5L10 15l4.5-4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="right" title="Mover a la derecha"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10H5M10.5 5.5L15 10l-4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn pos-reset" data-dir="reset" title="Restablecer posición"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v3M10 14v3M3 10h3M14 10h3"/><circle cx="10" cy="10" r="2"/></svg></button>
+                </div>
+              </div>
             </div>
 
             <div class="size-row">
               <div class="size-row-head"><label for="size-genblock">Bloque central (modo Genérico)</label><span
                   class="size-row-value" id="size-genblock-val">100%</span></div>
-              <input type="range" class="size-slider" id="size-genblock" data-var="--scale-genblock" min="50"
-                max="200" value="100" step="2">
+              <input type="range" class="size-slider" id="size-genblock" data-var="--scale-genblock" min="50" max="200"
+                value="100" step="2">
+              <div class="pos-row">
+                <span class="pos-label">Posición</span>
+                <div class="pos-pad" data-key="genblock">
+                  <button type="button" class="pos-btn" data-dir="left" title="Mover a la izquierda"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h10M9.5 5.5L5 10l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="up" title="Mover arriba"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5v10M5.5 9.5L10 5l4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="down" title="Mover abajo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M5.5 10.5L10 15l4.5-4.5"/></svg></button>
+                  <button type="button" class="pos-btn" data-dir="right" title="Mover a la derecha"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10H5M10.5 5.5L15 10l-4.5 4.5"/></svg></button>
+                  <button type="button" class="pos-btn pos-reset" data-dir="reset" title="Restablecer posición"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v3M10 14v3M3 10h3M14 10h3"/><circle cx="10" cy="10" r="2"/></svg></button>
+                </div>
+              </div>
             </div>
-
             <button class="btn btn-outline" id="btn-reset-sizes" type="button">
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                 stroke-linejoin="round">
                 <path
                   d="M4 5.5h12M8 5.5V4a1 1 0 011-1h2a1 1 0 011 1v1.5M5.5 5.5l.7 10.2a1.6 1.6 0 001.6 1.5h4.4a1.6 1.6 0 001.6-1.5l.7-10.2" />
               </svg>
-              Restablecer tamaños
+              Restablecer tamaños y posición
             </button>
           </div>
         </details>
@@ -4112,8 +4312,9 @@
           slider.value = 100;
           applySizeSlider(slider, false);
         });
+        resetAllPositions(false);
         saveState();
-        if (window.showFlyerToast) window.showFlyerToast('Tamaños restablecidos');
+        if (window.showFlyerToast) window.showFlyerToast('Tamaños y posiciones restablecidos');
       });
     }
 
@@ -4131,6 +4332,65 @@
           slider.value = v;
           applySizeSlider(slider, false);
         }
+      });
+    }
+
+    // ================================================================
+    //  POSICIÓN DE ELEMENTOS — desplazamiento manual opcional
+    //  Por defecto todos los bloques quedan en su lugar original al
+    //  cambiar el tamaño (ver transform-origin en el CSS). Estos
+    //  botones son la única forma de moverlos, y sólo cuando el
+    //  usuario lo pide explícitamente: cada click desplaza el bloque
+    //  una distancia fija (NUDGE_STEP) en la dirección elegida.
+    // ================================================================
+    const NUDGE_STEP = 4; // px sobre el lienzo real (1080 de ancho)
+    const posKeys = Array.from(document.querySelectorAll('.pos-pad')).map(p => p.dataset.key);
+
+    function getPos(key) {
+      const style = getComputedStyle(document.documentElement);
+      const x = parseFloat(style.getPropertyValue('--pos-x-' + key)) || 0;
+      const y = parseFloat(style.getPropertyValue('--pos-y-' + key)) || 0;
+      return { x, y };
+    }
+
+    function setPos(key, x, y) {
+      document.documentElement.style.setProperty('--pos-x-' + key, x + 'px');
+      document.documentElement.style.setProperty('--pos-y-' + key, y + 'px');
+    }
+
+    document.querySelectorAll('.pos-pad').forEach(pad => {
+      const key = pad.dataset.key;
+      pad.querySelectorAll('.pos-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const dir = btn.dataset.dir;
+          let { x, y } = getPos(key);
+          if (dir === 'up') y -= NUDGE_STEP;
+          else if (dir === 'down') y += NUDGE_STEP;
+          else if (dir === 'left') x -= NUDGE_STEP;
+          else if (dir === 'right') x += NUDGE_STEP;
+          else if (dir === 'reset') { x = 0; y = 0; }
+          setPos(key, x, y);
+          saveState();
+        });
+      });
+    });
+
+    function resetAllPositions(persist) {
+      posKeys.forEach(key => setPos(key, 0, 0));
+      if (persist) saveState();
+    }
+
+    function getElementPositionsState() {
+      const positions = {};
+      posKeys.forEach(key => { positions[key] = getPos(key); });
+      return positions;
+    }
+
+    function applyElementPositionsState(positions) {
+      if (!positions) return;
+      posKeys.forEach(key => {
+        const p = positions[key];
+        if (p) setPos(key, p.x || 0, p.y || 0);
       });
     }
 
@@ -5593,6 +5853,7 @@
           textBg: textBgToggle.checked,
           shieldSize: shieldSizeInput.value,
           elementSizes: getElementSizesState(),
+          elementPositions: getElementPositionsState(),
           // generico
           genTexto: document.getElementById('in-gen-texto').value,
           genPosX: genericoImgPosX,
@@ -5627,6 +5888,7 @@
           if (shieldSizeLabel) shieldSizeLabel.textContent = state.shieldSize;
         }
         applyElementSizesState(state.elementSizes);
+        applyElementPositionsState(state.elementPositions);
         return true;
       } catch (e) {
         return false;
