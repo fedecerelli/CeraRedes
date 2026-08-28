@@ -20,8 +20,8 @@
 
   <style>
     /* ================================================================
-   1. VARIABLES GLOBALES — Sistema de diseño (rediseño interfaz)
-   ================================================================ */
+       SISTEMA DE DISEÑO — APP MÓVIL (rediseño completo, mobile-only)
+       ================================================================ */
     :root {
       --blue-deep: #0B132B;
       --blue-mid: #141E3A;
@@ -32,21 +32,22 @@
       --grey-light: rgba(255, 255, 255, 0.15);
       --grey-text: rgba(255, 255, 255, 0.7);
 
-      /* Interfaz — paleta neutra y plana, con el azul institucional
-         del club como único acento (en vez de un azul genérico). */
-      --ui-bg: #F7F7F9;
-      --ui-canvas: #F0F1F4;
+      /* Paleta de la interfaz — cálida, plana, con el azul del club como
+         único acento y un segundo acento celeste para estados secundarios. */
+      --ui-bg: #F5F6FA;
+      --ui-canvas: #EEF0F6;
+      --ui-canvas-outer: #10131F;
       --ui-surface: #FFFFFF;
-      --ui-surface-2: #F5F5F7;
-      --ui-surface-3: #FAFAFB;
-      --ui-border: #E7E7EC;
-      --ui-border-strong: #D7D8E1;
-      --ui-text: #15161C;
-      --ui-text-muted: #6C6E7A;
-      --ui-text-soft: #9A9BA8;
+      --ui-surface-2: #F1F2F7;
+      --ui-surface-3: #FAFAFC;
+      --ui-border: #E4E6EF;
+      --ui-border-strong: #D3D6E4;
+      --ui-text: #12141C;
+      --ui-text-muted: #666A7C;
+      --ui-text-soft: #9698AA;
       --ui-accent: #0A227A;
       --ui-accent-2: #2E86AB;
-      --ui-accent-soft: #EEF1F8;
+      --ui-accent-soft: #E9EDFB;
       --ui-accent-ink: #0A227A;
       --ui-danger: #D6444E;
       --ui-danger-soft: #FBEEEE;
@@ -55,85 +56,88 @@
       --ui-warning: #C68A2A;
       --ui-warning-soft: #FBF3E6;
 
-      --ui-radius-sm: 10px;
-      --ui-radius-md: 14px;
-      --ui-radius-lg: 18px;
-      --ui-radius-xl: 22px;
+      --ui-radius-sm: 12px;
+      --ui-radius-md: 16px;
+      --ui-radius-lg: 22px;
+      --ui-radius-xl: 26px;
       --ui-radius-pill: 999px;
 
-      --ui-shadow-xs: 0 1px 2px rgba(15, 16, 22, 0.04);
-      --ui-shadow-sm: 0 1px 3px rgba(15, 16, 22, 0.06);
-      --ui-shadow-md: 0 6px 20px -10px rgba(15, 16, 22, 0.14);
-      --ui-shadow-lg: 0 16px 40px -18px rgba(15, 16, 22, 0.22);
-      --ui-shadow-accent: 0 2px 10px -3px rgba(10, 34, 122, 0.28);
+      --ui-shadow-xs: 0 1px 2px rgba(15, 16, 22, 0.05);
+      --ui-shadow-sm: 0 2px 8px -2px rgba(15, 16, 22, 0.08);
+      --ui-shadow-md: 0 10px 26px -12px rgba(15, 16, 22, 0.20);
+      --ui-shadow-lg: 0 -6px 24px -8px rgba(15, 16, 22, 0.18);
+      --ui-shadow-accent: 0 6px 16px -6px rgba(10, 34, 122, 0.40);
 
       --ui-font-ui: 'Plus Jakarta Sans', 'Montserrat', sans-serif;
-      --app-bar-h: 64px;
-      --bottom-nav-h: 78px;
+      --app-bar-h: 58px;
+      --bottom-nav-h: 72px;
       --sidebar-w: 408px;
+      --tap: 48px;
     }
 
     html[data-theme="dark"] {
-      --ui-bg: #101115;
-      --ui-canvas: #0B0C0F;
-      --ui-surface: #18191E;
-      --ui-surface-2: #1E1F25;
-      --ui-surface-3: #24252C;
-      --ui-border: #2A2B33;
-      --ui-border-strong: #383A44;
-      --ui-text: #F2F2F5;
-      --ui-text-muted: #A4A6B0;
-      --ui-text-soft: #6E707C;
-      --ui-accent: #6D8EFF;
+      --ui-bg: #101116;
+      --ui-canvas: #0B0C10;
+      --ui-canvas-outer: #000000;
+      --ui-surface: #1A1B22;
+      --ui-surface-2: #212229;
+      --ui-surface-3: #26272F;
+      --ui-border: #2C2D36;
+      --ui-border-strong: #3A3B47;
+      --ui-text: #F3F3F6;
+      --ui-text-muted: #A7A9B7;
+      --ui-text-soft: #6F7182;
+      --ui-accent: #7891FF;
       --ui-accent-2: #4AA3C2;
-      --ui-accent-soft: #1A2036;
-      --ui-accent-ink: #C4D2FF;
+      --ui-accent-soft: #1B2038;
+      --ui-accent-ink: #C7D1FF;
       --ui-danger: #E8747C;
       --ui-danger-soft: #2A1B1D;
       --ui-success: #3FCB98;
       --ui-success-soft: #10241D;
       --ui-warning: #E3B45E;
       --ui-warning-soft: #29220F;
-      --ui-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.30);
-      --ui-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.34);
-      --ui-shadow-md: 0 6px 20px -10px rgba(0, 0, 0, 0.45);
-      --ui-shadow-lg: 0 16px 40px -18px rgba(0, 0, 0, 0.55);
-      --ui-shadow-accent: 0 2px 10px -3px rgba(109, 142, 255, 0.30);
+      --ui-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+      --ui-shadow-sm: 0 2px 10px -2px rgba(0, 0, 0, 0.40);
+      --ui-shadow-md: 0 10px 26px -12px rgba(0, 0, 0, 0.55);
+      --ui-shadow-lg: 0 -6px 24px -8px rgba(0, 0, 0, 0.55);
+      --ui-shadow-accent: 0 6px 16px -6px rgba(120, 145, 255, 0.35);
     }
 
     @media (prefers-color-scheme: dark) {
       html:not([data-theme="light"]) {
-        --ui-bg: #101115;
-        --ui-canvas: #0B0C0F;
-        --ui-surface: #18191E;
-        --ui-surface-2: #1E1F25;
-        --ui-surface-3: #24252C;
-        --ui-border: #2A2B33;
-        --ui-border-strong: #383A44;
-        --ui-text: #F2F2F5;
-        --ui-text-muted: #A4A6B0;
-        --ui-text-soft: #6E707C;
-        --ui-accent: #6D8EFF;
+        --ui-bg: #101116;
+        --ui-canvas: #0B0C10;
+        --ui-canvas-outer: #000000;
+        --ui-surface: #1A1B22;
+        --ui-surface-2: #212229;
+        --ui-surface-3: #26272F;
+        --ui-border: #2C2D36;
+        --ui-border-strong: #3A3B47;
+        --ui-text: #F3F3F6;
+        --ui-text-muted: #A7A9B7;
+        --ui-text-soft: #6F7182;
+        --ui-accent: #7891FF;
         --ui-accent-2: #4AA3C2;
-        --ui-accent-soft: #1A2036;
-        --ui-accent-ink: #C4D2FF;
+        --ui-accent-soft: #1B2038;
+        --ui-accent-ink: #C7D1FF;
         --ui-danger: #E8747C;
         --ui-danger-soft: #2A1B1D;
         --ui-success: #3FCB98;
         --ui-success-soft: #10241D;
         --ui-warning: #E3B45E;
         --ui-warning-soft: #29220F;
-        --ui-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.30);
-        --ui-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.34);
-        --ui-shadow-md: 0 6px 20px -10px rgba(0, 0, 0, 0.45);
-        --ui-shadow-lg: 0 16px 40px -18px rgba(0, 0, 0, 0.55);
-        --ui-shadow-accent: 0 2px 10px -3px rgba(109, 142, 255, 0.30);
+        --ui-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+        --ui-shadow-sm: 0 2px 10px -2px rgba(0, 0, 0, 0.40);
+        --ui-shadow-md: 0 10px 26px -12px rgba(0, 0, 0, 0.55);
+        --ui-shadow-lg: 0 -6px 24px -8px rgba(0, 0, 0, 0.55);
+        --ui-shadow-accent: 0 6px 16px -6px rgba(120, 145, 255, 0.35);
       }
     }
 
     /* ================================================================
-   2. RESET Y ESTRUCTURA BASE
-   ================================================================ */
+       RESET Y ESTRUCTURA BASE
+       ================================================================ */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -148,11 +152,12 @@
 
     body {
       font-family: var(--ui-font-ui);
-      background: var(--ui-bg);
+      background: var(--ui-canvas-outer);
       color: var(--ui-text);
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      min-height: 100dvh;
       overflow-x: hidden;
       transition: background 0.2s ease, color 0.2s ease;
     }
@@ -171,44 +176,57 @@
       font-family: inherit;
     }
 
+    /* Marco tipo "app móvil": en pantallas angostas ocupa todo el ancho;
+       en pantallas más anchas queda centrado como una app de celular. */
+    .app-frame {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-height: 100dvh;
+      position: relative;
+    }
+
     /* ================================================================
-   3. BARRA SUPERIOR (APP BAR)
-   ================================================================ */
+       BARRA SUPERIOR (APP BAR)
+       ================================================================ */
     .app-bar {
       height: var(--app-bar-h);
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 0 20px;
+      gap: 10px;
+      padding: 0 16px;
       background: var(--ui-surface);
       border-bottom: 1px solid var(--ui-border);
       position: sticky;
       top: 0;
       z-index: 200;
-      box-shadow: var(--ui-shadow-xs);
     }
 
     .app-bar-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       min-width: 0;
     }
 
     .app-bar-crest {
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       flex-shrink: 0;
-      border-radius: 12px;
+      border-radius: 10px;
       background: linear-gradient(150deg, var(--blue-institutional), var(--blue-electric));
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 12.5px;
+      font-size: 11.5px;
       letter-spacing: 0.02em;
       box-shadow: var(--ui-shadow-accent);
     }
@@ -217,11 +235,11 @@
       display: flex;
       flex-direction: column;
       min-width: 0;
-      line-height: 1.3;
+      line-height: 1.25;
     }
 
     .app-bar-text strong {
-      font-size: 14.5px;
+      font-size: 13.5px;
       font-weight: 800;
       color: var(--ui-text);
       letter-spacing: -0.01em;
@@ -231,7 +249,7 @@
     }
 
     .app-bar-text small {
-      font-size: 11.5px;
+      font-size: 10.5px;
       font-weight: 600;
       color: var(--ui-text-muted);
       white-space: nowrap;
@@ -240,8 +258,8 @@
     }
 
     .theme-toggle {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       flex-shrink: 0;
       border-radius: var(--ui-radius-pill);
       border: 1px solid var(--ui-border);
@@ -254,19 +272,13 @@
       transition: background 0.15s, color 0.15s, transform 0.1s, border-color .15s;
     }
 
-    .theme-toggle:hover {
-      background: var(--ui-accent-soft);
-      color: var(--ui-accent);
-      border-color: var(--ui-accent);
-    }
-
     .theme-toggle:active {
       transform: scale(0.9);
     }
 
     .theme-toggle svg {
-      width: 18px;
-      height: 18px;
+      width: 17px;
+      height: 17px;
     }
 
     .theme-toggle .ico-moon {
@@ -282,94 +294,99 @@
     }
 
     /* ================================================================
-   4. LAYOUT PRINCIPAL (sidebar + canvas)
-   ================================================================ */
+       LAYOUT PRINCIPAL — una sola columna, siempre. Sin sidebar de
+       escritorio: Editor y Vista previa son dos pantallas que se
+       alternan con la navegación inferior.
+       ================================================================ */
     .app-shell {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       flex: 1;
       min-height: 0;
       width: 100%;
       background: var(--ui-canvas);
     }
 
-    /* ================================================================
-   5. NAVEGACIÓN INFERIOR MÓVIL — dock flotante
-   ================================================================ */
-    .mobile-tabs {
+    /* Sólo una "pantalla" (Editor o Vista previa) visible a la vez */
+    .view-tab-content {
       display: none;
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      min-height: 0;
+    }
+
+    .view-tab-content.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ================================================================
+       NAVEGACIÓN INFERIOR — barra fija de app nativa (2 destinos)
+       ================================================================ */
+    .mobile-tabs {
+      display: block;
+      flex-shrink: 0;
       z-index: 300;
-      padding: 0 14px calc(14px + env(safe-area-inset-bottom, 0px)) 14px;
-      pointer-events: none;
+      background: var(--ui-surface);
+      border-top: 1px solid var(--ui-border);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     .mobile-tabs>div {
       display: flex;
-      gap: 4px;
-      max-width: 420px;
+      gap: 2px;
+      max-width: 480px;
       margin: 0 auto;
-      background: var(--ui-surface);
-      border: 1px solid var(--ui-border);
-      border-radius: var(--ui-radius-xl);
-      padding: 6px;
-      box-shadow: var(--ui-shadow-lg);
-      pointer-events: auto;
+      padding: 6px 10px;
     }
 
     .tab-btn {
       flex: 1;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 7px;
-      padding: 12px 10px;
-      border-radius: var(--ui-radius-lg);
+      gap: 3px;
+      padding: 8px 6px 6px 6px;
+      min-height: var(--tap);
+      border-radius: var(--ui-radius-md);
       border: none;
       background: transparent;
       color: var(--ui-text-soft);
-      font-weight: 800;
-      font-size: 13px;
+      font-weight: 700;
+      font-size: 10.5px;
+      letter-spacing: 0.01em;
       cursor: pointer;
       transition: background 0.18s, color 0.18s;
     }
 
     .tab-btn svg {
-      width: 19px;
-      height: 19px;
+      width: 21px;
+      height: 21px;
       flex-shrink: 0;
     }
 
     .tab-btn.active {
-      color: #fff;
-      background: var(--blue-institutional);
-      box-shadow: var(--ui-shadow-accent);
+      color: var(--blue-institutional);
+      background: var(--ui-accent-soft);
+    }
+
+    html[data-theme="dark"] .tab-btn.active {
+      color: var(--ui-accent-ink);
     }
 
     /* ================================================================
-   6. PANEL DE CONTROL (sidebar)
-   ================================================================ */
+       PANEL DE CONTROL (pantalla "Editor")
+       ================================================================ */
     #panel {
-      width: var(--sidebar-w);
-      min-width: 340px;
+      width: 100%;
       background: var(--ui-bg);
-      border-right: 1px solid var(--ui-border);
-      padding: 24px 22px 20px 22px;
+      padding: 16px 16px 28px 16px;
       overflow-y: auto;
-      height: calc(100vh - var(--app-bar-h));
-      position: sticky;
-      top: var(--app-bar-h);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
+      -webkit-overflow-scrolling: touch;
+      min-height: 0;
     }
 
     .panel-header {
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -377,15 +394,15 @@
     }
 
     .panel-header h1 {
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 800;
       color: var(--ui-text);
       letter-spacing: -0.02em;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .panel-header p.sub {
-      font-size: 12.5px;
+      font-size: 12px;
       color: var(--ui-text-muted);
       font-weight: 600;
       line-height: 1.4;
@@ -394,7 +411,7 @@
     .panel-quick-actions {
       display: flex;
       gap: 6px;
-      margin: 14px 0 16px 0;
+      margin: 12px 0 14px 0;
       justify-content: flex-end;
     }
 
@@ -403,12 +420,12 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
-      padding: 7px 12px 7px 10px;
+      padding: 8px 12px 8px 10px;
       border-radius: var(--ui-radius-pill);
-      border: 1px solid transparent;
-      background: var(--ui-surface-2);
+      border: 1px solid var(--ui-border);
+      background: var(--ui-surface);
       color: var(--ui-text-muted);
       cursor: pointer;
       transition: background 0.15s, border-color 0.15s, color 0.15s;
@@ -420,7 +437,7 @@
       flex-shrink: 0;
     }
 
-    .panel-quick-actions button:hover {
+    .panel-quick-actions button:active {
       background: var(--ui-accent-soft);
       border-color: var(--ui-accent);
       color: var(--ui-accent-ink);
@@ -434,9 +451,9 @@
       border: 1px solid var(--ui-border);
       padding: 4px;
       border-radius: var(--ui-radius-pill);
-      margin: 0 0 18px 0;
+      margin: 6px 0 16px 0;
       position: sticky;
-      top: -2px;
+      top: -1px;
       z-index: 20;
       backdrop-filter: blur(6px);
     }
@@ -451,8 +468,9 @@
       background: transparent;
       color: var(--ui-text-muted);
       font-weight: 800;
-      font-size: 12px;
-      padding: 10px 6px;
+      font-size: 11.5px;
+      padding: 11px 6px;
+      min-height: var(--tap);
       border-radius: var(--ui-radius-pill);
       cursor: pointer;
       transition: background 0.15s, color 0.15s, box-shadow 0.15s;
@@ -491,10 +509,17 @@
       }
     }
 
-    /* ---- Acordeón de pasos: tarjetas tipo "stepper" ---- */
+    /* ---- Pasos: tarjetas grandes tipo app, con badge numerado visible ---- */
+    .step-trio {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
     details.fs {
-      scroll-margin-top: 90px;
-      border: 1.5px solid var(--ui-border);
+      scroll-margin-top: 70px;
+      border: 1px solid var(--ui-border);
       border-radius: var(--ui-radius-md);
       margin-bottom: 10px;
       overflow: hidden;
@@ -506,7 +531,8 @@
     details.fs summary {
       list-style: none;
       cursor: pointer;
-      padding: 14px 16px;
+      padding: 14px 14px;
+      min-height: var(--tap);
       font-size: 13px;
       font-weight: 700;
       color: var(--ui-text);
@@ -522,8 +548,8 @@
     }
 
     .step-ico {
-      width: 18px;
-      height: 18px;
+      width: 19px;
+      height: 19px;
       flex-shrink: 0;
       color: var(--ui-text-soft);
       transition: color 0.15s;
@@ -540,13 +566,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
+      width: 22px;
+      height: 22px;
+      margin-right: 9px;
       border-radius: var(--ui-radius-pill);
       background: var(--ui-accent-soft);
       color: var(--ui-accent-ink);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 800;
       flex-shrink: 0;
     }
@@ -554,8 +580,8 @@
     details.fs summary::after {
       content: '';
       flex-shrink: 0;
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
       border-right: 2px solid var(--ui-text-soft);
       border-bottom: 2px solid var(--ui-text-soft);
       transform: rotate(45deg);
@@ -594,7 +620,7 @@
     }
 
     .fs-body {
-      padding: 6px 16px 16px 16px;
+      padding: 4px 14px 16px 14px;
     }
 
     /* ---- Navegación tipo asistente (Anterior / Siguiente) ---- */
@@ -612,7 +638,8 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 12px 10px;
+      padding: 13px 10px;
+      min-height: var(--tap);
       border-radius: var(--ui-radius-sm);
       font-weight: 800;
       font-size: 12px;
@@ -624,7 +651,7 @@
     }
 
     .step-nav button:active {
-      transform: scale(0.97);
+      transform: scale(0.96);
     }
 
     .step-nav .step-prev {
@@ -632,7 +659,7 @@
       border: 1.5px solid var(--ui-border);
       color: var(--ui-text-muted);
       flex: 0 0 auto;
-      width: 48px;
+      width: 52px;
     }
 
     .step-nav .step-prev svg {
@@ -651,10 +678,6 @@
       box-shadow: var(--ui-shadow-accent);
     }
 
-    .step-nav .step-next:hover {
-      filter: brightness(1.06);
-    }
-
     .step-nav .step-next svg {
       width: 15px;
       height: 15px;
@@ -667,7 +690,7 @@
       font-weight: 800;
       color: var(--ui-accent-ink);
       background: var(--ui-accent-soft);
-      padding: 3px 9px;
+      padding: 4px 10px;
       border-radius: var(--ui-radius-pill);
       text-align: right;
       margin: 0 0 12px 0;
@@ -695,8 +718,8 @@
     select,
     textarea {
       width: 100%;
-      padding: 11px 13px;
-      font-size: 14px;
+      padding: 12px 14px;
+      font-size: 16px;
       border: 1.5px solid var(--ui-border);
       border-radius: var(--ui-radius-sm);
       font-family: inherit;
@@ -704,11 +727,12 @@
       background: var(--ui-surface-2);
       color: var(--ui-text);
       transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
-      min-height: 44px;
+      min-height: var(--tap);
     }
 
     textarea {
       min-height: unset;
+      font-size: 14px;
     }
 
     input:focus,
@@ -726,6 +750,7 @@
       accent-color: var(--ui-accent);
       background: transparent;
       border: none;
+      height: 36px;
     }
 
     ::placeholder {
@@ -734,7 +759,7 @@
     }
 
     p.hint {
-      font-size: 11px;
+      font-size: 11.5px;
       color: var(--ui-text-soft);
       margin-top: 6px;
       font-weight: 600;
@@ -745,22 +770,23 @@
       display: flex !important;
       align-items: center;
       gap: 9px;
-      font-size: 12.5px !important;
+      font-size: 13px !important;
       text-transform: none !important;
       font-weight: 600 !important;
       color: var(--ui-text) !important;
-      padding: 9px 4px;
+      padding: 11px 6px;
+      min-height: var(--tap);
       border-radius: var(--ui-radius-sm);
       transition: background .12s;
     }
 
-    .check-row:hover {
+    .check-row:active {
       background: var(--ui-surface-2);
     }
 
     .check-row input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       margin: 0;
       accent-color: var(--ui-accent);
       flex-shrink: 0;
@@ -771,23 +797,24 @@
       align-items: center;
       gap: 12px;
       background: var(--ui-surface-2);
-      padding: 11px 14px;
-      border-radius: var(--ui-radius-sm);
+      padding: 12px 14px;
+      min-height: 58px;
+      border-radius: var(--ui-radius-md);
       border: 1.5px dashed var(--ui-border-strong);
       margin-bottom: 10px;
       position: relative;
       transition: border-color 0.15s, background 0.15s;
     }
 
-    .file-input-group:hover {
+    .file-input-group:active {
       border-color: var(--ui-accent);
       background: var(--ui-accent-soft);
     }
 
     .file-input-group::before {
       content: '';
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       flex-shrink: 0;
       border-radius: var(--ui-radius-sm);
       background: var(--ui-surface);
@@ -799,8 +826,8 @@
     }
 
     .file-input-group img.mini {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       object-fit: contain;
       background: var(--ui-surface);
       border-radius: var(--ui-radius-sm);
@@ -843,8 +870,8 @@
       background: var(--ui-danger-soft);
       color: var(--ui-danger);
       border: 1px solid transparent;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       flex-shrink: 0;
       border-radius: var(--ui-radius-sm);
       cursor: pointer;
@@ -853,7 +880,7 @@
       transition: background 0.15s;
     }
 
-    .btn-remove-row:hover {
+    .btn-remove-row:active {
       background: var(--ui-danger);
       color: #fff;
     }
@@ -870,7 +897,11 @@
       flex: 1;
       border: 1.5px solid var(--ui-border);
       border-radius: var(--ui-radius-sm);
-      padding: 11px 6px;
+      padding: 12px 6px;
+      min-height: var(--tap);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       font-size: 11px;
       font-weight: 800;
@@ -880,11 +911,6 @@
       text-transform: uppercase;
       letter-spacing: 0.03em;
       transition: all 0.15s;
-    }
-
-    .cat-opt:hover,
-    .style-opt:hover {
-      border-color: var(--ui-border-strong);
     }
 
     .cat-opt.sel-primera.active {
@@ -929,27 +955,28 @@
       justify-content: center;
       gap: 8px;
       width: 100%;
-      padding: 13px 14px;
+      padding: 14px 14px;
+      min-height: var(--tap);
       border: none;
       border-radius: var(--ui-radius-sm);
       font-weight: 800;
-      font-size: 12.5px;
+      font-size: 13px;
       cursor: pointer;
       margin-bottom: 8px;
       text-align: center;
       text-transform: uppercase;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
       transition: transform 0.08s ease, box-shadow 0.15s, background 0.15s, opacity 0.15s, filter .15s;
     }
 
     .btn svg {
-      width: 16px;
-      height: 16px;
+      width: 17px;
+      height: 17px;
       flex-shrink: 0;
     }
 
     .btn:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
 
     .btn:disabled {
@@ -964,23 +991,15 @@
       box-shadow: var(--ui-shadow-accent);
     }
 
-    .btn-primary:hover {
-      filter: brightness(1.05);
-    }
-
     .btn-outline {
       background: var(--ui-surface);
       color: var(--ui-accent-ink);
       border: 1.5px solid var(--ui-border-strong);
     }
 
-    .btn-outline:hover {
-      background: var(--ui-accent-soft);
-      border-color: var(--ui-accent);
-    }
-
     .btn-small {
-      padding: 9px 10px;
+      padding: 10px 10px;
+      min-height: 42px;
       font-size: 10.5px;
       margin-top: 4px;
       margin-bottom: 0;
@@ -993,12 +1012,12 @@
       box-shadow: none;
     }
 
-    .btn-ghost-danger:hover {
+    .btn-ghost-danger:active {
       background: var(--ui-danger-soft);
     }
 
     .export-hint {
-      font-size: 10.5px;
+      font-size: 11px;
       color: var(--ui-text-soft);
       text-align: center;
       margin: 4px 0 12px 0;
@@ -1012,18 +1031,19 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      font-size: 12.5px !important;
+      font-size: 13px !important;
       text-transform: none !important;
       font-weight: 700 !important;
       color: var(--ui-text) !important;
       margin: 4px 0 12px 0 !important;
       cursor: pointer;
+      min-height: 36px;
     }
 
     .switch {
       position: relative;
-      width: 42px;
-      height: 25px;
+      width: 44px;
+      height: 27px;
       flex-shrink: 0;
     }
 
@@ -1049,8 +1069,8 @@
       position: absolute;
       top: 3px;
       left: 3px;
-      width: 19px;
-      height: 19px;
+      width: 21px;
+      height: 21px;
       border-radius: 50%;
       background: #fff;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
@@ -1081,35 +1101,36 @@
       opacity: 0.45;
     }
 
-    /* ---- Barra de exportación (tarjeta destacada, siempre visible al fondo del panel) ---- */
+    /* ---- Barra de exportación: CTA fija tipo app, siempre a mano ---- */
     #exportbar {
       margin-top: 18px;
-      padding: 16px;
+      padding: 16px 14px 6px 14px;
       background: var(--ui-surface);
-      border: 1.5px solid var(--ui-border);
-      border-radius: var(--ui-radius-lg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--ui-radius-lg) var(--ui-radius-lg) 0 0;
       box-shadow: var(--ui-shadow-md);
       position: sticky;
       bottom: 0;
     }
 
     /* ================================================================
-   7. MODAL CROPPER
-   ================================================================ */
+       MODAL CROPPER — hoja inferior (bottom sheet), estilo app nativa
+       ================================================================ */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(8, 12, 28, 0.72);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      height: 100dvh;
+      background: rgba(8, 12, 28, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       display: none;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
       z-index: 9999;
-      padding: 16px;
+      padding: 0;
     }
 
     .modal-overlay.active {
@@ -1129,16 +1150,42 @@
 
     .modal-content {
       background: var(--ui-surface);
-      border-radius: var(--ui-radius-lg);
+      border-radius: var(--ui-radius-xl) var(--ui-radius-xl) 0 0;
       width: 100%;
       max-width: 480px;
-      padding: 24px;
+      padding: 10px 20px calc(20px + env(safe-area-inset-bottom, 0px)) 20px;
       box-shadow: var(--ui-shadow-lg);
       border: 1px solid var(--ui-border);
+      border-bottom: none;
+      animation: sheetUp 0.22s ease;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+
+    @keyframes sheetUp {
+      from {
+        transform: translateY(24px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-content::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 4px;
+      border-radius: var(--ui-radius-pill);
+      background: var(--ui-border-strong);
+      margin: 4px auto 14px auto;
     }
 
     .modal-content h3 {
-      font-size: 16.5px;
+      font-size: 16px;
       font-weight: 800;
       color: var(--ui-text);
       margin-bottom: 16px;
@@ -1148,7 +1195,7 @@
 
     .img-container {
       width: 100%;
-      height: 280px;
+      height: 300px;
       background:
         linear-gradient(45deg, var(--ui-surface-2) 25%, transparent 25%, transparent 75%, var(--ui-surface-2) 75%, var(--ui-surface-2)),
         linear-gradient(45deg, var(--ui-surface-2) 25%, var(--ui-surface-3) 25%, var(--ui-surface-3) 75%, var(--ui-surface-2) 75%, var(--ui-surface-2));
@@ -1183,33 +1230,36 @@
     }
 
     /* ================================================================
-   8. VISTA PREVIA (canvas / stage)
-   ================================================================ */
+       VISTA PREVIA (pantalla "Vista Previa")
+       ================================================================ */
     #stage {
       flex: 1;
-      padding: 40px 32px;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      justify-content: center;
-      gap: 40px;
+      padding: 24px 16px 24px 16px;
+      align-items: center;
+      gap: 22px;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       width: 100%;
+      min-height: 0;
       background-image: radial-gradient(var(--ui-border-strong) 1px, transparent 1px);
-      background-size: 22px 22px;
+      background-size: 20px 20px;
     }
 
     .preview-block {
-      display: flex;
+      display: none;
       flex-direction: column;
       align-items: center;
+      width: 100%;
+    }
+
+    .preview-block.active {
+      display: flex;
     }
 
     .preview-block h3 {
       display: inline-flex;
       align-self: center;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
       color: var(--ui-text-muted);
       text-transform: uppercase;
@@ -1224,8 +1274,8 @@
     }
 
     .preview-frame {
-      box-shadow: var(--ui-shadow-lg);
-      border-radius: 20px;
+      box-shadow: var(--ui-shadow-md);
+      border-radius: 22px;
       overflow: hidden;
       background: var(--ui-surface);
       border: 6px solid var(--ui-surface);
@@ -1236,21 +1286,21 @@
     }
 
     #wrap916 {
-      width: clamp(230px, 21vw, 320px);
+      width: clamp(210px, 72vw, 340px);
       aspect-ratio: 9 / 16;
     }
 
     #wrap11 {
-      width: clamp(260px, 24vw, 380px);
+      width: clamp(230px, 84vw, 380px);
       aspect-ratio: 1 / 1;
     }
 
-    /* Selector de formato (visible solo en móvil) */
+    /* Selector de formato Historia / Feed dentro de la vista previa */
     .format-selector-mobile {
-      display: none;
+      display: flex !important;
       justify-content: center;
       gap: 6px;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       background: var(--ui-surface);
       border: 1px solid var(--ui-border);
       padding: 5px;
@@ -1259,7 +1309,8 @@
     }
 
     .format-selector-mobile button {
-      padding: 10px 20px;
+      padding: 11px 20px;
+      min-height: 40px;
       border: none;
       border-radius: var(--ui-radius-pill);
       background: transparent;
@@ -1278,12 +1329,12 @@
     }
 
     /* ================================================================
-   9. TOAST DE CONFIRMACIÓN
-   ================================================================ */
+       TOAST DE CONFIRMACIÓN
+       ================================================================ */
     .toast-stack {
       position: fixed;
       left: 50%;
-      top: calc(var(--app-bar-h) + 14px);
+      top: calc(var(--app-bar-h) + 10px);
       transform: translateX(-50%);
       z-index: 10000;
       display: flex;
@@ -1291,7 +1342,7 @@
       gap: 8px;
       align-items: center;
       pointer-events: none;
-      width: min(92vw, 380px);
+      width: min(92vw, 420px);
     }
 
     .toast {
@@ -1304,7 +1355,7 @@
       border-radius: var(--ui-radius-md);
       font-size: 12.5px;
       font-weight: 700;
-      box-shadow: var(--ui-shadow-lg);
+      box-shadow: var(--ui-shadow-md);
       border: 1px solid var(--ui-border);
       opacity: 0;
       transform: translateY(-10px);
@@ -1336,7 +1387,6 @@
       }
     }
 
-    /* ================================================================
        DISEÑO DEL FLYER – FONDO DE ESTADIO
        ================================================================ */
     .card {
@@ -1952,6 +2002,241 @@
 
     .card-11 .flyer-schedule .sched-cat {
       font-size: 20px;
+    }
+
+    /* ================================================================
+       MODO JUGADOR DEL PARTIDO
+       ================================================================ */
+    .player-canvas-layer {
+      touch-action: none;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      background: #12141C;
+    }
+
+    .player-canvas-layer:active {
+      cursor: grabbing;
+    }
+
+    .player-photo-img {
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .flyer-jugador {
+      justify-content: space-between;
+      padding: 0 !important;
+    }
+
+    .flyer-jugador .flyer-header {
+      position: relative;
+      z-index: 5;
+      padding: 30px 34px 0 34px;
+    }
+
+    .flyer-jugador-scrim-top {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 26%;
+      z-index: 2;
+      background: linear-gradient(to bottom, rgba(6, 10, 24, 0.75) 0%, rgba(6, 10, 24, 0) 100%);
+      pointer-events: none;
+    }
+
+    .card-11 .flyer-jugador .flyer-header {
+      padding: 24px 26px 0 26px;
+    }
+
+    .flyer-jugador .flyer-header .club-crest {
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35));
+    }
+
+    .flyer-jugador .flyer-header .club-name .line1 {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 600;
+    }
+
+    .flyer-jugador .flyer-header .club-name .line2 {
+      font-size: 24px;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .flyer-jugador-scrim {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 46%;
+      z-index: 2;
+      background: linear-gradient(to top, rgba(6, 10, 24, 0.92) 0%, rgba(6, 10, 24, 0.55) 55%, rgba(6, 10, 24, 0) 100%);
+      pointer-events: none;
+    }
+
+    .flyer-jugador-bottom {
+      position: relative;
+      z-index: 4;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 0 34px 34px 34px;
+    }
+
+    .jugador-distincion {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 0.22em;
+      color: var(--blue-electric);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .jugador-name-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      justify-content: center;
+    }
+
+    .jugador-dorsal {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      line-height: 1;
+      color: #fff;
+      background: var(--blue-institutional);
+      width: 76px;
+      height: 76px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+    }
+
+    .jugador-nombre {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 46px;
+      line-height: 1.05;
+      color: #fff;
+      letter-spacing: 0.02em;
+      text-align: center;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    .jugador-rival-row {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.85);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+    }
+
+    .jugador-rival-sep {
+      color: var(--blue-electric);
+    }
+
+    .card-11 .jugador-dorsal {
+      width: 58px;
+      height: 58px;
+      font-size: 46px;
+      border-radius: 12px;
+    }
+
+    .card-11 .jugador-nombre {
+      font-size: 32px;
+    }
+
+    .card-11 .jugador-distincion {
+      font-size: 20px;
+    }
+
+    .card-11 .flyer-jugador-bottom {
+      padding: 0 26px 26px 26px;
+    }
+
+    /* ================================================================
+       MODO LISTA DE CONCENTRADOS
+       ================================================================ */
+    .conc-rival-row {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--blue-electric);
+      text-align: center;
+      text-transform: uppercase;
+      margin: -4px 0 6px 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    .flyer-concentrados {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 10px 0 20px 0;
+      position: relative;
+      z-index: 5;
+      max-height: 62%;
+      overflow: hidden;
+    }
+
+    .flyer-concentrados .conc-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 8px;
+      padding: 8px 16px;
+      backdrop-filter: blur(4px);
+    }
+
+    .flyer-concentrados .conc-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      color: var(--blue-electric);
+      width: 36px;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .flyer-concentrados .conc-num-empty {
+      width: 0;
+    }
+
+    .flyer-concentrados .conc-nombre {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: #fff;
+      flex: 1;
+      text-transform: uppercase;
+    }
+
+    .card-11 .flyer-concentrados .conc-num {
+      font-size: 20px;
+      width: 28px;
+    }
+
+    .card-11 .flyer-concentrados .conc-nombre {
+      font-size: 15px;
     }
 
     /* ================================================================
@@ -2705,172 +2990,51 @@
     }
 
     /* ================================================================
-   10. RESPONSIVE — mobile first
-   ================================================================ */
+    /* ================================================================
+       RESPONSIVE — la app es mobile-only por diseño. En pantallas más
+       anchas (tablet/escritorio, sólo para pruebas) se muestra el mismo
+       layout dentro de un marco centrado tipo teléfono, en vez de un
+       layout de escritorio distinto.
+       ================================================================ */
+    @media (min-width: 641px) {
+      body {
+        background: var(--ui-canvas-outer);
+      }
+
+      .app-frame {
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+      }
+
+      .mobile-tabs {
+        position: sticky;
+      }
+    }
+
     @media (min-width: 851px) {
-      #stage {
-        min-height: calc(100vh - var(--app-bar-h));
-      }
 
-      /* ---- Escudo / Categoría / Formato: siempre visibles a la vez, en formato compacto ---- */
-      .step-trio {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-
-      .step-trio details.fs {
-        margin-bottom: 0;
-      }
-
-      .step-trio summary {
-        padding: 10px 14px;
-        font-size: 12px;
-        gap: 10px;
-      }
-
-      .step-trio .fs-body {
-        padding: 4px 14px 12px 14px;
-      }
-
-      /* En escritorio estos 3 pasos no son un asistente secuencial: se ocultan el indicador
-     "Paso X de N" y los botones Anterior/Siguiente porque los tres quedan abiertos juntos. */
       .step-primary .step-progress,
       .step-primary .step-nav {
         display: none;
       }
-
-      /* ---- Barra de exportación: discreta, ya no ocupa media pantalla ---- */
-      #exportbar {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 8px;
-        padding: 10px;
-        margin-top: 14px;
-      }
-
-      #exportbar .btn {
-        width: auto;
-        flex: 1 1 auto;
-        margin-bottom: 0;
-        padding: 9px 12px;
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: none;
-        letter-spacing: 0;
-        border-radius: var(--ui-radius-md);
-      }
-
-      #exportbar .btn-primary {
-        box-shadow: none;
-      }
-
-      #exportbar .btn svg {
-        width: 14px;
-        height: 14px;
-      }
-
-      #exportbar .export-hint {
-        flex-basis: 100%;
-        order: 3;
-        margin: 0;
-        font-size: 9.5px;
-        text-align: left;
-      }
-
-      #exportbar .btn-ghost-danger {
-        flex: 0 0 auto;
-        order: 4;
-        padding: 6px 8px;
-        font-size: 10px;
-        margin-left: auto;
-      }
     }
 
-    @media (max-width: 850px) {
-      .app-shell {
-        flex-direction: column;
-      }
-
-      .mobile-tabs {
-        display: block;
-      }
-
-      #panel {
-        width: 100%;
-        min-width: 100%;
-        height: auto;
-        position: relative;
-        top: 0;
-        padding: 18px 16px calc(var(--bottom-nav-h) + 78px + env(safe-area-inset-bottom, 0px)) 16px;
-        box-shadow: none;
-      }
-
-      #stage {
-        padding: 22px 14px calc(var(--bottom-nav-h) + 30px + env(safe-area-inset-bottom, 0px)) 14px;
-        gap: 26px;
-      }
-
-      #wrap916 {
-        width: clamp(210px, 68vw, 360px);
-      }
-
-      #wrap11 {
-        width: clamp(230px, 82vw, 400px);
-      }
-
-      .view-tab-content {
-        display: none;
-      }
-
-      .view-tab-content.active {
-        display: block;
-      }
-
-      #stage.view-tab-content.active {
-        display: flex;
-      }
-
-      #exportbar {
-        position: static;
-        margin-top: 22px;
-      }
-
-      .preview-block {
-        display: none;
-      }
-
-      .preview-block.active {
-        display: flex;
-      }
-
-      .format-selector-mobile {
-        display: flex !important;
-      }
-
-      .app-bar-text small {
-        display: none;
-      }
-    }
-
-    @media (max-width: 420px) {
+    @media (max-width: 380px) {
       .panel-header h1 {
         font-size: 19px;
       }
 
       .app-bar-crest {
-        width: 32px;
-        height: 32px;
-        font-size: 11px;
+        width: 30px;
+        height: 30px;
+        font-size: 10.5px;
       }
 
       #wrap916 {
-        width: clamp(190px, 72vw, 320px);
+        width: clamp(190px, 74vw, 320px);
       }
 
       #wrap11 {
-        width: clamp(210px, 84vw, 360px);
+        width: clamp(200px, 84vw, 340px);
       }
     }
 
@@ -2879,6 +3043,7 @@
         padding-bottom: max(0px, env(safe-area-inset-bottom));
       }
     }
+
 
     /* ================================================================
    TAMAÑO Y POSICIÓN DE ELEMENTOS (nueva función)
@@ -3103,6 +3268,8 @@
 
 <body>
 
+  <div class="app-frame">
+
   <!-- ================================================================
      BARRA SUPERIOR (APP BAR)
      ================================================================ -->
@@ -3127,30 +3294,6 @@
       </svg>
     </button>
   </header>
-
-  <!-- ================================================================
-     PESTAÑAS MÓVILES (barra inferior)
-     ================================================================ -->
-  <nav class="mobile-tabs">
-    <div>
-      <button class="tab-btn active" onclick="switchTab('editor')">
-        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-          stroke-linejoin="round">
-          <path d="M4 4h9.5L16 6.5V16H4z" />
-          <path d="M7 8h6M7 11h6M7 14h3.5" />
-        </svg>
-        Editor
-      </button>
-      <button class="tab-btn" onclick="switchTab('preview')">
-        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-          stroke-linejoin="round">
-          <path d="M1.8 10S4.8 4.2 10 4.2 18.2 10 18.2 10 15.2 15.8 10 15.8 1.8 10 1.8 10z" />
-          <circle cx="10" cy="10" r="2.4" />
-        </svg>
-        Vista Previa
-      </button>
-    </div>
-  </nav>
 
   <div class="app-shell">
 
@@ -3224,6 +3367,8 @@
               <option value="RESULTADO">Resultado de la Fecha (Marcador y Goles)</option>
               <option value="GENERICO">Genérico (Libre / Cualquier Aviso)</option>
               <option value="FOTO">Foto (Solo encabezado)</option>
+              <option value="JUGADOR">Jugador del Partido</option>
+              <option value="CONCENTRADOS">Lista de Concentrados</option>
             </select>
           </div>
         </details>
@@ -3309,6 +3454,95 @@
               </div>
               <label>Nombre Rival</label>
               <input type="text" id="in-nombre-rival" class="in-nombre-rival" value="MOQUEHUA">
+            </div>
+          </details>
+        </div>
+
+        <!-- SECCIÓN MODO JUGADOR DEL PARTIDO -->
+        <div id="field-group-jugador" style="display: none;">
+          <details class="fs">
+            <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10" cy="7" r="3.2" />
+                <path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+              </svg><span class="step-label">Foto del Jugador</span></summary>
+            <div class="fs-body">
+              <div id="jugador-upload-block">
+                <label>Fotografía del jugador</label>
+                <div class="file-input-group">
+                  <img class="mini mini-jugador" src="" alt="" style="display:none;">
+                  <input type="file" accept="image/*" id="file-jugador">
+                </div>
+                <button class="btn btn-outline btn-small" id="btn-remove-jugador" style="display:none;">Quitar
+                  foto</button>
+
+                <div id="jugador-fit-controls" style="display:none; margin-top:10px;">
+                  <label>Ajuste · Historia 9:16</label>
+                  <div class="style-selector player-fit-selector" data-format="916">
+                    <div class="style-opt active" data-fit="cover">Cubrir Lienzo</div>
+                    <div class="style-opt" data-fit="contain">Foto Completa</div>
+                  </div>
+                  <label style="margin-top:8px;">Ajuste · Feed 1:1</label>
+                  <div class="style-selector player-fit-selector" data-format="11">
+                    <div class="style-opt active" data-fit="cover">Cubrir Lienzo</div>
+                    <div class="style-opt" data-fit="contain">Foto Completa</div>
+                  </div>
+                  <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+                    <button class="btn btn-outline btn-small" id="btn-center-jugador" style="flex:1;">Centrar</button>
+                    <button class="btn btn-outline btn-small" id="btn-reset-jugador" style="flex:1;">Restablecer</button>
+                  </div>
+                  <p class="hint">Mové la foto con un dedo. Usá dos dedos para hacer zoom.</p>
+                </div>
+              </div>
+            </div>
+          </details>
+          <details class="fs">
+            <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="14" height="14" rx="2" />
+                <path d="M7 10h6M10 7v6" />
+              </svg><span class="step-label">Datos del Jugador</span></summary>
+            <div class="fs-body">
+              <label>Nombre del jugador</label>
+              <input type="text" id="in-jugador-nombre" value="JUAN PÉREZ">
+              <label>Dorsal (número de camiseta)</label>
+              <input type="text" id="in-jugador-dorsal" value="10">
+              <label>Distinción</label>
+              <input type="text" id="in-jugador-distincion" value="FIGURA DEL PARTIDO">
+            </div>
+          </details>
+        </div>
+
+        <!-- SECCIÓN MODO LISTA DE CONCENTRADOS -->
+        <div id="field-group-concentrados" style="display: none;">
+          <details class="fs">
+            <summary><svg class="step-ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4.5" width="14" height="12.5" rx="2" />
+                <path d="M6.5 8h7M6.5 11h7M6.5 14h4" />
+              </svg><span class="step-label">Lista de Jugadores Concentrados</span></summary>
+            <div class="fs-body">
+              <div id="conc-inputs">
+                <div class="schedule-input-row">
+                  <input type="text" value="1" class="conc-in-num" placeholder="N°"
+                    style="max-width:56px; text-align:center;">
+                  <input type="text" value="PÉREZ, JUAN" class="conc-in-nombre" placeholder="Apellido, Nombre">
+                  <button class="btn-remove-row" onclick="removeConcRow(this)">X</button>
+                </div>
+                <div class="schedule-input-row">
+                  <input type="text" value="4" class="conc-in-num" placeholder="N°"
+                    style="max-width:56px; text-align:center;">
+                  <input type="text" value="GÓMEZ, LUCAS" class="conc-in-nombre" placeholder="Apellido, Nombre">
+                  <button class="btn-remove-row" onclick="removeConcRow(this)">X</button>
+                </div>
+                <div class="schedule-input-row">
+                  <input type="text" value="7" class="conc-in-num" placeholder="N°"
+                    style="max-width:56px; text-align:center;">
+                  <input type="text" value="FERNÁNDEZ, MATÍAS" class="conc-in-nombre" placeholder="Apellido, Nombre">
+                  <button class="btn-remove-row" onclick="removeConcRow(this)">X</button>
+                </div>
+              </div>
+              <button class="btn btn-outline btn-small" id="btn-add-conc">+ Agregar Jugador</button>
             </div>
           </details>
         </div>
@@ -3412,61 +3646,34 @@
                   <img class="mini mini-generico" src="" alt="" style="display:none;">
                   <input type="file" accept="image/*" id="file-generico">
                 </div>
-                <div id="generico-img-actions" style="display:none; flex-direction:column; gap:6px; margin-bottom:8px;">
-                  <p class="hint">
-                    Historia y Feed tienen formas distintas: ajustá el recorte para cada uno.
-                  </p>
-                  <div style="display:flex; gap:6px; align-items:center;">
-                    <button class="btn btn-outline btn-small" id="btn-edit-generico-916"
-                      style="flex:1; margin-bottom:0;">Editar Historia 9:16</button>
-                    <img class="mini mini-generico-916" src="" alt=""
-                      style="display:none; width:26px; height:26px; object-fit:cover; border-radius:6px; border:1px solid #ccc; flex-shrink:0;">
-                  </div>
-                  <div style="display:flex; gap:6px; align-items:center;">
-                    <button class="btn btn-outline btn-small" id="btn-edit-generico-11"
-                      style="flex:1; margin-bottom:0;">Editar Feed 1:1</button>
-                    <img class="mini mini-generico-11" src="" alt=""
-                      style="display:none; width:26px; height:26px; object-fit:cover; border-radius:6px; border:1px solid #ccc; flex-shrink:0;">
-                  </div>
-                  <button class="btn btn-outline btn-small" id="btn-remove-generico" style="margin-bottom:0;">Quitar
-                    imagen</button>
+                <button class="btn btn-outline btn-small" id="btn-remove-generico" style="display:none;">Quitar
+                  imagen</button>
 
-                  <label style="margin-top:8px;">Posición de la imagen</label>
-                  <div class="row2">
-                    <div>
-                      <label style="margin:0 0 2px 0;">Horizontal</label>
-                      <input type="range" id="in-gen-posx" min="0" max="100" value="50" step="1">
-                    </div>
-                    <div>
-                      <label style="margin:0 0 2px 0;">Vertical</label>
-                      <input type="range" id="in-gen-posy" min="0" max="100" value="50" step="1">
-                    </div>
+                <div id="generico-fit-controls" style="display:none; margin-top:10px;">
+                  <label>Ajuste · Historia 9:16</label>
+                  <div class="style-selector gen-fit-selector" data-format="916">
+                    <div class="style-opt active" data-fit="cover">Cubrir Lienzo</div>
+                    <div class="style-opt" data-fit="contain">Imagen Completa</div>
+                  </div>
+                  <label style="margin-top:8px;">Ajuste · Feed 1:1</label>
+                  <div class="style-selector gen-fit-selector" data-format="11">
+                    <div class="style-opt active" data-fit="cover">Cubrir Lienzo</div>
+                    <div class="style-opt" data-fit="contain">Imagen Completa</div>
                   </div>
 
-                  <label style="margin-top:8px;">Zoom</label>
-                  <div style="display:flex; align-items:center; gap:8px;">
-                    <input type="range" id="in-gen-zoom" min="50" max="200" value="100" step="5" style="flex:1;">
-                    <span id="zoom-label"
-                      style="font-size:11px; font-weight:600; color:#0A227A; min-width:40px;">100%</span>
+                  <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+                    <button class="btn btn-outline btn-small" id="btn-center-generico" style="flex:1;">Centrar</button>
+                    <button class="btn btn-outline btn-small" id="btn-reset-generico" style="flex:1;">Restablecer</button>
                   </div>
+
                   <p class="hint">
-                    Ajusta el zoom para encuadrar mejor la imagen.
+                    Mové la imagen con un dedo. Usá dos dedos para hacer zoom. Historia y Feed se ajustan por
+                    separado.
                   </p>
                 </div>
               </div>
 
               <div id="generico-options" style="display:block;">
-                <label>Formato de la imagen</label>
-                <select id="in-gen-imgformat">
-                  <option value="1/1">Cuadrada (1:1)</option>
-                  <option value="4/5" selected>Vertical (4:5)</option>
-                  <option value="9/16">Vertical alta (9:16)</option>
-                  <option value="3/4">Vertical clásica (3:4)</option>
-                  <option value="16/9">Horizontal (16:9)</option>
-                  <option value="21/9">Panorámica (21:9)</option>
-                  <option value="libre">Libre (a tu gusto)</option>
-                </select>
-
                 <label>Texto Libre</label>
                 <textarea id="in-gen-texto" rows="5"
                   style="width:100%; padding:8px; font-size:12px; border:1px solid #D1D9ED; border-radius:6px; font-family:inherit; font-weight:600; resize:vertical;"
@@ -4023,6 +4230,32 @@
 
   </div><!-- /app-shell -->
 
+  <!-- ================================================================
+     NAVEGACIÓN INFERIOR (Editor / Vista Previa)
+     ================================================================ -->
+  <nav class="mobile-tabs">
+    <div>
+      <button class="tab-btn active" onclick="switchTab('editor')">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M4 4h9.5L16 6.5V16H4z" />
+          <path d="M7 8h6M7 11h6M7 14h3.5" />
+        </svg>
+        Editor
+      </button>
+      <button class="tab-btn" onclick="switchTab('preview')">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M1.8 10S4.8 4.2 10 4.2 18.2 10 18.2 10 15.2 15.8 10 15.8 1.8 10 1.8 10z" />
+          <circle cx="10" cy="10" r="2.4" />
+        </svg>
+        Vista Previa
+      </button>
+    </div>
+  </nav>
+
+  </div><!-- /app-frame -->
+
   <!-- Contenedor de notificaciones (toasts) -->
   <div class="toast-stack" id="toast-stack"></div>
 
@@ -4229,18 +4462,15 @@
     let localShieldSrc = null;
     let rivalShieldSrc = null;
     let sponsorSrc = null;
-    let genericoImgSrcStory = null;
-    let genericoImgSrcFeed = null;
-    let genericoImgBlurStory = null;
-    let genericoImgBlurFeed = null;
-    let genericoImgRatioStory = null;
-    let genericoImgRatioFeed = null;
-    let genericoOriginalSrc = null;
-    let genericoPendingChain = false;
+    let genImgSrc = null;
+    let genNatural = { w: 0, h: 0 };
+    let genState = { '916': null, '11': null };
+    let genInitialState = { '916': null, '11': null };
     let genericoStyle = 'tradicional';
-    let genericoImgPosX = 50;
-    let genericoImgPosY = 50;
-    let genericoZoom = 100;
+    let playerImgSrc = null;
+    let playerNatural = { w: 0, h: 0 };
+    let playerState = { '916': null, '11': null };
+    let playerInitialState = { '916': null, '11': null };
     let backgroundImgSrc = null;
     let currentCategory = 'PRIMERA';
     let cropper = null;
@@ -4391,17 +4621,6 @@
       posKeys.forEach(key => {
         const p = positions[key];
         if (p) setPos(key, p.x || 0, p.y || 0);
-      });
-    }
-
-    const zoomInput = document.getElementById('in-gen-zoom');
-    const zoomLabel = document.getElementById('zoom-label');
-    if (zoomInput && zoomLabel) {
-      zoomInput.addEventListener('input', () => {
-        genericoZoom = Number(zoomInput.value);
-        zoomLabel.textContent = genericoZoom + '%';
-        renderCards();
-        saveState();
       });
     }
 
@@ -4791,7 +5010,10 @@
       } else {
         photoLayerInner = `
           <div class="foto-canvas-placeholder">
-            <span class="icon">📷</span>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:44px; height:44px;">
+              <path d="M4 8h3l1.6-2.4A1.5 1.5 0 019.9 5h4.2a1.5 1.5 0 011.3.7L17 8h3a1.5 1.5 0 011.5 1.5v9A1.5 1.5 0 0120 20H4a1.5 1.5 0 01-1.5-1.5v-9A1.5 1.5 0 014 8z" />
+              <circle cx="12" cy="14" r="3.6" />
+            </svg>
             <span>Subí una fotografía<br>para empezar a editar</span>
           </div>
         `;
@@ -4811,6 +5033,117 @@
       return html;
     }
 
+    function buildJugadorHTML(format) {
+      const flags = getVisibilityFlags();
+      const ceramicaShield = getCeramicaShieldHTML();
+      const brand1 = document.querySelector('.in-brand1').value;
+      const brand2 = document.querySelector('.in-brand2').value;
+      const { dayName, formattedDate } = getCalculatedDateInfo();
+      const hora = getFormattedHora();
+      const rivalName = document.getElementById('in-nombre-rival').value.toUpperCase() || 'RIVAL';
+      const nombreJugador = (document.getElementById('in-jugador-nombre').value || '').toUpperCase();
+      const dorsal = (document.getElementById('in-jugador-dorsal').value || '').trim();
+      const distincion = document.getElementById('in-jugador-distincion').value || '';
+
+      let photoLayerInner;
+      if (playerImgSrc && playerState[format]) {
+        const st = playerState[format];
+        photoLayerInner = `<img class="player-photo-img" data-format="${format}" src="${playerImgSrc}" draggable="false" alt="" style="position:absolute; left:${st.left}px; top:${st.top}px; width:${st.w}px; height:${st.h}px;">`;
+      } else {
+        photoLayerInner = `
+          <div class="foto-canvas-placeholder">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:44px; height:44px;">
+              <circle cx="12" cy="8.6" r="3.6" />
+              <path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" />
+            </svg>
+            <span>Subí la foto del jugador<br>para empezar a editar</span>
+          </div>
+        `;
+      }
+
+      let headerHTML = buildHeaderHTML(ceramicaShield, brand1, brand2, flags.showHeader);
+
+      const distincionHidden = flags.showTitle ? '' : 'style="visibility:hidden;"';
+      const infoHidden = flags.showInfo ? '' : 'style="visibility:hidden;"';
+      const nameHidden = flags.showTeams ? '' : 'style="visibility:hidden;"';
+      let sponsorHTML = buildSponsorHTML(sponsorSrc, flags.showSponsors);
+
+      const html = `
+        <div class="card-content flyer-jugador">
+          <div class="flyer-background has-bg-img player-canvas-layer" data-format="${format}" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; overflow:hidden;">
+            ${photoLayerInner}
+          </div>
+          <div class="flyer-jugador-scrim-top"></div>
+          <div class="flyer-jugador-scrim"></div>
+          ${headerHTML}
+          <div class="flyer-jugador-bottom">
+            <div class="jugador-distincion" ${distincionHidden}>${distincion}</div>
+            <div class="jugador-name-row" ${nameHidden}>
+              ${dorsal ? `<div class="jugador-dorsal">${dorsal}</div>` : ''}
+              <div class="jugador-nombre">${nombreJugador}</div>
+            </div>
+            <div class="jugador-rival-row" ${infoHidden}>
+              <span>VS ${rivalName}</span>
+              <span class="jugador-rival-sep">•</span>
+              <span>${dayName} ${formattedDate}</span>
+              ${hora ? `<span class="jugador-rival-sep">•</span><span>${hora}</span>` : ''}
+            </div>
+            ${sponsorHTML}
+          </div>
+        </div>
+      `;
+      return html;
+    }
+
+    function buildConcentradosHTML(format) {
+      const flags = getVisibilityFlags();
+      const ceramicaShield = getCeramicaShieldHTML();
+      const brand1 = document.querySelector('.in-brand1').value;
+      const brand2 = document.querySelector('.in-brand2').value;
+      const t1 = document.querySelector('.in-t1').value || 'LISTA DE';
+      const t2 = document.querySelector('.in-t2').value || 'CONCENTRADOS';
+      const { dayName, formattedDate } = getCalculatedDateInfo();
+      const rivalName = document.getElementById('in-nombre-rival').value.toUpperCase() || 'RIVAL';
+      const footR1 = document.querySelector('.in-foot-r1').value;
+      const footR2 = document.querySelector('.in-foot-r2').value;
+      const slogan = document.querySelector('.in-foot-slogan').value;
+
+      const numeros = document.querySelectorAll('.conc-in-num');
+      const nombres = document.querySelectorAll('.conc-in-nombre');
+      let rows = '';
+      nombres.forEach((n, i) => {
+        const nombre = (n.value || '').trim();
+        if (!nombre) return;
+        const numero = ((numeros[i] && numeros[i].value) || '').trim();
+        rows += `
+          <div class="conc-row">
+            ${numero ? `<div class="conc-num">${numero}</div>` : '<div class="conc-num conc-num-empty"></div>'}
+            <div class="conc-nombre">${nombre}</div>
+          </div>
+        `;
+      });
+      if (!rows) {
+        rows = `<div class="conc-row"><div class="conc-nombre" style="text-align:center; opacity:0.6;">Agregá jugadores en el panel</div></div>`;
+      }
+
+      let headerHTML = buildHeaderHTML(ceramicaShield, brand1, brand2, flags.showHeader);
+      let titleHTML = buildTitleHTML(t1, t2, flags.showTitle);
+      const infoHidden = flags.showInfo ? '' : 'style="visibility:hidden;"';
+      let footerHTML = buildFooterHTML(footR1, footR2, slogan, flags.showFooter);
+      let sponsorHTML = buildSponsorHTML(sponsorSrc, flags.showSponsors);
+
+      let inner = `
+        ${headerHTML}
+        ${titleHTML}
+        <div class="conc-rival-row" ${infoHidden}>VS ${rivalName} · ${dayName} ${formattedDate}</div>
+        <div class="flyer-concentrados">${rows}</div>
+        ${footerHTML}
+        ${sponsorHTML}
+      `;
+      return buildBaseContent(inner, format);
+    }
+
+
     function buildGenericoHTML(format) {
       const is916 = format === '916';
       const showHeader = document.getElementById('in-gen-show-header').checked;
@@ -4820,19 +5153,16 @@
       const showSponsors = document.getElementById('in-gen-show-sponsors').checked && !!sponsorSrc;
       const showFooter = document.getElementById('in-gen-show-footer').checked;
 
-      const src = is916 ? genericoImgSrcStory : genericoImgSrcFeed;
-      const ratio = is916 ? genericoImgRatioStory : genericoImgRatioFeed;
+      const src = genImgSrc;
       const texto = document.getElementById('in-gen-texto').value.trim();
       const ceramicaShield = getCeramicaShieldHTML();
 
       let bgHTML = '';
-      if (src) {
-        const zoomPercent = genericoZoom / 100;
-        const posX = genericoImgPosX;
-        const posY = genericoImgPosY;
+      if (src && genState[format]) {
+        const st = genState[format];
         bgHTML = `
-          <div class="flyer-background has-bg-img" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; overflow:hidden;">
-            <img src="${src}" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; object-position: ${posX}% ${posY}%; transform: scale(${zoomPercent}); z-index:1;">
+          <div class="flyer-background has-bg-img gen-canvas-layer" data-format="${format}" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; overflow:hidden;">
+            <img class="gen-bg-photo-img" data-format="${format}" src="${src}" draggable="false" alt="" style="position:absolute; left:${st.left}px; top:${st.top}px; width:${st.w}px; height:${st.h}px;">
           </div>
         `;
       } else {
@@ -4842,7 +5172,7 @@
       const subtitle = document.querySelector('.in-cat').value || '';
 
       if (genericoStyle === 'minimal') {
-        const blurSrc = is916 ? genericoImgBlurStory : genericoImgBlurFeed;
+        const blurSrc = genImgSrc;
         const glassBg = blurSrc ?
           `background-image: linear-gradient(135deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.46) 100%), url(${blurSrc}); background-size: cover; background-position: center;` :
           `background: rgba(255,255,255,0.2); backdrop-filter: blur(12px);`;
@@ -4916,17 +5246,9 @@
       let imgHTML = '';
       if (src) {
         const canvas = is916 ? { w: 950, h: 620 } : { w: 970, h: 340 };
-        let w = canvas.w, h = canvas.h;
-        if (ratio) {
-          w = canvas.h * ratio;
-          h = canvas.h;
-          if (w > canvas.w) { w = canvas.w; h = canvas.w / ratio; }
-        }
-        const left = (canvas.w - w) * (genericoImgPosX / 100);
-        const top = (canvas.h - h) * (genericoImgPosY / 100);
         imgHTML = `
           <div style="width:100%; height:${canvas.h}px; position:relative; margin:10px 0;">
-            <div style="position:absolute; left:${left}px; top:${top}px; width:${w}px; height:${h}px; overflow:hidden; border-radius:12px; border:1px solid rgba(255,255,255,0.15); box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+            <div style="position:absolute; left:0; top:0; width:${canvas.w}px; height:${canvas.h}px; overflow:hidden; border-radius:12px; border:1px solid rgba(255,255,255,0.15); box-shadow:0 10px 30px rgba(0,0,0,0.4);">
               <img src="${src}" style="width:100%; height:100%; object-fit:cover;">
             </div>
           </div>
@@ -4994,6 +5316,8 @@
     function renderCards() {
       const mode = document.getElementById('in-mode').value;
       const isFoto = mode === 'FOTO';
+      const isGenerico = mode === 'GENERICO';
+      const isJugador = mode === 'JUGADOR';
 
       const selectedFont = fontSelector.value;
       const textBgOn = textBgToggle.checked;
@@ -5014,6 +5338,8 @@
       updateAllText();
 
       if (isFoto) attachFotoCanvasEvents();
+      if (isGenerico) attachGenCanvasEvents();
+      if (isJugador) attachPlayerCanvasEvents();
     }
 
     function buildCardHTML(format, mode) {
@@ -5022,6 +5348,8 @@
       if (mode === 'RESULTADO') return buildResultadoHTML(format);
       if (mode === 'FOTO') return buildFotoHTML(format);
       if (mode === 'GENERICO') return buildGenericoHTML(format);
+      if (mode === 'JUGADOR') return buildJugadorHTML(format);
+      if (mode === 'CONCENTRADOS') return buildConcentradosHTML(format);
       return '';
     }
 
@@ -5043,26 +5371,33 @@
     //  EVENTOS DEL PANEL
     // ================================================================
 
-    document.getElementById('in-mode').addEventListener('change', (e) => {
-      const mode = e.target.value;
+    function updateModeVisibility() {
+      const mode = document.getElementById('in-mode').value;
       const isVs = mode === 'VS';
       const isLibre = mode === 'LIBRE';
       const isResultado = mode === 'RESULTADO';
       const isGenerico = mode === 'GENERICO';
       const isFoto = mode === 'FOTO';
+      const isJugador = mode === 'JUGADOR';
+      const isConcentrados = mode === 'CONCENTRADOS';
 
-      document.getElementById('field-group-vs').style.display = (isVs || isResultado) ? 'block' : 'none';
+      document.getElementById('field-group-vs').style.display = (isVs || isResultado || isJugador || isConcentrados) ? 'block' : 'none';
       document.getElementById('field-group-libre').style.display = isLibre ? 'block' : 'none';
       document.getElementById('field-group-resultado').style.display = isResultado ? 'block' : 'none';
       document.getElementById('field-group-generico').style.display = isGenerico ? 'block' : 'none';
       document.getElementById('field-group-foto').style.display = isFoto ? 'block' : 'none';
-      document.getElementById('field-hora-vs').style.display = isVs ? 'block' : 'none';
+      document.getElementById('field-group-jugador').style.display = isJugador ? 'block' : 'none';
+      document.getElementById('field-group-concentrados').style.display = isConcentrados ? 'block' : 'none';
+      document.getElementById('field-hora-vs').style.display = (isVs || isJugador) ? 'block' : 'none';
 
       const hideCancha = isGenerico || isResultado || isFoto;
-      const hideAccesos = isGenerico || isResultado || isFoto || isLibre;
+      const hideAccesos = isGenerico || isResultado || isFoto || isLibre || isJugador || isConcentrados;
       document.getElementById('fieldset-cancha').style.display = hideCancha ? 'none' : 'block';
       document.getElementById('fieldset-accesos').style.display = hideAccesos ? 'none' : 'block';
+    }
 
+    document.getElementById('in-mode').addEventListener('change', () => {
+      updateModeVisibility();
       renderCards();
       saveState();
     });
@@ -5087,7 +5422,8 @@
 
     document.querySelectorAll('#panel input[type="text"]').forEach(inp => {
       inp.addEventListener('input', () => {
-        if (inp.classList.contains('in-nombre-rival') || inp.classList.contains('in-estadio')) renderCards();
+        if (inp.classList.contains('in-nombre-rival') || inp.classList.contains('in-estadio') ||
+          inp.id === 'in-jugador-nombre' || inp.id === 'in-jugador-dorsal' || inp.id === 'in-jugador-distincion') renderCards();
         else updateAllText();
         saveState();
       });
@@ -5118,17 +5454,6 @@
         renderCards();
         saveState();
       });
-    });
-
-    document.getElementById('in-gen-posx').addEventListener('input', (e) => {
-      genericoImgPosX = Number(e.target.value);
-      renderCards();
-      saveState();
-    });
-    document.getElementById('in-gen-posy').addEventListener('input', (e) => {
-      genericoImgPosY = Number(e.target.value);
-      renderCards();
-      saveState();
     });
 
     // ================================================================
@@ -5208,55 +5533,18 @@
     //  CARGA DE ESCUDOS – CROPPER
     // ================================================================
 
-    function isGenericoTarget(target) {
-      return target === 'generico-916' || target === 'generico-11';
-    }
-
-    function makeBlurredDataUrl(srcDataUrl, blurPx = 18) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => {
-          const maxDim = 480;
-          const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
-          const w = Math.max(1, Math.round(img.width * scale));
-          const h = Math.max(1, Math.round(img.height * scale));
-          const c = document.createElement('canvas');
-          c.width = w; c.height = h;
-          const ctx = c.getContext('2d');
-          try { ctx.filter = `blur(${blurPx}px)`; } catch (e) { /* ignore */ }
-          ctx.drawImage(img, 0, 0, w, h);
-          resolve(c.toDataURL('image/jpeg', 0.82));
-        };
-        img.onerror = () => resolve(null);
-        img.src = srcDataUrl;
-      });
-    }
-
     function openCropperModal(file, target) {
       currentTargetTeam = target;
       const reader = new FileReader();
       reader.onload = (e) => {
         cropImage.src = e.target.result;
-        if (isGenericoTarget(target)) genericoOriginalSrc = genericoOriginalSrc || e.target.result;
-
-        const titles = {
-          'generico-916': 'Encuadrar Imagen · Historia 9:16',
-          'generico-11': 'Encuadrar Imagen · Feed 1:1'
-        };
-        document.getElementById('cropModalTitle').textContent = titles[target] || 'Ajustar y Centrar Escudo';
-        document.getElementById('cropModalHint').style.display = isGenericoTarget(target) ? 'block' : 'none';
+        document.getElementById('cropModalTitle').textContent = 'Ajustar y Centrar Escudo';
+        document.getElementById('cropModalHint').style.display = 'none';
 
         cropModal.classList.add('active');
         if (cropper) cropper.destroy();
 
-        let options;
-        if (isGenericoTarget(target)) {
-          const chosenRatio = parseImgRatio(document.getElementById('in-gen-imgformat').value);
-          options = { aspectRatio: chosenRatio === null ? NaN : chosenRatio, viewMode: 1, background: false, autoCropArea: 0.95, responsive: true, dragMode: 'move', cropBoxResizable: true, cropBoxMovable: true, guides: true, zoomOnWheel: true };
-        } else {
-          options = { aspectRatio: 1, viewMode: 1, background: false, autoCropArea: 0.9, responsive: true };
-        }
-
+        const options = { aspectRatio: 1, viewMode: 1, background: false, autoCropArea: 0.9, responsive: true };
         cropper = new Cropper(cropImage, options);
       };
       reader.readAsDataURL(file);
@@ -5267,47 +5555,6 @@
 
     document.getElementById('btnCropSave').addEventListener('click', () => {
       if (!cropper) return;
-
-      if (isGenericoTarget(currentTargetTeam)) {
-        const canvas = cropper.getCroppedCanvas({ maxWidth: 1600, maxHeight: 1600, imageSmoothingQuality: 'high' });
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-        const resultRatio = canvas.width / canvas.height;
-        const targetNow = currentTargetTeam;
-
-        if (targetNow === 'generico-916') {
-          genericoImgSrcStory = dataUrl;
-          genericoImgRatioStory = resultRatio;
-          document.querySelector('.mini-generico-916').src = dataUrl;
-          document.querySelector('.mini-generico-916').style.display = 'block';
-        } else {
-          genericoImgSrcFeed = dataUrl;
-          genericoImgRatioFeed = resultRatio;
-          document.querySelector('.mini-generico-11').src = dataUrl;
-          document.querySelector('.mini-generico-11').style.display = 'block';
-        }
-        const mini = document.querySelector('.mini-generico');
-        mini.src = dataUrl; mini.style.display = 'block';
-        document.getElementById('generico-img-actions').style.display = 'flex';
-
-        cropModal.classList.remove('active');
-        cropper.destroy(); cropper = null;
-        renderCards();
-        saveState();
-
-        makeBlurredDataUrl(dataUrl).then(blurUrl => {
-          if (targetNow === 'generico-916') genericoImgBlurStory = blurUrl;
-          else genericoImgBlurFeed = blurUrl;
-          renderCards();
-        });
-
-        if (targetNow === 'generico-916' && genericoPendingChain) {
-          genericoPendingChain = false;
-          fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => {
-            setTimeout(() => openCropperModal(blob, 'generico-11'), 200);
-          });
-        }
-        return;
-      }
 
       const canvas = cropper.getCroppedCanvas({ width: 500, height: 500 });
       const croppedUrl = canvas.toDataURL('image/png');
@@ -5330,7 +5577,6 @@
     document.getElementById('btnCropCancel').addEventListener('click', () => {
       cropModal.classList.remove('active');
       if (cropper) cropper.destroy(); cropper = null;
-      genericoPendingChain = false;
     });
 
     // ================================================================
@@ -5431,44 +5677,174 @@
     });
 
     // ================================================================
-    //  IMAGEN GENÉRICA
+    //  IMAGEN GENÉRICA (canvas interactivo, misma lógica que Foto)
     // ================================================================
     document.getElementById('file-generico').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
-      genericoPendingChain = true;
-      openCropperModal(file, 'generico-916');
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const dataUrl = ev.target.result;
+        const img = new Image();
+        img.onload = () => {
+          genImgSrc = dataUrl;
+          genNatural = { w: img.naturalWidth, h: img.naturalHeight };
+          initGenState();
+          const mini = document.querySelector('.mini-generico');
+          mini.src = dataUrl; mini.style.display = 'block';
+          document.getElementById('btn-remove-generico').style.display = 'block';
+          document.getElementById('generico-fit-controls').style.display = 'block';
+          document.querySelectorAll('.gen-fit-selector').forEach(sel => {
+            sel.querySelectorAll('.style-opt').forEach(o => o.classList.remove('active'));
+            sel.querySelector('.style-opt[data-fit="cover"]').classList.add('active');
+          });
+          renderCards();
+          saveState();
+        };
+        img.src = dataUrl;
+      };
+      reader.readAsDataURL(file);
       e.target.value = '';
     });
 
-    document.getElementById('btn-edit-generico-916').addEventListener('click', () => {
-      if (!genericoOriginalSrc) return;
-      fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => openCropperModal(blob, 'generico-916'));
+    document.querySelectorAll('.gen-fit-selector').forEach(sel => {
+      sel.addEventListener('click', (e) => {
+        const opt = e.target.closest('.style-opt');
+        if (!opt || !genImgSrc) return;
+        const format = sel.dataset.format;
+        const fit = opt.dataset.fit;
+        sel.querySelectorAll('.style-opt').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        setGenFitMode(format, fit);
+        renderCards();
+        saveState();
+      });
     });
 
-    document.getElementById('btn-edit-generico-11').addEventListener('click', () => {
-      if (!genericoOriginalSrc) return;
-      fetch(genericoOriginalSrc).then(r => r.blob()).then(blob => openCropperModal(blob, 'generico-11'));
+    document.getElementById('btn-center-generico').addEventListener('click', () => {
+      if (!genImgSrc) return;
+      ['916', '11'].forEach(format => centrarGen(format));
+    });
+
+    document.getElementById('btn-reset-generico').addEventListener('click', () => {
+      if (!genImgSrc) return;
+      ['916', '11'].forEach(format => resetearGen(format));
     });
 
     document.getElementById('btn-remove-generico').addEventListener('click', () => {
-      genericoImgSrcStory = null;
-      genericoImgSrcFeed = null;
-      genericoImgBlurStory = null;
-      genericoImgBlurFeed = null;
-      genericoImgRatioStory = null;
-      genericoImgRatioFeed = null;
-      genericoOriginalSrc = null;
-      genericoPendingChain = false;
+      genImgSrc = null;
+      genNatural = { w: 0, h: 0 };
+      genState = { '916': null, '11': null };
+      genInitialState = { '916': null, '11': null };
       document.getElementById('file-generico').value = '';
       const mini = document.querySelector('.mini-generico');
       mini.src = ''; mini.style.display = 'none';
-      document.querySelector('.mini-generico-916').style.display = 'none';
-      document.querySelector('.mini-generico-11').style.display = 'none';
-      document.getElementById('generico-img-actions').style.display = 'none';
+      document.getElementById('btn-remove-generico').style.display = 'none';
+      document.getElementById('generico-fit-controls').style.display = 'none';
       renderCards();
       saveState();
     });
+
+    // ================================================================
+    //  FOTO DEL JUGADOR (canvas interactivo, misma lógica que Foto/Genérico)
+    // ================================================================
+    document.getElementById('file-jugador').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const dataUrl = ev.target.result;
+        const img = new Image();
+        img.onload = () => {
+          playerImgSrc = dataUrl;
+          playerNatural = { w: img.naturalWidth, h: img.naturalHeight };
+          initPlayerState();
+          const mini = document.querySelector('.mini-jugador');
+          mini.src = dataUrl; mini.style.display = 'block';
+          document.getElementById('btn-remove-jugador').style.display = 'block';
+          document.getElementById('jugador-fit-controls').style.display = 'block';
+          document.querySelectorAll('.player-fit-selector').forEach(sel => {
+            sel.querySelectorAll('.style-opt').forEach(o => o.classList.remove('active'));
+            sel.querySelector('.style-opt[data-fit="cover"]').classList.add('active');
+          });
+          renderCards();
+          saveState();
+        };
+        img.src = dataUrl;
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    });
+
+    document.querySelectorAll('.player-fit-selector').forEach(sel => {
+      sel.addEventListener('click', (e) => {
+        const opt = e.target.closest('.style-opt');
+        if (!opt || !playerImgSrc) return;
+        const format = sel.dataset.format;
+        const fit = opt.dataset.fit;
+        sel.querySelectorAll('.style-opt').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        setPlayerFitMode(format, fit);
+        renderCards();
+        saveState();
+      });
+    });
+
+    document.getElementById('btn-center-jugador').addEventListener('click', () => {
+      if (!playerImgSrc) return;
+      ['916', '11'].forEach(format => centrarPlayer(format));
+    });
+
+    document.getElementById('btn-reset-jugador').addEventListener('click', () => {
+      if (!playerImgSrc) return;
+      ['916', '11'].forEach(format => resetearPlayer(format));
+    });
+
+    document.getElementById('btn-remove-jugador').addEventListener('click', () => {
+      playerImgSrc = null;
+      playerNatural = { w: 0, h: 0 };
+      playerState = { '916': null, '11': null };
+      playerInitialState = { '916': null, '11': null };
+      document.getElementById('file-jugador').value = '';
+      const mini = document.querySelector('.mini-jugador');
+      mini.src = ''; mini.style.display = 'none';
+      document.getElementById('btn-remove-jugador').style.display = 'none';
+      document.getElementById('jugador-fit-controls').style.display = 'none';
+      renderCards();
+      saveState();
+    });
+
+    // ================================================================
+    //  LISTA DE CONCENTRADOS – FILAS DINÁMICAS
+    // ================================================================
+    document.getElementById('btn-add-conc').addEventListener('click', () => {
+      const container = document.getElementById('conc-inputs');
+      const div = document.createElement('div');
+      div.className = 'schedule-input-row';
+      div.innerHTML = `
+        <input type="text" value="" class="conc-in-num" placeholder="N°" style="max-width:56px; text-align:center;">
+        <input type="text" value="" class="conc-in-nombre" placeholder="Apellido, Nombre">
+        <button class="btn-remove-row" onclick="removeConcRow(this)">X</button>
+      `;
+      container.appendChild(div);
+      attachConcEvents();
+      renderCards();
+      saveState();
+    });
+
+    function removeConcRow(btn) {
+      btn.parentElement.remove();
+      renderCards();
+      saveState();
+    }
+
+    function attachConcEvents() {
+      document.querySelectorAll('.conc-in-num, .conc-in-nombre').forEach(inp => {
+        inp.removeEventListener('input', renderCards);
+        inp.addEventListener('input', () => { renderCards(); saveState(); });
+      });
+    }
+    attachConcEvents();
 
     // ================================================================
     //  FONDO PERSONALIZADO
@@ -5591,6 +5967,363 @@
         fotoState[format] = JSON.parse(JSON.stringify(fotoInitialState[format]));
         applyFotoTransform(format);
       }
+    }
+
+    // ================================================================
+    //  MOTOR DE CANVAS INTERACTIVO — FONDO DEL FLYER GENÉRICO
+    //  (misma lógica que el motor de Foto: una única fuente de verdad
+    //  para posición/zoom, compartida entre vista previa y exportación)
+    // ================================================================
+    function setGenFitMode(format, fitMode) {
+      if (!genNatural.w || !genNatural.h) return;
+      const canvas = FOTO_CANVAS[format];
+      const minScale = fitMode === 'contain'
+        ? Math.min(canvas.w / genNatural.w, canvas.h / genNatural.h)
+        : Math.max(canvas.w / genNatural.w, canvas.h / genNatural.h);
+      const scale = minScale;
+      const w = genNatural.w * scale;
+      const h = genNatural.h * scale;
+      genState[format] = {
+        fitMode,
+        scale, minScale, maxScale: minScale * 4,
+        w, h,
+        left: (canvas.w - w) / 2,
+        top: (canvas.h - h) / 2
+      };
+      genInitialState[format] = JSON.parse(JSON.stringify(genState[format]));
+    }
+
+    function initGenState() {
+      ['916', '11'].forEach(format => setGenFitMode(format, 'cover'));
+    }
+
+    function clampGenState(format) {
+      const st = genState[format];
+      if (!st) return;
+      const canvas = FOTO_CANVAS[format];
+      st.scale = Math.max(st.minScale, Math.min(st.maxScale, st.scale));
+      st.w = genNatural.w * st.scale;
+      st.h = genNatural.h * st.scale;
+      if (st.w <= canvas.w) {
+        st.left = (canvas.w - st.w) / 2;
+      } else {
+        if (st.left > 0) st.left = 0;
+        if (st.left + st.w < canvas.w) st.left = canvas.w - st.w;
+      }
+      if (st.h <= canvas.h) {
+        st.top = (canvas.h - st.h) / 2;
+      } else {
+        if (st.top > 0) st.top = 0;
+        if (st.top + st.h < canvas.h) st.top = canvas.h - st.h;
+      }
+    }
+
+    function applyGenTransform(format) {
+      const st = genState[format];
+      if (!st) return;
+      document.querySelectorAll(`.gen-bg-photo-img[data-format="${format}"]`).forEach(img => {
+        img.style.left = st.left + 'px';
+        img.style.top = st.top + 'px';
+        img.style.width = st.w + 'px';
+        img.style.height = st.h + 'px';
+      });
+    }
+
+    function zoomGenAt(format, ratio, clientPoint, origin, scaleFactor) {
+      const st = genState[format];
+      if (!st) return;
+      const canvasPoint = {
+        x: (clientPoint.x - origin.x) / scaleFactor,
+        y: (clientPoint.y - origin.y) / scaleFactor
+      };
+      const localX = (canvasPoint.x - st.left) / st.scale;
+      const localY = (canvasPoint.y - st.top) / st.scale;
+      let newScale = st.scale * ratio;
+      newScale = Math.max(st.minScale, Math.min(st.maxScale, newScale));
+      st.scale = newScale;
+      st.w = genNatural.w * newScale;
+      st.h = genNatural.h * newScale;
+      st.left = canvasPoint.x - localX * newScale;
+      st.top = canvasPoint.y - localY * newScale;
+      clampGenState(format);
+      applyGenTransform(format);
+    }
+
+    function centrarGen(format) {
+      const st = genState[format];
+      if (!st) return;
+      const canvas = FOTO_CANVAS[format];
+      st.left = (canvas.w - st.w) / 2;
+      st.top = (canvas.h - st.h) / 2;
+      clampGenState(format);
+      applyGenTransform(format);
+    }
+
+    function resetearGen(format) {
+      if (genInitialState[format]) {
+        genState[format] = JSON.parse(JSON.stringify(genInitialState[format]));
+        applyGenTransform(format);
+      }
+    }
+
+    // ================================================================
+    //  MOTOR DE CANVAS INTERACTIVO — FOTO DEL JUGADOR DEL PARTIDO
+    //  (misma lógica que el motor de Foto/Genérico: única fuente de
+    //  verdad para posición/zoom, compartida entre preview y export)
+    // ================================================================
+    function setPlayerFitMode(format, fitMode) {
+      if (!playerNatural.w || !playerNatural.h) return;
+      const canvas = FOTO_CANVAS[format];
+      const scale = fitMode === 'contain'
+        ? Math.min(canvas.w / playerNatural.w, canvas.h / playerNatural.h)
+        : Math.max(canvas.w / playerNatural.w, canvas.h / playerNatural.h);
+      const w = playerNatural.w * scale;
+      const h = playerNatural.h * scale;
+      playerState[format] = {
+        fitMode,
+        scale, minScale: scale, maxScale: scale * 4,
+        w, h,
+        left: (canvas.w - w) / 2,
+        top: (canvas.h - h) / 2
+      };
+      playerInitialState[format] = JSON.parse(JSON.stringify(playerState[format]));
+    }
+
+    function initPlayerState() {
+      ['916', '11'].forEach(format => setPlayerFitMode(format, 'cover'));
+    }
+
+    function clampPlayerState(format) {
+      const st = playerState[format];
+      if (!st) return;
+      const canvas = FOTO_CANVAS[format];
+      st.scale = Math.max(st.minScale, Math.min(st.maxScale, st.scale));
+      st.w = playerNatural.w * st.scale;
+      st.h = playerNatural.h * st.scale;
+      if (st.w <= canvas.w) {
+        st.left = (canvas.w - st.w) / 2;
+      } else {
+        if (st.left > 0) st.left = 0;
+        if (st.left + st.w < canvas.w) st.left = canvas.w - st.w;
+      }
+      if (st.h <= canvas.h) {
+        st.top = (canvas.h - st.h) / 2;
+      } else {
+        if (st.top > 0) st.top = 0;
+        if (st.top + st.h < canvas.h) st.top = canvas.h - st.h;
+      }
+    }
+
+    function applyPlayerTransform(format) {
+      const st = playerState[format];
+      if (!st) return;
+      document.querySelectorAll(`.player-photo-img[data-format="${format}"]`).forEach(img => {
+        img.style.left = st.left + 'px';
+        img.style.top = st.top + 'px';
+        img.style.width = st.w + 'px';
+        img.style.height = st.h + 'px';
+      });
+    }
+
+    function zoomPlayerAt(format, ratio, clientPoint, origin, scaleFactor) {
+      const st = playerState[format];
+      if (!st) return;
+      const canvasPoint = {
+        x: (clientPoint.x - origin.x) / scaleFactor,
+        y: (clientPoint.y - origin.y) / scaleFactor
+      };
+      const localX = (canvasPoint.x - st.left) / st.scale;
+      const localY = (canvasPoint.y - st.top) / st.scale;
+      let newScale = st.scale * ratio;
+      newScale = Math.max(st.minScale, Math.min(st.maxScale, newScale));
+      st.scale = newScale;
+      st.w = playerNatural.w * newScale;
+      st.h = playerNatural.h * newScale;
+      st.left = canvasPoint.x - localX * newScale;
+      st.top = canvasPoint.y - localY * newScale;
+      clampPlayerState(format);
+      applyPlayerTransform(format);
+    }
+
+    function centrarPlayer(format) {
+      const st = playerState[format];
+      if (!st) return;
+      const canvas = FOTO_CANVAS[format];
+      st.left = (canvas.w - st.w) / 2;
+      st.top = (canvas.h - st.h) / 2;
+      clampPlayerState(format);
+      applyPlayerTransform(format);
+    }
+
+    function resetearPlayer(format) {
+      if (playerInitialState[format]) {
+        playerState[format] = JSON.parse(JSON.stringify(playerInitialState[format]));
+        applyPlayerTransform(format);
+      }
+    }
+
+    function attachPlayerCanvasEvents() {
+      ['916', '11'].forEach(format => {
+        const layer = document.querySelector(`#wrap${format} .player-canvas-layer`);
+        if (!layer) return;
+
+        const pointers = new Map();
+        let dragLast = null;
+        let lastDist = null;
+
+        function getScaleFactor() {
+          const rect = layer.getBoundingClientRect();
+          return rect.width / FOTO_CANVAS[format].w;
+        }
+        function getOrigin() {
+          const rect = layer.getBoundingClientRect();
+          return { x: rect.left, y: rect.top };
+        }
+
+        layer.addEventListener('pointerdown', (e) => {
+          if (!playerImgSrc) return;
+          layer.setPointerCapture(e.pointerId);
+          pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+          if (pointers.size === 1) {
+            dragLast = { x: e.clientX, y: e.clientY };
+          } else if (pointers.size === 2) {
+            const pts = Array.from(pointers.values());
+            lastDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+          }
+        });
+
+        layer.addEventListener('pointermove', (e) => {
+          if (!pointers.has(e.pointerId)) return;
+          pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+          const scaleFactor = getScaleFactor();
+          const origin = getOrigin();
+
+          if (pointers.size === 1 && dragLast) {
+            const st = playerState[format];
+            if (st) {
+              const dx = (e.clientX - dragLast.x) / scaleFactor;
+              const dy = (e.clientY - dragLast.y) / scaleFactor;
+              st.left += dx;
+              st.top += dy;
+              clampPlayerState(format);
+              applyPlayerTransform(format);
+            }
+            dragLast = { x: e.clientX, y: e.clientY };
+          } else if (pointers.size === 2) {
+            const pts = Array.from(pointers.values());
+            const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+            const mid = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 };
+            if (lastDist) {
+              const ratio = dist / lastDist;
+              zoomPlayerAt(format, ratio, mid, origin, scaleFactor);
+            }
+            lastDist = dist;
+          }
+        });
+
+        function endPointer(e) {
+          if (pointers.has(e.pointerId)) pointers.delete(e.pointerId);
+          lastDist = null;
+          if (pointers.size === 1) {
+            const remaining = Array.from(pointers.values())[0];
+            dragLast = { x: remaining.x, y: remaining.y };
+          } else {
+            dragLast = null;
+          }
+        }
+        layer.addEventListener('pointerup', endPointer);
+        layer.addEventListener('pointercancel', endPointer);
+        layer.addEventListener('pointerleave', (e) => { if (pointers.size <= 1) endPointer(e); });
+
+        layer.addEventListener('wheel', (e) => {
+          if (!playerImgSrc) return;
+          e.preventDefault();
+          const ratio = e.deltaY < 0 ? 1.08 : 0.92;
+          zoomPlayerAt(format, ratio, { x: e.clientX, y: e.clientY }, getOrigin(), getScaleFactor());
+        }, { passive: false });
+      });
+    }
+
+    function attachGenCanvasEvents() {
+      ['916', '11'].forEach(format => {
+        const layer = document.querySelector(`#wrap${format} .gen-canvas-layer`);
+        if (!layer) return;
+
+        const pointers = new Map();
+        let dragLast = null;
+        let lastDist = null;
+
+        function getScaleFactor() {
+          const rect = layer.getBoundingClientRect();
+          return rect.width / FOTO_CANVAS[format].w;
+        }
+        function getOrigin() {
+          const rect = layer.getBoundingClientRect();
+          return { x: rect.left, y: rect.top };
+        }
+
+        layer.addEventListener('pointerdown', (e) => {
+          if (!genImgSrc) return;
+          layer.setPointerCapture(e.pointerId);
+          pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+          if (pointers.size === 1) {
+            dragLast = { x: e.clientX, y: e.clientY };
+          } else if (pointers.size === 2) {
+            const pts = Array.from(pointers.values());
+            lastDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+          }
+        });
+
+        layer.addEventListener('pointermove', (e) => {
+          if (!pointers.has(e.pointerId)) return;
+          pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+          const scaleFactor = getScaleFactor();
+          const origin = getOrigin();
+
+          if (pointers.size === 1 && dragLast) {
+            const st = genState[format];
+            if (st) {
+              const dx = (e.clientX - dragLast.x) / scaleFactor;
+              const dy = (e.clientY - dragLast.y) / scaleFactor;
+              st.left += dx;
+              st.top += dy;
+              clampGenState(format);
+              applyGenTransform(format);
+            }
+            dragLast = { x: e.clientX, y: e.clientY };
+          } else if (pointers.size === 2) {
+            const pts = Array.from(pointers.values());
+            const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+            const mid = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 };
+            if (lastDist) {
+              const ratio = dist / lastDist;
+              zoomGenAt(format, ratio, mid, origin, scaleFactor);
+            }
+            lastDist = dist;
+          }
+        });
+
+        function endPointer(e) {
+          if (pointers.has(e.pointerId)) pointers.delete(e.pointerId);
+          lastDist = null;
+          if (pointers.size === 1) {
+            const remaining = Array.from(pointers.values())[0];
+            dragLast = { x: remaining.x, y: remaining.y };
+          } else {
+            dragLast = null;
+          }
+        }
+        layer.addEventListener('pointerup', endPointer);
+        layer.addEventListener('pointercancel', endPointer);
+        layer.addEventListener('pointerleave', (e) => { if (pointers.size <= 1) endPointer(e); });
+
+        layer.addEventListener('wheel', (e) => {
+          if (!genImgSrc) return;
+          e.preventDefault();
+          const ratio = e.deltaY < 0 ? 1.08 : 0.92;
+          zoomGenAt(format, ratio, { x: e.clientX, y: e.clientY }, getOrigin(), getScaleFactor());
+        }, { passive: false });
+      });
     }
 
     function attachFotoCanvasEvents() {
@@ -5856,9 +6589,6 @@
           elementPositions: getElementPositionsState(),
           // generico
           genTexto: document.getElementById('in-gen-texto').value,
-          genPosX: genericoImgPosX,
-          genPosY: genericoImgPosY,
-          genZoom: genericoZoom,
           genStyle: genericoStyle,
           genShowHeader: document.getElementById('in-gen-show-header').checked,
           genShowCategoria: document.getElementById('in-gen-show-categoria').checked,
@@ -5866,11 +6596,28 @@
           genShowTexto: document.getElementById('in-gen-show-texto').checked,
           genShowSponsors: document.getElementById('in-gen-show-sponsors').checked,
           genShowFooter: document.getElementById('in-gen-show-footer').checked,
+          genState: genState,
+          genNatural: genNatural,
+          genInitialState: genInitialState,
+          genImgSrc: genImgSrc && genImgSrc.length < 500000 ? genImgSrc : null,
           // foto
           fotoState: fotoState,
           fotoNatural: fotoNatural,
           fotoInitialState: fotoInitialState,
           fotoImgSrc: fotoImgSrc && fotoImgSrc.length < 500000 ? fotoImgSrc : null,
+          // jugador del partido
+          jugadorNombre: document.getElementById('in-jugador-nombre').value,
+          jugadorDorsal: document.getElementById('in-jugador-dorsal').value,
+          jugadorDistincion: document.getElementById('in-jugador-distincion').value,
+          playerState: playerState,
+          playerNatural: playerNatural,
+          playerInitialState: playerInitialState,
+          playerImgSrc: playerImgSrc && playerImgSrc.length < 500000 ? playerImgSrc : null,
+          // lista de concentrados
+          concentrados: Array.from(document.querySelectorAll('.conc-in-nombre')).map((n, i) => ({
+            num: (document.querySelectorAll('.conc-in-num')[i] || {}).value || '',
+            nombre: n.value || ''
+          })),
         };
         localStorage.setItem('flyerData', JSON.stringify(state));
       } catch (e) { }
@@ -5881,14 +6628,142 @@
         const raw = localStorage.getItem('flyerData');
         if (!raw) return false;
         const state = JSON.parse(raw);
-        // Aplicar estado (igual que antes, omito por brevedad, pero está completo en el código final)
-        // ... (se mantiene el mismo código de restauración)
+
+        if (state.mode) document.getElementById('in-mode').value = state.mode;
+        if (state.category) currentCategory = state.category;
+        if (state.brand1 !== undefined) document.querySelector('.in-brand1').value = state.brand1;
+        if (state.brand2 !== undefined) document.querySelector('.in-brand2').value = state.brand2;
+        if (state.t1 !== undefined) document.querySelector('.in-t1').value = state.t1;
+        if (state.t2 !== undefined) document.querySelector('.in-t2').value = state.t2;
+        if (state.cat !== undefined) document.querySelector('.in-cat').value = state.cat;
+        if (state.estadio !== undefined) document.querySelector('.in-estadio').value = state.estadio;
+        if (state.estadioSub !== undefined) document.querySelector('.in-estadio-sub').value = state.estadioSub;
+        if (state.hora !== undefined) document.querySelector('.in-hora').value = state.hora;
+        if (state.fecha) datePicker.value = state.fecha;
+        if (state.condicion) document.getElementById('in-condicion').value = state.condicion;
+        if (state.rival !== undefined) document.getElementById('in-nombre-rival').value = state.rival;
+        if (state.golesLocal !== undefined) document.getElementById('in-goles-local').value = state.golesLocal;
+        if (state.golesRival !== undefined) document.getElementById('in-goles-rival').value = state.golesRival;
+        if (state.footSlogan !== undefined) document.querySelector('.in-foot-slogan').value = state.footSlogan;
+        if (state.footR1 !== undefined) document.querySelector('.in-foot-r1').value = state.footR1;
+        if (state.footR2 !== undefined) document.querySelector('.in-foot-r2').value = state.footR2;
+        if (state.accLocal !== undefined) document.querySelector('.in-acc-local').value = state.accLocal;
+        if (state.accVisit !== undefined) document.querySelector('.in-acc-visit').value = state.accVisit;
+        if (state.showAccesos !== undefined) document.getElementById('in-show-accesos').checked = state.showAccesos;
+        if (state.showHeader !== undefined) document.getElementById('in-show-header').checked = state.showHeader;
+        if (state.showCategory !== undefined) document.getElementById('in-show-category').checked = state.showCategory;
+        if (state.showTitle !== undefined) document.getElementById('in-show-title').checked = state.showTitle;
+        if (state.showInfo !== undefined) document.getElementById('in-show-info').checked = state.showInfo;
+        if (state.showTeams !== undefined) document.getElementById('in-show-teams').checked = state.showTeams;
+        if (state.showFooter !== undefined) document.getElementById('in-show-footer').checked = state.showFooter;
+        if (state.showSponsors !== undefined) document.getElementById('in-show-sponsors').checked = state.showSponsors;
+
+        if (state.font) fontSelector.value = state.font;
+        if (state.textBg !== undefined) textBgToggle.checked = state.textBg;
         if (state.shieldSize && shieldSizeInput) {
           shieldSizeInput.value = state.shieldSize;
           if (shieldSizeLabel) shieldSizeLabel.textContent = state.shieldSize;
         }
         applyElementSizesState(state.elementSizes);
         applyElementPositionsState(state.elementPositions);
+
+        // ---- genérico: texto, estilo y visibilidad ----
+        if (state.genTexto !== undefined) document.getElementById('in-gen-texto').value = state.genTexto;
+        if (state.genStyle) {
+          genericoStyle = state.genStyle;
+          document.querySelectorAll('#generico-style-selector .style-opt').forEach(o => {
+            o.classList.toggle('active', o.dataset.style === state.genStyle);
+          });
+        }
+        if (state.genShowHeader !== undefined) document.getElementById('in-gen-show-header').checked = state.genShowHeader;
+        if (state.genShowCategoria !== undefined) document.getElementById('in-gen-show-categoria').checked = state.genShowCategoria;
+        if (state.genShowTitulo !== undefined) document.getElementById('in-gen-show-titulo').checked = state.genShowTitulo;
+        if (state.genShowTexto !== undefined) document.getElementById('in-gen-show-texto').checked = state.genShowTexto;
+        if (state.genShowSponsors !== undefined) document.getElementById('in-gen-show-sponsors').checked = state.genShowSponsors;
+        if (state.genShowFooter !== undefined) document.getElementById('in-gen-show-footer').checked = state.genShowFooter;
+
+        // ---- genérico: imagen de fondo (única fuente de verdad) ----
+        if (state.genImgSrc && state.genState) {
+          genImgSrc = state.genImgSrc;
+          genNatural = state.genNatural || { w: 0, h: 0 };
+          genState = state.genState;
+          genInitialState = state.genInitialState || { '916': null, '11': null };
+          const mini = document.querySelector('.mini-generico');
+          if (mini) { mini.src = genImgSrc; mini.style.display = 'block'; }
+          const btnRemove = document.getElementById('btn-remove-generico');
+          if (btnRemove) btnRemove.style.display = 'block';
+          const fitControls = document.getElementById('generico-fit-controls');
+          if (fitControls) fitControls.style.display = 'block';
+          document.querySelectorAll('.gen-fit-selector').forEach(sel => {
+            const format = sel.dataset.format;
+            const fit = genState[format] && genState[format].fitMode === 'contain' ? 'contain' : 'cover';
+            sel.querySelectorAll('.style-opt').forEach(o => o.classList.toggle('active', o.dataset.fit === fit));
+          });
+        }
+
+        // ---- foto: fotografía de fondo (única fuente de verdad) ----
+        if (state.fotoImgSrc && state.fotoState) {
+          fotoImgSrc = state.fotoImgSrc;
+          fotoNatural = state.fotoNatural || { w: 0, h: 0 };
+          fotoState = state.fotoState;
+          fotoInitialState = state.fotoInitialState || { '916': null, '11': null };
+          const mini = document.querySelector('.mini-foto');
+          if (mini) { mini.src = fotoImgSrc; mini.style.display = 'block'; }
+          const btnRemove = document.getElementById('btn-remove-foto');
+          if (btnRemove) btnRemove.style.display = 'block';
+          const fitControls = document.getElementById('foto-fit-controls');
+          if (fitControls) fitControls.style.display = 'block';
+          document.querySelectorAll('.foto-fit-selector').forEach(sel => {
+            const format = sel.dataset.format;
+            const fit = fotoState[format] && fotoState[format].fitMode === 'contain' ? 'contain' : 'cover';
+            sel.querySelectorAll('.style-opt').forEach(o => o.classList.toggle('active', o.dataset.fit === fit));
+          });
+        }
+
+        // ---- jugador del partido: datos ----
+        if (state.jugadorNombre !== undefined) document.getElementById('in-jugador-nombre').value = state.jugadorNombre;
+        if (state.jugadorDorsal !== undefined) document.getElementById('in-jugador-dorsal').value = state.jugadorDorsal;
+        if (state.jugadorDistincion !== undefined) document.getElementById('in-jugador-distincion').value = state.jugadorDistincion;
+
+        // ---- jugador del partido: foto (única fuente de verdad) ----
+        if (state.playerImgSrc && state.playerState) {
+          playerImgSrc = state.playerImgSrc;
+          playerNatural = state.playerNatural || { w: 0, h: 0 };
+          playerState = state.playerState;
+          playerInitialState = state.playerInitialState || { '916': null, '11': null };
+          const mini = document.querySelector('.mini-jugador');
+          if (mini) { mini.src = playerImgSrc; mini.style.display = 'block'; }
+          const btnRemove = document.getElementById('btn-remove-jugador');
+          if (btnRemove) btnRemove.style.display = 'block';
+          const fitControls = document.getElementById('jugador-fit-controls');
+          if (fitControls) fitControls.style.display = 'block';
+          document.querySelectorAll('.player-fit-selector').forEach(sel => {
+            const format = sel.dataset.format;
+            const fit = playerState[format] && playerState[format].fitMode === 'contain' ? 'contain' : 'cover';
+            sel.querySelectorAll('.style-opt').forEach(o => o.classList.toggle('active', o.dataset.fit === fit));
+          });
+        }
+
+        // ---- lista de concentrados ----
+        if (Array.isArray(state.concentrados) && state.concentrados.length) {
+          const container = document.getElementById('conc-inputs');
+          if (container) {
+            container.innerHTML = '';
+            state.concentrados.forEach(p => {
+              const div = document.createElement('div');
+              div.className = 'schedule-input-row';
+              div.innerHTML = `
+                <input type="text" value="${(p.num || '').replace(/"/g, '&quot;')}" class="conc-in-num" placeholder="N°" style="max-width:56px; text-align:center;">
+                <input type="text" value="${(p.nombre || '').replace(/"/g, '&quot;')}" class="conc-in-nombre" placeholder="Apellido, Nombre">
+                <button class="btn-remove-row" onclick="removeConcRow(this)">X</button>
+              `;
+              container.appendChild(div);
+            });
+            if (typeof attachConcEvents === 'function') attachConcEvents();
+          }
+        }
+
+        if (typeof updateModeVisibility === 'function') updateModeVisibility();
         return true;
       } catch (e) {
         return false;
@@ -5922,13 +6797,6 @@
 
     renderCards();
     document.fonts.ready.then(fitAll);
-
-    function parseImgRatio(str) {
-      if (!str || str === 'libre') return null;
-      const [w, h] = str.split('/').map(Number);
-      if (!w || !h) return null;
-      return w / h;
-    }
 
     setInterval(saveState, 5000);
   </script>
